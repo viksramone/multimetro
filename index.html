@@ -1,0 +1,83 @@
+<html lang="es-ES">
+<head title:"Uso del polímetro">
+</head>
+<body style = "background-color:white" "overflow-y:hidden" "overflow-x:hidden">
+<header>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=1200, initial-scale=0.5">
+	<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="estilos.css">
+
+</header>
+
+
+<div class="tooltip" id = "centroDiagrama"><a href=case0.html>Uso del multímetro
+	<span class="tooltiptext">Características principales del múltimetro</span></div>
+<div class="tooltip" id = "casoDeUso1"><a href=case1.html>1
+	<span class="tooltiptext">Medida de la diferencia de potencial en una base de enchufe doméstica</span></div>
+<div class="tooltip" id = "casoDeUso2"><a href=case2.html>2
+	<span class="tooltiptext">Medidas de la diferencia de potencial en los terminales de una batería</span></div>
+<div class="tooltip" id = "casoDeUso3"><a href=case3.html>3
+	<span class="tooltiptext">Medidas de continuidad</span></div>
+<div class="tooltip" id = "casoDeUso4"><a href=case4.html>4
+	<span class="tooltiptext">Medidas de resistencias</span></div>
+<div class="tooltip" id = "casoDeUso5"><a href=case5.html>5
+	<span class="tooltiptext">Tooltip text</span></div>
+<div class="tooltip" id = "casoDeUso6"><a href=case6.html>6
+	<span class="tooltiptext">Tooltip text</span></div>
+<div class="tooltip" id = "casoDeUso7"><a href=case7.html>7
+	<span class="tooltiptext">Tooltip text</span></div>
+<div class="tooltip" id = "casoDeUso8"><a href=case8.html>¿?
+	<span class="tooltiptext">Tooltip text</span></div>
+
+<style>
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  top:50px;
+  left: 105%;
+  width: 300px;
+  height: auto;
+  background-color: SlateBlue;
+  color: #fff;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height:25px;
+  font-size: 15px;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* To the left of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent SlateBlue transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+</style>
+
+</body>
+</html>
+
+
+
