@@ -9,6 +9,8 @@ body {
 	overflow-y:hidden;
 	overflow-x:hidden;
 	background-image: url('./images/tablero.jpg');
+	transform: scale(0.8);
+      	transform-origin: 0 0;
 }
 #polimetro {position: absolute; top: 70px; left: 20px; visibility: visible}
 #selector {position: absolute; top: 393px; left: 98px}
