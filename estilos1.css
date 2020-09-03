@@ -10,7 +10,7 @@ body {
 	overflow-x:hidden;
 	background-image: url('./images/tablero.jpg');
 	transform: scale(0.8);
-      	transform-origin: 0 0;
+    transform-origin: 0 0;
 }
 #polimetro {position: absolute; top: 70px; left: 20px; visibility: visible}
 #selector {position: absolute; top: 393px; left: 98px}
@@ -77,11 +77,12 @@ body {
 #conectorNegro {position:absolute; width:186px; height: 741px; top:560px; left:450px; background-image: url('./images/conectorNegro.png'); background-repeat: no-repeat}
 
 
-#aspaRojaPaso1{position: absolute; width:50px; height: 50px; top:145px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso2{position: absolute; width:50px; height: 50px; top:210px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso3{position: absolute; width:50px; height: 50px; top:270px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso4{position: absolute; width:50px; height: 50px; top:330px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso5{position: absolute; width:50px; height: 50px; top:400px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso1{position: absolute; width:50px; height: 50px; top:90px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso2{position: absolute; width:50px; height: 50px; top:165px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso3{position: absolute; width:50px; height: 50px; top:240px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso4{position: absolute; width:50px; height: 50px; top:315px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso5{position: absolute; width:50px; height: 50px; top:390px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
 
 
 #asesor {position:absolute; width:600px; height: 800px; top:10px; left:1050px; background-image: url('./images/papelLibreta.jpg'); background-repeat: no-repeat}
+
