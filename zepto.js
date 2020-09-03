@@ -35,6 +35,32 @@
 		posicionSelector[22] = "./images/boto23.jpg";
 		posicionSelector[23] = "./images/boto24.jpg";
 
+	var estadoFusiblePosicionSelector = new Array (20);
+		estadoFusiblePosicionSelector[0] = "Correcto";
+		estadoFusiblePosicionSelector[1] = "Correcto";
+		estadoFusiblePosicionSelector[2] = "Correcto";
+		estadoFusiblePosicionSelector[3] = "Correcto";
+		estadoFusiblePosicionSelector[4] = "Correcto";
+		estadoFusiblePosicionSelector[5] = "Correcto";
+		estadoFusiblePosicionSelector[6] = "Correcto";
+		estadoFusiblePosicionSelector[7] = "Correcto";
+		estadoFusiblePosicionSelector[8] = "Correcto";
+		estadoFusiblePosicionSelector[9] = "Correcto";
+		estadoFusiblePosicionSelector[10] = "Correcto";
+		estadoFusiblePosicionSelector[11] = "Correcto";
+		estadoFusiblePosicionSelector[12] = "Correcto";
+		estadoFusiblePosicionSelector[13] = "Correcto";
+		estadoFusiblePosicionSelector[14] = "Correcto";
+		estadoFusiblePosicionSelector[15] = "Correcto";
+		estadoFusiblePosicionSelector[16] = "Correcto";
+		estadoFusiblePosicionSelector[17] = "Correcto";
+		estadoFusiblePosicionSelector[18] = "Correcto";
+		estadoFusiblePosicionSelector[19] = "Correcto";
+		estadoFusiblePosicionSelector[20] = "Correcto";
+		estadoFusiblePosicionSelector[21] = "Correcto";
+		estadoFusiblePosicionSelector[22] = "Correcto";
+		estadoFusiblePosicionSelector[23] = "Correcto";
+
 	var magnitudAMedir;
 	var tipoMagnitudAMedir;
 	var magnitudMedida;
@@ -62,6 +88,8 @@
 	var conectorNegroElement = document.getElementById('conectorNegro'), posicionXConectorNegro = 0, posicionYConectorNegro = 0;
 	var conectorNegroConectadoACOM;
 	conectorNegroElement.addEventListener("mousedown", dragStartConectorNegro);
+
+	var audioExplosionElement = document.getElementById("audioExplosion");
 
 //-----------------------------------------------------------------------------------------------------------------------
 function determinaPosicionSelector(e)
@@ -2995,7 +3023,7 @@ function dragEndConectorNegro()
 					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 610)
 	{
 		document.getElementById('conexionCOM').style.fill = "transparent";
-		conectorNegroElement.style.left = "171px";
+		conectorNegroElement.style.left = "169px";
 		conectorNegroElement.style.top = "653px";
 		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
 		conectorNegroElement.style.backgroundRepeat = "no-repeat";
@@ -3088,13 +3116,56 @@ function determinaValor()
 					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
 					break;				
 				case 10: //console.log("hFE");
+					break;
 				case 11: //console.log("AAC - 2mA");
+					if (conexionCorrecta == true && estadoFusiblePosicionSelector[11] == "Correcto")
+					{
+						audioExplosionElement.play();
+						estadoFusiblePosicionSelector[11] = "Fundido";
+					}
+					break
 				case 12: //console.log("AAC - 20mA/10A");
+					if (conexionCorrecta == true && estadoFusiblePosicionSelector[12] == "Correcto")
+					{
+						audioExplosionElement.play();
+						estadoFusiblePosicionSelector[12] = "Fundido";
+					}
+					break
 				case 13: //console.log("AAC - 200mA");
+					if (conexionCorrecta == true && estadoFusiblePosicionSelector[13] == "Correcto")
+					{
+						audioExplosionElement.play();
+						estadoFusiblePosicionSelector[13] = "Fundido";
+					}
+					break
 				case 14: //console.log("ADC - 200mA");
+					if (conexionCorrecta == true && estadoFusiblePosicionSelector[14] == "Correcto")
+					{
+						audioExplosionElement.play();
+						estadoFusiblePosicionSelector[14] = "Fundido";
+					}
+					break
 				case 15: //console.log("ADC - 20mA/10A");
+					if (conexionCorrecta == true && estadoFusiblePosicionSelector[15] == "Correcto")
+					{
+						audioExplosionElement.play();
+						estadoFusiblePosicionSelector[15] = "Fundido";
+					}
+					break
 				case 16: //console.log("ADC - 2mA");
+					if (conexionCorrecta == true && estadoFusiblePosicionSelector[16] == "Correcto")
+					{
+						audioExplosionElement.play();
+						estadoFusiblePosicionSelector[16] = "Fundido";
+					}
+					break
 				case 17: //console.log("ADC - 200uA");
+					if (conexionCorrecta == true && estadoFusiblePosicionSelector[17] == "Correcto")
+					{
+						audioExplosionElement.play();
+						estadoFusiblePosicionSelector[17] = "Fundido";
+					}
+					break
 				case 18: //console.log("Ohm - 200");
 				case 19: //console.log("Ohm - 2k");
 				case 20: //console.log("Ohm - 20k");
