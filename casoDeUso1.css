@@ -1,0 +1,94 @@
+/*
+Código CSS Polímetros
+*/
+body {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	overflow-y:hidden;
+	overflow-x:hidden;
+	background-image: url('./images/tablero.jpg');
+	transform: scale(0.8);
+    transform-origin: 0 0;
+}
+
+a{
+	color:inherit;
+	text-decoration: none;
+}
+
+#polimetro {position: absolute; top: 70px; left: 20px; visibility: visible}
+#selector {position: absolute; top: 393px; left: 98px}
+
+#conexion10A {position:absolute; top:624px; left:51px ;visibility:visible; fill:transparent}
+#conexionCOM {position:absolute; top:624px; left:136px ;visibility:visible; fill:transparent}
+#conexionVRA {position:absolute; top:624px; left:222px ;visibility:visible; fill:transparent}
+
+#D7S_1a {position:absolute; top:170px; left:220px ;visibility:hidden}		   
+#D7S_1b {position:absolute; top:170px; left:220px ;visibility:hidden}
+#D7S_1c {position:absolute; top:170px; left:220px ;visibility:hidden}
+#D7S_1d {position:absolute; top:170px; left:220px ;visibility:hidden}
+#D7S_1e {position:absolute; top:170px; left:220px ;visibility:hidden}
+#D7S_1f {position:absolute; top:170px; left:220px ;visibility:hidden}
+#D7S_1g {position:absolute; top:170px; left:220px ;visibility:hidden}
+
+#D7S_2a {position:absolute; top:170px; left:175px ;visibility:hidden}		   
+#D7S_2b {position:absolute; top:170px; left:175px ;visibility:hidden}
+#D7S_2c {position:absolute; top:170px; left:175px ;visibility:hidden}
+#D7S_2d {position:absolute; top:170px; left:175px ;visibility:hidden}
+#D7S_2e {position:absolute; top:170px; left:175px ;visibility:hidden}
+#D7S_2f {position:absolute; top:170px; left:175px ;visibility:hidden}
+#D7S_2g {position:absolute; top:170px; left:175px ;visibility:hidden}
+
+#D7S_3a {position:absolute; top:170px; left:130px ;visibility:hidden}		   
+#D7S_3b {position:absolute; top:170px; left:130px ;visibility:hidden}
+#D7S_3c {position:absolute; top:170px; left:130px ;visibility:hidden}
+#D7S_3d {position:absolute; top:170px; left:130px ;visibility:hidden}
+#D7S_3e {position:absolute; top:170px; left:130px ;visibility:hidden}
+#D7S_3f {position:absolute; top:170px; left:130px ;visibility:hidden}
+#D7S_3g {position:absolute; top:170px; left:130px ;visibility:hidden}
+
+#D7S_4a {position:absolute; top:170px; left:85px ;visibility:hidden}		   
+#D7S_4b {position:absolute; top:170px; left:85px ;visibility:hidden}
+#D7S_4c {position:absolute; top:170px; left:85px ;visibility:hidden}
+#D7S_4d {position:absolute; top:170px; left:85px ;visibility:hidden}
+#D7S_4e {position:absolute; top:170px; left:85px ;visibility:hidden}
+#D7S_4f {position:absolute; top:170px; left:85px ;visibility:hidden}
+#D7S_4g {position:absolute; top:170px; left:85px ;visibility:hidden}
+
+#signo {position:absolute; top:170px; left:76px ;visibility:hidden}
+#punto1 {position:absolute; top:239px; left:123px ;visibility:hidden}
+#punto2 {position:absolute; top:239px; left:169px ;visibility:hidden}
+#punto3 {position:absolute; top:239px; left:214px ;visibility:hidden}
+#punto4 {position:absolute; top:239px; left:258px ;visibility:hidden}
+
+#ohmios {position:absolute; top:166px; left:277px ;visibility:hidden}
+#kiloohmios {position:absolute; top:182px; left:270px ;visibility:hidden}
+#megaohmios {position:absolute; top:198px; left:265px ;visibility:hidden}
+#voltios {position:absolute; top:214px; left:279px ;visibility:hidden}
+#milivoltios {position:absolute; top:214px; left:267px ;visibility:hidden}
+#hfe {position:absolute; top:230px; left:266px ;visibility:hidden}
+#miliamperios {position:absolute; top:214px; left:90px ;visibility:hidden}
+#microamperios {position:absolute; top:230px; left:90px ;visibility:hidden}
+#AC {position:absolute; top:166px; left:90px ;visibility:hidden}
+
+#baseDeEnchufe{position: absolute; top: 225px; width:680px; height: 870px; left:600px; background-image: url('./images/baseDeEnchufe.png'); background-repeat: no-repeat}
+#faseBaseDeEnchufe {position:absolute; top:340px; left:738px ;visibility:visible; fill:transparent;}
+#neutroBaseDeEnchufe {position:absolute; top:340px; left:665px ;visibility:visible; fill:transparent;}
+
+#sondaRoja{position: absolute; width:68px; height: 870px; top:100px; left:370px; background-image: url('./images/puntaRoja.png'); background-repeat: no-repeat}
+#sondaNegra{position: absolute; width:68px; height: 870px; top:20px; left:450px; background-image: url('./images/puntaNegra.png'); background-repeat: no-repeat}
+#conectorRojo {position:absolute; width:186px; height: 741px; top:460px; left:370px; background-image: url('./images/conectorRojo.png'); background-repeat: no-repeat}
+#conectorNegro {position:absolute; width:186px; height: 741px; top:560px; left:450px; background-image: url('./images/conectorNegro.png'); background-repeat: no-repeat}
+
+
+#aspaRojaPaso1{position: absolute; width:50px; height: 50px; top:90px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso2{position: absolute; width:50px; height: 50px; top:165px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso3{position: absolute; width:50px; height: 50px; top:240px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso4{position: absolute; width:50px; height: 50px; top:315px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso5{position: absolute; width:50px; height: 50px; top:390px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+
+
+#asesor {position:absolute; width:600px; height: 800px; top:10px; left:1050px; background-image: url('./images/papelLibreta.jpg'); background-repeat: no-repeat}
+

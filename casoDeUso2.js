@@ -68,37 +68,184 @@
 
 	var valorMaximo;
 	var valorMinimo;
+	var valorMaximo10A;
+	var valorMinimo10A;
 
+	var secadorElement = document.getElementById('secador');	
+	secadorElement.addEventListener("click", seleccionaReceptorSecador);
+	var receptorActivoSecador = false;
+
+	var cadenaElement = document.getElementById('cadena');	
+	cadenaElement.addEventListener("click", seleccionaReceptorCadena);
+	var receptorActivoCadena = false;
+	
+	var estufaElement = document.getElementById('estufa');	
+	estufaElement.addEventListener("click", seleccionaReceptorEstufa);
+	var receptorActivoEstufa = false;
+	
 	var selectorElement = document.getElementById('selector');	
 	selectorElement.addEventListener("click", determinaPosicionSelector);
 	selectorElement.addEventListener("auxclick", determinaPosicionSelector);
 
 	var sondaRojaElement = document.getElementById('sondaRoja'), posicionXSondaRoja = 0, posicionYSondaRoja = 0;
-	var sondaRojaConectadaAFASE, sondaRojaConectadaANEUTRO;
+	var sondaRojaConectadaARegletaFase1 = false, sondaRojaConectadaARegletaFase2 = false,
+	sondaRojaConectadaARegletaNeutro1 = false, sondaRojaConectadaARegletaNeutro2 = false;
 	sondaRojaElement.addEventListener("mousedown", dragStartSondaRoja);
 
 	var sondaNegraElement = document.getElementById('sondaNegra'), posicionXSondaNegra = 0, posicionYSondaNegra = 0;
-	var sondaNegraConectadaAFASE, sondaNegraConectadaANEUTRO;
+	var sondaNegraConectadaARegletaFase1 = false, sondaNegraConectadaARegletaFase2 = false,
+	sondaNegraConectadaARegletaNeutro1 = false, sondaNegraConectadaARegletaNeutro2 = false;
 	sondaNegraElement.addEventListener("mousedown", dragStartSondaNegra);
 
 	var conectorRojoElement = document.getElementById('conectorRojo'), posicionXConectorRojo = 0, posicionYConectorRojo = 0;
-	var conectorRojoConectadoA10A, conectorRojoConectadoAVRA;
+	var conectorRojoConectadoA10A = false, conectorRojoConectadoAVRA = false;
 	conectorRojoElement.addEventListener("mousedown", dragStartConectorRojo);
 
 	var conectorNegroElement = document.getElementById('conectorNegro'), posicionXConectorNegro = 0, posicionYConectorNegro = 0;
-	var conectorNegroConectadoACOM;
+	var conectorNegroConectadoACOM = false;
 	conectorNegroElement.addEventListener("mousedown", dragStartConectorNegro);
 
 	var puenteNeutroElement = document.getElementById('puenteNeutro'), posicionXpuenteNeutro = 0, posicionYpuenteNeutro = 0;
-	var puenteNeutroConectadoARegleta;
+	var puenteNeutroConectadoARegleta = true;
 	puenteNeutroElement.addEventListener("mousedown", dragStartPuenteNeutro);
 
 	var puenteFaseElement = document.getElementById('puenteFase'), posicionXpuenteFase = 0, posicionYpuenteFase = 0;
-	var puenteFaseConectadoARegleta;
+	var puenteFaseConectadoARegleta = true;
 	puenteFaseElement.addEventListener("mousedown", dragStartPuenteFase);
 
-	var audioExplosionElement = document.getElementById("audioExplosion");
+	var conexionCorrectaParaMedicion;
+	var conexionCorrectaParaReceptor;
+	var potenciaReceptor = 0;
+	var VoltajeAC = 230;
 
+	var audioExplosionElement = document.getElementById("audioExplosion");
+	var audioSecadorElement = document.getElementById("audioSecador");
+	var audioCadenaElement = document.getElementById("audioCadena");
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+function actualizaReceptor()
+{
+	compruebaConexion();
+
+	if (receptorActivoSecador == true)
+	{
+		audioCadenaElement.pause();
+
+		if (conexionCorrectaParaReceptor == true)
+		{
+			audioSecadorElement.play();
+			potenciaReceptor = 1000;
+
+		}
+		else
+		{
+			audioSecadorElement.pause();
+			potenciaReceptor = 0;	
+		}
+	}
+
+	else if (receptorActivoCadena == true)
+	{
+
+		audioSecadorElement.pause();
+
+		if (conexionCorrectaParaReceptor == true)
+		{
+			audioCadenaElement.play();
+			potenciaReceptor = 200;
+		}
+		else
+		{
+			audioCadenaElement.pause();
+			potenciaReceptor = 0;	
+		}
+	}
+
+	else if (receptorActivoEstufa == true)
+	{
+		audioSecadorElement.pause();
+		audioCadenaElement.pause();
+		potenciaReceptor = 5000;
+	}	
+	else
+	{
+		audioSecadorElement.pause();
+		audioCadenaElement.pause();
+		potenciaReceptor = 0;	
+	}
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+function seleccionaReceptorSecador()
+{
+	if (receptorActivoSecador == false)
+	{	
+		receptorActivoSecador = true;
+		secadorElement.style.border = "5px solid blue";
+	}
+	else
+	{
+		receptorActivoSecador = false;
+		secadorElement.style.border = "2px solid black";
+	}
+		
+	receptorActivoCadena = false;
+	cadenaElement.style.border = "2px solid black";
+	receptorActivoEstufa = false;
+	estufaElement.style.border = "2px solid black";
+
+	actualizaReceptor();
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+function seleccionaReceptorCadena()
+{
+	if (receptorActivoCadena == false)
+	{
+		receptorActivoCadena = true;
+		cadenaElement.style.border = "5px solid blue";
+	}
+	else
+	{
+		receptorActivoCadena = false;
+		cadenaElement.style.border = "2px solid black";
+	}
+
+	receptorActivoSecador = false;
+	secadorElement.style.border = "2px solid black";
+	receptorActivoEstufa = false;
+	estufaElement.style.border = "2px solid black";
+
+	actualizaReceptor();
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+function seleccionaReceptorEstufa()
+{
+	if (receptorActivoEstufa == false)
+	{
+		receptorActivoEstufa = true;
+		estufaElement.style.border = "5px solid blue";
+	}
+	else
+	{
+		receptorActivoEstufa = false;
+		estufaElement.style.border = "2px solid black";
+	}
+
+	receptorActivoCadena = false;
+	cadenaElement.style.border = "2px solid black";
+	receptorActivoSecador = false;
+	secadorElement.style.border = "2px solid black";
+
+	actualizaReceptor();
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 function determinaPosicionSelector(e)
 {
@@ -1260,6 +1407,8 @@ function configuraPolimetroSegunSelector(indicePosicionSelector)
 		tipoMagnitudAMedir = "AC";
 		valorMaximo = .0199;
 		valorMinimo = -.01999;
+		valorMaximo10A = 10.;
+		valorMinimo10A = -10.;
 
 		break;
 
@@ -2356,13 +2505,13 @@ function configuraValor(valorMedido)
 		if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
 			representaValor(valorMedido*100);
 		else
-			representaFueraDeEscala()
+			representaFueraDeEscala();
 		break;
 	case 9:  //console.log("VAC - 2V");
 		if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
 			representaValor(valorMedido*1000);
 		else
-			representaFueraDeEscala()
+			representaFueraDeEscala();
 		break;
 	case 10: //console.log("hFE");
 		break;
@@ -2370,19 +2519,28 @@ function configuraValor(valorMedido)
 		if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
 			representaValor(valorMedido*1000000);
 		else
-			representaFueraDeEscala()
+			representaFueraDeEscala();
 		break;
 	case 12: //console.log("AAC - 20mA/10A");
-		if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
-			representaValor(valorMedido*100000);
-		else
-			representaFueraDeEscala()
+		if (conectorRojoConectadoAVRA == true)
+			if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
+				representaValor(valorMedido*1000000);
+			else
+				representaFueraDeEscala();
+		else if (conectorRojoConectadoA10A == true)
+			if (valorMedido <= valorMaximo10A && valorMedido >= valorMinimo10A)
+				representaValor(valorMedido*100);
+			else
+				representaFueraDeEscala();
 		break;
 	case 13: //console.log("AAC - 200mA");
-		if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
-			representaValor(valorMedido*10000);
+		if (conectorRojoConectadoAVRA == true)
+			if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
+				representaValor(valorMedido*10000);
+			else
+				representaFueraDeEscala()
 		else
-			representaFueraDeEscala()
+			console.log("Assert línea 2398");
 		break;
 	case 14: //console.log("ADC - 200mA");
 		if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
@@ -2757,57 +2915,127 @@ function dragMoveSondaRoja(e)
 	sondaRojaElement.style.left = (e.pageX - posicionXSondaRoja);
 	sondaRojaElement.style.top = (e.pageY - posicionYSondaRoja);
 
-	if (((sondaRojaElement.style.left > "670px") && (sondaRojaElement.style.left < "705px"))
-		&& ((sondaRojaElement.style.top > "369px") && (sondaRojaElement.style.top < "409px")))
+	if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 485
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 505
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 210
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 240)
 	{
-		document.getElementById('neutroBaseDeEnchufe').style.fill = "rgb(200,200,200,0.2)";
+		document.getElementById('regletaPuenteNeutro').style.fill = "rgb(200,200,200,1)";
+		sondaRojaConectadaARegletaNeutro1 = true;
+		compruebaConexion();
 	}
-	else if (((sondaRojaElement.style.left > "743px") && (sondaRojaElement.style.left < "778px"))
-		&& ((sondaRojaElement.style.top > "369px") && (sondaRojaElement.style.top < "409px")))
+	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 656
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 676
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 221
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 251)
 	{
-		document.getElementById('faseBaseDeEnchufe').style.fill = "rgb(200,200,200,0.2)";
+		document.getElementById('regletaPuenteNeutro2').style.fill = "rgb(200,200,200,1)";
+		sondaRojaConectadaARegletaNeutro2 = true;
+		compruebaConexion();
+	}
+	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 516
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 536
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 213
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 243)
+	{
+		document.getElementById('regletaPuenteFase').style.fill = "rgb(200,200,200,1)";
+		sondaRojaConectadaARegletaFase1 = true;
+		compruebaConexion();
+	}
+	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 626
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 646
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 218
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 248)
+	{
+		document.getElementById('regletaPuenteFase2').style.fill = "rgb(200,200,200,1)";
+		sondaRojaConectadaARegletaFase2 = true;
+		compruebaConexion();
 	}
 	else 
 	{
-		document.getElementById('neutroBaseDeEnchufe').style.fill = "transparent";
-		document.getElementById('faseBaseDeEnchufe').style.fill = "transparent";
+		document.getElementById('regletaPuenteFase').style.fill = "transparent";
+		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
+		document.getElementById('regletaPuenteNeutro').style.fill = "transparent";
+		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
+		sondaRojaConectadaARegletaNeutro1 = false;
+		sondaRojaConectadaARegletaNeutro2 = false;
+		sondaRojaConectadaARegletaFase1 = false;
+		sondaRojaConectadaARegletaFase2 = false;
 	}
+
+	actualizaReceptor();
+	actualizaVisor();
+	
 }
 //-----------------------------------------------------------------------------------------------------------------------
 function dragEndSondaRoja(e) 
+
 {
-	if (((sondaRojaElement.style.left > "670px") && (sondaRojaElement.style.left < "705px"))
-		&& ((sondaRojaElement.style.top > "369px") && (sondaRojaElement.style.top < "409px")))
+	if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 485
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 505
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 210
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 240)
 	{
-		sondaRojaElement.style.left = "689px";
-		sondaRojaElement.style.top = "389px";
+		sondaRojaElement.style.left = "498px";
+		sondaRojaElement.style.top = "217px";
 		console.log("Sonda Roja conectada a neutro");
-		sondaRojaConectadaAFASE = false;
-		sondaRojaConectadaANEUTRO = true;
+		sondaRojaConectadaARegletaNeutro1 = true;
+		sondaRojaConectadaARegletaNeutro2 = false;
 		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
-		document.getElementById('neutroBaseDeEnchufe').style.fill = "transparent";
+		document.getElementById('regletaPuenteNeutro').style.fill = "transparent";
 	}
-	else if (((sondaRojaElement.style.left > "743px") && (sondaRojaElement.style.left < "778px"))
-		&& ((sondaRojaElement.style.top > "369px") && (sondaRojaElement.style.top < "409px")))
+	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 656
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 676
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 221
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 251)
 	{
-		sondaRojaElement.style.left = "762px";
-		sondaRojaElement.style.top = "389px";
+		sondaRojaElement.style.left = "670px";
+		sondaRojaElement.style.top = "228px";
 		console.log("Sonda Roja conectada a fase");
-		sondaRojaConectadaAFASE = true;
-		sondaRojaConectadaANEUTRO = false;
+		sondaRojaConectadaARegletaNeutro1 = false;
+		sondaRojaConectadaARegletaNeutro2 = true;
 		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
-		document.getElementById('faseBaseDeEnchufe').style.fill = "transparent";
+		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
+	}
+	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 516
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 536
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 213
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 243)
+	{
+		sondaRojaElement.style.left = "529px";
+		sondaRojaElement.style.top = "220px";
+		console.log("Sonda Roja conectada a fase");
+		sondaRojaConectadaARegletaFase1 = true;
+		sondaRojaConectadaARegletaFase2 = false;
+		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('regletaPuenteFase').style.fill = "transparent";
+	}
+	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 626
+			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 646
+				&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) > 218
+					&& (sondaRojaElement.style.top.substring(0,sondaRojaElement.style.top.length-2)) < 248)
+	{
+		sondaRojaElement.style.left = "639px";
+		sondaRojaElement.style.top = "225px";
+		console.log("Sonda Roja conectada a fase");
+		sondaRojaConectadaARegletaFase1 = false;
+		sondaRojaConectadaARegletaFase2 = true;
+		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
 	}
 	else
 	{
 	console.log("Sonda Roja desconectada");
 	document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaRoja.png')";
-	sondaRojaConectadaAFASE = false;
-	sondaRojaConectadaANEUTRO = false;
+	sondaRojaConectadaARegletaFase1 = false;
+	sondaRojaConectadaARegletaFase2 = false;
+	sondaRojaConectadaARegletaNeutro1 = false;
+	sondaRojaConectadaARegletaNeutro2 = false;
+	
 	}
 
-	compruebaConexion();
 	clearInterval(myVar);
+	actualizaReceptor();
 	actualizaVisor();
 	removeEventListener("mousemove", dragMoveSondaRoja);
 	removeEventListener("mouseup", dragEndSondaRoja);
@@ -2832,58 +3060,122 @@ function dragMoveSondaNegra(e)
 	sondaNegraElement.style.left = (e.pageX - posicionXSondaNegra);
 	sondaNegraElement.style.top = (e.pageY - posicionYSondaNegra);
 
-		if (((sondaNegraElement.style.left > "670px") && (sondaNegraElement.style.left < "705px"))
-		&& ((sondaNegraElement.style.top > "369px") && (sondaNegraElement.style.top < "409")))
+	if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 485
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 505
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 210
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 240)
 	{
-		document.getElementById('neutroBaseDeEnchufe').style.fill = "rgb(200,200,200,0.2)";
+		document.getElementById('regletaPuenteNeutro').style.fill = "rgb(200,200,200,1)";
+		sondaNegraConectadaARegletaNeutro1 = true;
 	}
-	else if (((sondaNegraElement.style.left > "743px") && (sondaNegraElement.style.left < "778px"))
-		&& ((sondaNegraElement.style.top > "369") && (sondaNegraElement.style.top < "409")))
+	else if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 656
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 676
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 221
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 251)
 	{
-		document.getElementById('faseBaseDeEnchufe').style.fill = "rgb(200,200,200,0.2)";
+		document.getElementById('regletaPuenteNeutro2').style.fill = "rgb(200,200,200,1)";
+		sondaNegraConectadaARegletaNeutro2 = true;
 	}
-	else
+	else if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 516
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 536
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 213
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 243)
 	{
-		document.getElementById('neutroBaseDeEnchufe').style.fill = "transparent";
-		document.getElementById('faseBaseDeEnchufe').style.fill = "transparent";
+		document.getElementById('regletaPuenteFase').style.fill = "rgb(200,200,200,1)";
+		sondaNegraConectadaARegletaFase1 = true;
 	}
+	else if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 626
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 646
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 218
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 248)
+	{
+		document.getElementById('regletaPuenteFase2').style.fill = "rgb(200,200,200,1)";
+		sondaNegraConectadaARegletaFase2 = true;
+	}
+	else 
+	{
+		document.getElementById('regletaPuenteFase').style.fill = "transparent";
+		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
+		document.getElementById('regletaPuenteNeutro').style.fill = "transparent";
+		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
+		sondaNegraConectadaARegletaNeutro1 = false;
+		sondaNegraConectadaARegletaNeutro2 = false;
+		sondaNegraConectadaARegletaFase1 = false;
+		sondaNegraConectadaARegletaFase2 = false;
+	}
+
+	actualizaReceptor();
+	actualizaVisor();
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
 function dragEndSondaNegra()
 {
-	if (((sondaNegraElement.style.left > "670px") && (sondaNegraElement.style.left < "705px"))
-		&& ((sondaNegraElement.style.top > "369px") && (sondaNegraElement.style.top < "409px")))
+if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 485
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 505
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 210
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 240)
 	{
-		sondaNegraElement.style.left = "689px";
-		sondaNegraElement.style.top = "389px";
+		sondaNegraElement.style.left = "498px";
+		sondaNegraElement.style.top = "217px";
 		console.log("Sonda Negra conectada a neutro");
-		document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaVerde.png')";
-		sondaNegraConectadaAFASE = false;
-		sondaNegraConectadaANEUTRO = true;
-		document.getElementById('neutroBaseDeEnchufe').style.fill = "transparent";
+		sondaNegraConectadaARegletaNeutro1 = true;
+		sondaNegraConectadaARegletaNeutro2 = false;
+		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('regletaPuenteNeutro').style.fill = "transparent";
 	}
-	else if (((sondaNegraElement.style.left > "743px") && (sondaNegraElement.style.left < "778px"))
-		&& ((sondaNegraElement.style.top > "369px") && (sondaNegraElement.style.top < "409px")))
+	else if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 656
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 676
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 221
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 251)
 	{
-		sondaNegraElement.style.left = "762px";
-		sondaNegraElement.style.top = "389px";
+		sondaNegraElement.style.left = "670px";
+		sondaNegraElement.style.top = "228px";
 		console.log("Sonda Negra conectada a fase");
-		document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaVerde.png')";
-		sondaNegraConectadaAFASE = true;
-		sondaNegraConectadaANEUTRO = false;
-		document.getElementById('faseBaseDeEnchufe').style.fill = "transparent";
+		sondaNegraConectadaARegletaNeutro1 = false;
+		sondaNegraConectadaARegletaNeutro2 = true;
+		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
+	}
+	else if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 516
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 536
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 213
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 243)
+	{
+		sondaNegraElement.style.left = "529px";
+		sondaNegraElement.style.top = "220px";
+		console.log("Sonda Negra conectada a fase");
+		sondaNegraConectadaARegletaFase1 = true;
+		sondaNegraConectadaARegletaFase2 = false;
+		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('regletaPuenteFase').style.fill = "transparent";
+	}
+	else if ((sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) > 626
+			&& (sondaNegraElement.style.left.substring(0,sondaNegraElement.style.left.length-2)) < 646
+				&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) > 218
+					&& (sondaNegraElement.style.top.substring(0,sondaNegraElement.style.top.length-2)) < 248)
+	{
+		sondaNegraElement.style.left = "639px";
+		sondaNegraElement.style.top = "225px";
+		console.log("Sonda Negra conectada a fase");
+		sondaNegraConectadaARegletaFase1 = false;
+		sondaNegraConectadaARegletaFase2 = true;
+		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
 	}
 	else
 	{
 	console.log("Sonda Negra desconectada");
-	document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
-	sondaNegraConectadaAFASE = false;
-	sondaNegraConectadaANEUTRO = false;
+	document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaRoja.png')";
+	sondaNegraConectadaARegletaFase1 = false;
+	sondaNegraConectadaARegletaFase2 = false;
+	sondaNegraConectadaARegletaNeutro1 = false;
+	sondaNegraConectadaARegletaNeutro2 = false;
+	
 	}
 
-	compruebaConexion();
 	clearInterval(myVar);
+	actualizaReceptor();
 	actualizaVisor();
 	removeEventListener("mousemove", dragMoveSondaNegra);
 	removeEventListener("mouseup", dragEndSondaNegra);	
@@ -3075,13 +3367,14 @@ function dragMovePuenteNeutro(e)
 	puenteNeutroElement.style.left = (e.pageX - posicionXPuenteNeutro);
 	puenteNeutroElement.style.top = (e.pageY - posicionYPuenteNeutro);
 	
-	if ((puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) > 700
-			&& (puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) < 760
-				&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) > 270
-					&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) < 330)
+	if ((puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) > 510
+			&& (puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) < 530
+				&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) > 208
+					&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) < 228)
 	{
 		document.getElementById('regletaPuenteNeutro').style.fill = "rgb(200,200,200,0.2)";
 		document.getElementById('regletaPuenteNeutro2').style.fill = "rgb(200,200,200,0.2)";
+		puenteNeutroConectadoARegleta = true;
 	//console.log(puenteNeutroElement.style.left);
 	//console.log(puenteNeutroElement.style.top);
 
@@ -3090,37 +3383,41 @@ function dragMovePuenteNeutro(e)
 	{
 		document.getElementById('regletaPuenteNeutro').style.fill = "transparent";
 		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
+		puenteNeutroConectadoARegleta = false;
 	}
+
+	actualizaReceptor();
+	actualizaVisor();
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
+
 function dragEndPuenteNeutro()
 {
-	if ((puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) > 700
-			&& (puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) < 760
-				&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) > 270
-					&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) < 330)
+	if ((puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) > 510
+			&& (puenteNeutroElement.style.left.substring(0,puenteNeutroElement.style.left.length-2)) < 530
+				&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) > 208
+					&& (puenteNeutroElement.style.top.substring(0,puenteNeutroElement.style.top.length-2)) < 228)
 	{
 		document.getElementById('regletaPuenteNeutro').style.fill = "transparent";
 		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
-		puenteNeutroElement.style.left = "733px";
-		puenteNeutroElement.style.top = "300px";
+		puenteNeutroElement.style.left = "519px";
+		puenteNeutroElement.style.top = "218px";
 		puenteNeutroElement.style.backgroundRepeat = "no-repeat";
-		console.log("Puente neutro conectado a regleta");
+		console.log("Puente neutro conectado");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
 		puenteNeutroConectadoARegleta = true;
-
 	}
 	else
 	{
-		console.log("Conector negro desconectado");
+		console.log("Puente Neutro desconectado");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
 		puenteNeutroConectadoARegleta = false;
 		puenteNeutroElement.style.backgroundImage = "url('./images/puenteNeutro.png')";
 	}
 	
-	compruebaConexion();
 	clearInterval(myVar);
+	actualizaReceptor();
 	actualizaVisor();
 	removeEventListener("mousemove", dragMovePuenteNeutro);
 	removeEventListener("mouseup", dragEndPuenteNeutro);	
@@ -3150,33 +3447,38 @@ function dragMovePuenteFase(e)
 	console.log(puenteFaseElement.style.left);
 		console.log(puenteFaseElement.style.top);
 	
-	if ((puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) > 740
-			&& (puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) < 780
-				&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) > 280
-					&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) < 330)
+	if ((puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) > 539
+			&& (puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) < 559
+				&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) > 210
+					&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) < 230)
 	{
 		document.getElementById('regletaPuenteFase').style.fill = "rgb(200,200,200,0.2)";
 		document.getElementById('regletaPuenteFase2').style.fill = "rgb(200,200,200,0.2)";
+		puenteFaseConectadoARegleta = true;
 	}
 	else
 	{
 		document.getElementById('regletaPuenteFase').style.fill = "transparent";
 		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
+		puenteFaseConectadoARegleta = false;
 	}
+
+	actualizaReceptor();
+	actualizaVisor();
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
 function dragEndPuenteFase()
 {
-	if ((puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) > 740
-			&& (puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) < 780
-				&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) > 280
-					&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) < 330)
+	if ((puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) > 539
+			&& (puenteFaseElement.style.left.substring(0,puenteFaseElement.style.left.length-2)) < 559
+				&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) > 210
+					&& (puenteFaseElement.style.top.substring(0,puenteFaseElement.style.top.length-2)) < 230)
 	{
 		document.getElementById('regletaPuenteFase').style.fill = "transparent";
 		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
-		puenteFaseElement.style.left = "764px";
-		puenteFaseElement.style.top = "302px";
+		puenteFaseElement.style.left = "549px";
+		puenteFaseElement.style.top = "220px";
 		puenteFaseElement.style.backgroundRepeat = "no-repeat";
 		console.log("Puenta fase conectado a la regleta");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
@@ -3207,19 +3509,40 @@ function actualizaVisor() {
 //-----------------------------------------------------------------------------------------------------------------------
 function compruebaConexion()
 {
-	switch (casoDeUso)
+	// el circuito lo cierran los puentes
+	if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true
+	&& sondaRojaConectadaARegletaFase1 == false && sondaRojaConectadaARegletaFase2 == false
+	&& sondaNegraConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false)
 	{
-		case 0: {} //polímetro sin conexiones
-		case 1: //conectar puntas
-		case 2: //medidas de voltaje en base de enchufe
-			if (((sondaRojaConectadaAFASE == true && sondaNegraConectadaANEUTRO == true)
-				|| (sondaRojaConectadaANEUTRO == true && sondaNegraConectadaAFASE == true))
-				&& conectorRojoConectadoA10A == false && conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
-				conexionCorrecta = true;
-			else
-				conexionCorrecta = false;
-			break;
-		default: break;
+		conexionCorrectaParaReceptor = true;
+		conexionCorrectaParaMedicion = false;
+	}
+	else if (
+		puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false
+		&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaNeutro2 == true)
+			|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaNeutro1 == true))
+		&& sondaRojaConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false
+		&& (conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true
+		)
+	{
+
+		conexionCorrectaParaReceptor = true;
+		conexionCorrectaParaMedicion = true;
+	}
+	else if (
+		puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == true
+		&& ((sondaRojaConectadaARegletaFase1 == true && sondaNegraConectadaARegletaFase2 == true)
+			|| (sondaRojaConectadaARegletaFase2 == true && sondaNegraConectadaARegletaFase1 == true))
+		&& sondaRojaConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false
+		&& (conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
+	{
+		conexionCorrectaParaReceptor = true;
+		conexionCorrectaParaMedicion = true;
+	}
+	else
+	{
+		conexionCorrectaParaReceptor = false;
+		conexionCorrectaParaMedicion = true;
 	}
 }
 
@@ -3228,106 +3551,108 @@ function determinaValor()
 {
 	//clearInterval(myVar);
 	
-	magnitudMedida = "V";
-	tipoMagnitudMedida = "DC";
+	magnitudMedida = "A";
+	tipoMagnitudMedida = "AC";
 
-	switch (casoDeUso)
+	switch (indicePosicionSelector)
 	{
-		case 0: {} //polímetro sin conexiones
-		case 1: //conectar puntas
-		case 2: //medidas de voltaje en base de enchufe
-		{
-			switch (indicePosicionSelector)
+		case 0:  //console.log("Multímetro apagado");
+		case 1:  //console.log("VDC - 200mV");
+		case 2:  //console.log("VDC - 2V");
+		case 3:  //console.log("VDC - 20V");
+		case 4:  //console.log("VDC - 200V");
+		case 5:  //console.log("VDC - 1000V");
+			configuraValor(0 + Math.random()*4/1000 - 8/10000);
+			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			break;
+		case 6:  //console.log("VAC - 750V");
+			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaVerde.png')";
+			if (conexionCorrectaParaMedicion == true) configuraValor(VoltajeAC);
+			else configuraValor(0);
+			break;
+		case 7:  //console.log("VAC - 200V");
+			representaFueraDeEscala();
+			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			break;
+		case 8:  //console.log("VAC - 20V");
+			representaFueraDeEscala();
+			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			break;				
+		case 9:  //console.log("VAC - 2V");
+			representaFueraDeEscala();
+			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			break;				
+		case 10: //console.log("hFE");
+			break;
+		case 11: //console.log("AAC - 2mA");
+			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[13] == "Correcto")
 			{
-				case 0:  //console.log("Multímetro apagado");
-				case 1:  //console.log("VDC - 200mV");
-				case 2:  //console.log("VDC - 2V");
-				case 3:  //console.log("VDC - 20V");
-				case 4:  //console.log("VDC - 200V");
-				case 5:  //console.log("VDC - 1000V");
-					configuraValor(0 + Math.random()*4/1000 - 8/10000);
-					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
-					break;
-				case 6:  //console.log("VAC - 750V");
-					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaVerde.png')";
-					if (conexionCorrecta == true) configuraValor(232);
-					else configuraValor(0);
-					break;
-				case 7:  //console.log("VAC - 200V");
-					representaFueraDeEscala();
-					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
-					break;
-				case 8:  //console.log("VAC - 20V");
-					representaFueraDeEscala();
-					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
-					break;				
-				case 9:  //console.log("VAC - 2V");
-					representaFueraDeEscala();
-					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
-					break;				
-				case 10: //console.log("hFE");
-					break;
-				case 11: //console.log("AAC - 2mA");
-					if (conexionCorrecta == true && estadoFusiblePosicionSelector[11] == "Correcto")
-					{
-						audioExplosionElement.play();
-						estadoFusiblePosicionSelector[11] = "Fundido";
-					}
-					break
-				case 12: //console.log("AAC - 20mA/10A");
-					if (conexionCorrecta == true && estadoFusiblePosicionSelector[12] == "Correcto")
-					{
-						audioExplosionElement.play();
-						estadoFusiblePosicionSelector[12] = "Fundido";
-					}
-					break
-				case 13: //console.log("AAC - 200mA");
-					if (conexionCorrecta == true && estadoFusiblePosicionSelector[13] == "Correcto")
-					{
-						audioExplosionElement.play();
-						estadoFusiblePosicionSelector[13] = "Fundido";
-					}
-					break
-				case 14: //console.log("ADC - 200mA");
-					if (conexionCorrecta == true && estadoFusiblePosicionSelector[14] == "Correcto")
-					{
-						audioExplosionElement.play();
-						estadoFusiblePosicionSelector[14] = "Fundido";
-					}
-					break
-				case 15: //console.log("ADC - 20mA/10A");
-					if (conexionCorrecta == true && estadoFusiblePosicionSelector[15] == "Correcto")
-					{
-						audioExplosionElement.play();
-						estadoFusiblePosicionSelector[15] = "Fundido";
-					}
-					break
-				case 16: //console.log("ADC - 2mA");
-					if (conexionCorrecta == true && estadoFusiblePosicionSelector[16] == "Correcto")
-					{
-						audioExplosionElement.play();
-						estadoFusiblePosicionSelector[16] = "Fundido";
-					}
-					break
-				case 17: //console.log("ADC - 200uA");
-					if (conexionCorrecta == true && estadoFusiblePosicionSelector[17] == "Correcto")
-					{
-						audioExplosionElement.play();
-						estadoFusiblePosicionSelector[17] = "Fundido";
-					}
-					break
-				case 18: //console.log("Ohm - 200");
-				case 19: //console.log("Ohm - 2k");
-				case 20: //console.log("Ohm - 20k");
-				case 21: //console.log("Ohm - 200k");
-				case 22: //console.log("Ohm - 2M");
-				case 23: //console.log("Ohm - 20M");
-					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
-				default:
-					document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
-					break;
+				configuraValor(potenciaReceptor/VoltajeAC);
 			}
-		}
+			break
+		case 12: //console.log("AAC - 20mA/10A");
+			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoA10A == true && estadoFusiblePosicionSelector[12] == "Correcto")
+			{
+				configuraValor(potenciaReceptor/VoltajeAC);
+			}
+			else if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[12] == "Correcto")
+			{
+				configuraValor(potenciaReceptor/VoltajeAC);
+			}
+			else if (conexionCorrectaParaMedicion == true && puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true
+				&& (sondaRojaConectadaARegletaNeutro1 == false || sondaRojaConectadaARegletaNeutro2 == false
+					|| sondaRojaConectadaARegletaFase1 == false || sondaNegraConectadaARegletaFase2 == false
+					|| sondaNegraConectadaARegletaNeutro1 == false || sondaNegraConectadaARegletaNeutro2 == false
+					|| sondaNegraConectadaARegletaFase1 == false || sondaNegraConectadaARegletaFase2 == false))
+				configuraValor(0);
+			else
+				configuraValor(0);
+			break
+
+		case 13: //console.log("AAC - 200mA");
+			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[13] == "Correcto")
+			{
+				configuraValor(potenciaReceptor/VoltajeAC);
+			}
+			break
+		case 14: //console.log("ADC - 200mA");
+			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[14] == "Correcto")
+			{
+				audioExplosionElement.play();
+				estadoFusiblePosicionSelector[14] = "Fundido";
+			}
+			break
+		case 15: //console.log("ADC - 20mA/10A");
+			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[15] == "Correcto")
+			{
+				audioExplosionElement.play();
+				estadoFusiblePosicionSelector[15] = "Fundido";
+			}
+			break
+		case 16: //console.log("ADC - 2mA");
+			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[16] == "Correcto")
+			{
+				audioExplosionElement.play();
+				estadoFusiblePosicionSelector[16] = "Fundido";
+			}
+			break
+		case 17: //console.log("ADC - 200uA");
+			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[17] == "Correcto")
+			{
+				audioExplosionElement.play();
+				estadoFusiblePosicionSelector[17] = "Fundido";
+			}
+			break
+		case 18: //console.log("Ohm - 200");
+		case 19: //console.log("Ohm - 2k");
+		case 20: //console.log("Ohm - 20k");
+		case 21: //console.log("Ohm - 200k");
+		case 22: //console.log("Ohm - 2M");
+		case 23: //console.log("Ohm - 20M");
+			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+		default:
+			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			break;
 	}
 }
 /*

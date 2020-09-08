@@ -1,0 +1,76 @@
+/*
+Código CSS Polímetros
+*/
+body {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	overflow-y:hidden;
+	overflow-x:hidden;
+}
+#polimetro {position: absolute; top: 100px; left: 800px; visibility: visible}
+#selector {position: absolute; top: 423px; left: 878px}
+
+#conexion10A {position:absolute; top:652px; left:41px ;visibility:visible; fill:transparent}
+#conexionCOM {position:absolute; top:652px; left:126px ;visibility:visible; fill:transparent}
+#conexionVRA {position:absolute; top:652px; left:212px ;visibility:visible; fill:transparent}
+
+#D7S_1a {position:absolute; top:200px; left:1000px ;visibility:hidden}		   
+#D7S_1b {position:absolute; top:200px; left:1000px ;visibility:hidden}
+#D7S_1c {position:absolute; top:200px; left:1000px ;visibility:hidden}
+#D7S_1d {position:absolute; top:200px; left:1000px ;visibility:hidden}
+#D7S_1e {position:absolute; top:200px; left:1000px ;visibility:hidden}
+#D7S_1f {position:absolute; top:200px; left:1000px ;visibility:hidden}
+#D7S_1g {position:absolute; top:200px; left:1000px ;visibility:hidden}
+
+#D7S_2a {position:absolute; top:200px; left:955px ;visibility:hidden}		   
+#D7S_2b {position:absolute; top:200px; left:955px ;visibility:hidden}
+#D7S_2c {position:absolute; top:200px; left:955px ;visibility:hidden}
+#D7S_2d {position:absolute; top:200px; left:955px ;visibility:hidden}
+#D7S_2e {position:absolute; top:200px; left:955px ;visibility:hidden}
+#D7S_2f {position:absolute; top:200px; left:955px ;visibility:hidden}
+#D7S_2g {position:absolute; top:200px; left:955px ;visibility:hidden}
+
+#D7S_3a {position:absolute; top:200px; left:910px ;visibility:hidden}		   
+#D7S_3b {position:absolute; top:200px; left:910px ;visibility:hidden}
+#D7S_3c {position:absolute; top:200px; left:910px ;visibility:hidden}
+#D7S_3d {position:absolute; top:200px; left:910px ;visibility:hidden}
+#D7S_3e {position:absolute; top:200px; left:910px ;visibility:hidden}
+#D7S_3f {position:absolute; top:200px; left:910px ;visibility:hidden}
+#D7S_3g {position:absolute; top:200px; left:910px ;visibility:hidden}
+
+#D7S_4a {position:absolute; top:200px; left:865px ;visibility:hidden}		   
+#D7S_4b {position:absolute; top:200px; left:865px ;visibility:hidden}
+#D7S_4c {position:absolute; top:200px; left:865px ;visibility:hidden}
+#D7S_4d {position:absolute; top:200px; left:865px ;visibility:hidden}
+#D7S_4e {position:absolute; top:200px; left:865px ;visibility:hidden}
+#D7S_4f {position:absolute; top:200px; left:865px ;visibility:hidden}
+#D7S_4g {position:absolute; top:200px; left:865px ;visibility:hidden}
+
+#signo {position:absolute; top:200px; left:856px ;visibility:hidden}
+#punto1 {position:absolute; top:269px; left:903px ;visibility:hidden}
+#punto2 {position:absolute; top:269px; left:949px ;visibility:hidden}
+#punto3 {position:absolute; top:269px; left:994px ;visibility:hidden}
+#punto4 {position:absolute; top:269px; left:1038px ;visibility:hidden}
+
+#ohmios {position:absolute; top:196px; left:1057px ;visibility:hidden}
+#kiloohmios {position:absolute; top:212px; left:1050px ;visibility:hidden}
+#megaohmios {position:absolute; top:228px; left:1045px ;visibility:hidden}
+#voltios {position:absolute; top:244px; left:1059px ;visibility:hidden}
+#milivoltios {position:absolute; top:244px; left:1047px ;visibility:hidden}
+#hfe {position:absolute; top:260px; left:1046px ;visibility:hidden}
+#miliamperios {position:absolute; top:244px; left:870px ;visibility:hidden}
+#microamperios {position:absolute; top:260px; left:870px ;visibility:hidden}
+#AC {position:absolute; top:196px; left:870px ;visibility:hidden}
+
+#baseDeEnchufe{position: absolute; top: 150px; width:680px; height: 870px; left:1200px; background-image: url('./images/baseDeEnchufe.png'); background-repeat: no-repeat}
+#faseBaseDeEnchufe {position:absolute; top:265px; left:1338px ;visibility:visible; fill:transparent}
+#neutroBaseDeEnchufe {position:absolute; top:265px; left:1265px ;visibility:visible; fill:transparent}
+
+#sondaRoja{position: absolute; width:68px; height: 870px; top:100px; left:370px; background-image: url('./images/puntaRoja.png'); background-repeat: no-repeat}
+#sondaNegra{position: absolute; width:68px; height: 870px; top:20px; left:450px; background-image: url('./images/puntaNegra.png'); background-repeat: no-repeat}
+#conectorRojo {position:absolute; width:186px; height: 741px; top:460px; left:370px; background-image: url('./images/conectorRojo.png'); background-repeat: no-repeat}
+#conectorNegro {position:absolute; width:186px; height: 741px; top:560px; left:450px; background-image: url('./images/conectorNegro.png'); background-repeat: no-repeat}
+
+#asesor {position:absolute; width:600px; height: 200px; bottom:10px; right:10px; background-color: white}
