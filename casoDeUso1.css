@@ -73,22 +73,21 @@ a{
 #microamperios {position:absolute; top:230px; left:90px ;visibility:hidden}
 #AC {position:absolute; top:166px; left:90px ;visibility:hidden}
 
-#baseDeEnchufe{position: absolute; top: 225px; width:680px; height: 870px; left:600px; background-image: url('./images/baseDeEnchufe.png'); background-repeat: no-repeat}
+#baseDeEnchufe{position: absolute; top: 225px; width:301px; height: 330px; left:600px; background-image: url('./images/baseDeEnchufe.png');}
 #faseBaseDeEnchufe {position:absolute; top:340px; left:738px ;visibility:visible; fill:transparent;}
 #neutroBaseDeEnchufe {position:absolute; top:340px; left:665px ;visibility:visible; fill:transparent;}
 
-#sondaRoja{position: absolute; width:68px; height: 870px; top:100px; left:370px; background-image: url('./images/puntaRoja.png'); background-repeat: no-repeat}
-#sondaNegra{position: absolute; width:68px; height: 870px; top:20px; left:450px; background-image: url('./images/puntaNegra.png'); background-repeat: no-repeat}
-#conectorRojo {position:absolute; width:186px; height: 741px; top:460px; left:370px; background-image: url('./images/conectorRojo.png'); background-repeat: no-repeat}
-#conectorNegro {position:absolute; width:186px; height: 741px; top:560px; left:450px; background-image: url('./images/conectorNegro.png'); background-repeat: no-repeat}
+#sondaRoja{position: absolute; width:50px; height: 815px; top:100px; left:370px; background-image: url('./images/puntaRoja.png');}
+#sondaNegra{position: absolute; width:50px; height: 815px; top:20px; left:450px; background-image: url('./images/puntaNegra.png');}
+#conectorRojo {position:absolute; width:185px; height: 500px; top:460px; left:370px; background-image: url('./images/conectorRojo.png');}
+#conectorNegro {position:absolute; width:150px; height: 500px; top:560px; left:450px; background-image: url('./images/conectorNegro.png');}
 
 
-#aspaRojaPaso1{position: absolute; width:50px; height: 50px; top:90px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso2{position: absolute; width:50px; height: 50px; top:165px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso3{position: absolute; width:50px; height: 50px; top:240px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso4{position: absolute; width:50px; height: 50px; top:315px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso5{position: absolute; width:50px; height: 50px; top:390px; left:20px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso1{position: absolute; width:30px; height: 37px; top:90px; left:20px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso2{position: absolute; width:30px; height: 37px; top:165px; left:20px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso3{position: absolute; width:30px; height: 37px; top:240px; left:20px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso4{position: absolute; width:30px; height: 37px; top:315px; left:20px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso5{position: absolute; width:30px; height: 37px; top:390px; left:20px; background-image: url('./images/aspaRoja.png');}
 
 
-#asesor {position:absolute; width:600px; height: 800px; top:10px; left:1050px; background-image: url('./images/papelLibreta.jpg'); background-repeat: no-repeat}
-
+#asesor {position:absolute; width:600px; height: 800px; top:10px; left:1050px; background-image: url('./images/papelLibreta.jpg');}
