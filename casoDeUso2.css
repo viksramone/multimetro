@@ -73,9 +73,9 @@ a{
 #microamperios {position:absolute; top:230px; left:90px ;visibility:hidden}
 #AC {position:absolute; top:166px; left:90px ;visibility:hidden}
 
-#baseDeEnchufeCasoDeUso2{position: absolute; top: 50px; width:1100px; height: 800px; left:438px; background-image: url('./images/baseDeEnchufeCU2.png'); background-repeat: no-repeat}
-#puenteNeutro{position: absolute; top: 218px; width:300px; height: 300px; left:519px; background-image: url('./images/puenteNeutro.png'); background-repeat: no-repeat}
-#puenteFase{position: absolute; top: 220px; width:125px; height: 125px; left:549px; background-image: url('./images/puenteFase.png'); background-repeat: no-repeat}
+#baseDeEnchufeCasoDeUso2{position: absolute; top: 50px; width:552px; height: 615px; left:438px; background-image: url('./images/baseDeEnchufeCasoDeUso2.png');}
+#puenteNeutro{position: absolute; top: 218px; width:185px; height: 154px; left:519px; background-image: url('./images/puenteNeutro.png');}
+#puenteFase{position: absolute; top: 220px; width:125px; height: 125px; left:549px; background-image: url('./images/puenteFase.png');}
 
 #regletaPuenteFase {position:absolute; top:180px; left:505px ;visibility:visible; fill:brown;}
 #regletaPuenteNeutro {position:absolute; top:177px; left:474px ;visibility:visible; fill:blue;}
@@ -83,19 +83,19 @@ a{
 #regletaPuenteNeutro2 {position:absolute; top:188px; left:647px ;visibility:visible; fill:blue;}
 
 
-#sondaRoja{position: absolute; width:68px; height: 870px; top:100px; left:320px; background-image: url('./images/puntaRoja.png'); background-repeat: no-repeat}
-#sondaNegra{position: absolute; width:68px; height: 870px; top:20px; left:364px; background-image: url('./images/puntaNegra.png'); background-repeat: no-repeat}
-#conectorRojo {position:absolute; width:186px; height: 741px; top:460px; left:300px; background-image: url('./images/conectorRojo.png'); background-repeat: no-repeat}
-#conectorNegro {position:absolute; width:186px; height: 741px; top:560px; left:320px; background-image: url('./images/conectorNegro.png'); background-repeat: no-repeat}
+#sondaRoja{position: absolute; width:50px; height: 815px; top:100px; left:320px; background-image: url('./images/puntaRoja.png');}
+#sondaNegra{position: absolute; width:50px; height: 815px; top:20px; left:364px; background-image: url('./images/puntaNegra.png');}
+#conectorRojo {position:absolute; width:185px; height: 500px; top:460px; left:300px; background-image: url('./images/conectorRojo.png');}
+#conectorNegro {position:absolute; width:150px; height: 500px; top:560px; left:320px; background-image: url('./images/conectorNegro.png');}
 
 
-#aspaRojaPaso1{position: absolute; width:50px; height: 50px; top:67px; left:10px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso2{position: absolute; width:50px; height: 50px; top:110px; left:10px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso3{position: absolute; width:50px; height: 50px; top:153px; left:10px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso4{position: absolute; width:50px; height: 50px; top:194px; left:10px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
-#aspaRojaPaso5{position: absolute; width:50px; height: 50px; top:235px; left:10px; background-image: url('./images/aspaRoja.png'); background-repeat: no-repeat}
+#aspaRojaPaso1{position: absolute; width:30px; height: 37px; top:67px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso2{position: absolute; width:30px; height: 37px; top:110px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso3{position: absolute; width:30px; height: 37px; top:153px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso4{position: absolute; width:30px; height: 37px; top:194px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso5{position: absolute; width:30px; height: 37px; top:235px; left:10px; background-image: url('./images/aspaRoja.png');}
 
-#asesor {position:absolute; width:600px; height: 800px; top:10px; left:1050px; background-image: url('./images/papelLibretaCasoDeUso2.jpg'); background-repeat: no-repeat}
+#asesor {position:absolute; width:600px; height: 800px; top:10px; left:1050px; background-image: url('./images/papelLibretaCasoDeUso2.jpg');}
 #secador{
 	position:absolute;
 	top: 670px;
