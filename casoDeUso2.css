@@ -77,10 +77,10 @@ a{
 #puenteNeutro{position: absolute; top: 218px; width:185px; height: 154px; left:519px; background-image: url('./images/puenteNeutro.png');}
 #puenteFase{position: absolute; top: 220px; width:125px; height: 125px; left:549px; background-image: url('./images/puenteFase.png');}
 
-#regletaPuenteFase {position:absolute; top:180px; left:505px ;visibility:visible; fill:brown;}
-#regletaPuenteNeutro {position:absolute; top:177px; left:474px ;visibility:visible; fill:blue;}
-#regletaPuenteFase2 {position:absolute; top:185px; left:615px ;visibility:visible; fill:brown;}
-#regletaPuenteNeutro2 {position:absolute; top:188px; left:647px ;visibility:visible; fill:blue;}
+#regletaPuenteFase {position:absolute; top:180px; left:505px ;visibility:visible; fill:transparent;}
+#regletaPuenteNeutro {position:absolute; top:177px; left:474px ;visibility:visible; fill:transparent;}
+#regletaPuenteFase2 {position:absolute; top:185px; left:615px ;visibility:visible; fill:transparent;}
+#regletaPuenteNeutro2 {position:absolute; top:188px; left:647px ;visibility:visible; fill:transparent;}
 
 
 #sondaRoja{position: absolute; width:50px; height: 815px; top:100px; left:320px; background-image: url('./images/puntaRoja.png');}
