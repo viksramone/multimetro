@@ -73,7 +73,7 @@ a{
 #microamperios {position:absolute; top:230px; left:90px ;visibility:hidden}
 #AC {position:absolute; top:166px; left:90px ;visibility:hidden}
 
-#baseDeEnchufeCasoDeUso2{position: absolute; top: 50px; width:1100px; height: 800px; left:438px; background-image: url('./images/baseDeEnchufeCasoDeUso2.png'); background-repeat: no-repeat}
+#baseDeEnchufeCasoDeUso2{position: absolute; top: 50px; width:1100px; height: 800px; left:438px; background-image: url('./images/baseDeEnchufeCU2.png'); background-repeat: no-repeat}
 #puenteNeutro{position: absolute; top: 218px; width:300px; height: 300px; left:519px; background-image: url('./images/puenteNeutro.png'); background-repeat: no-repeat}
 #puenteFase{position: absolute; top: 220px; width:125px; height: 125px; left:549px; background-image: url('./images/puenteFase.png'); background-repeat: no-repeat}
 
