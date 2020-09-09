@@ -89,14 +89,6 @@
 	var conectorNegroConectadoACOM;
 	conectorNegroElement.addEventListener("mousedown", dragStartConectorNegro);
 
-	var puenteNeutroElement = document.getElementById('puenteNeutro'), posicionXpuenteNeutro = 0, posicionYpuenteNeutro = 0;
-	var puenteNeutroConectadoARegleta;
-	puenteNeutroElement.addEventListener("mousedown", dragStartPuenteNeutro);
-
-	var puenteFaseElement = document.getElementById('puenteFase'), posicionXpuenteFase = 0, posicionYpuenteFase = 0;
-	var puenteFaseConectadoARegleta;
-	puenteFaseElement.addEventListener("mousedown", dragStartPuenteFase);
-
 	var audioExplosionElement = document.getElementById("audioExplosion");
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -2901,7 +2893,6 @@ function dragStartConectorRojo(e)
 	posicionYConectorRojo = e.pageY - conectorRojoElement.offsetTop;	
 
 	conectorRojoElement.style.backgroundImage = "url('./images/conectorRojo.png')"; 
-	conectorRojoElement.style.backgroundRepeat = "no-repeat";
 
 	addEventListener("mousemove", dragMoveConectorRojo);
 	addEventListener("mouseup", dragEndConectorRojo);
@@ -2917,15 +2908,15 @@ function dragMoveConectorRojo(e)
 
 	if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 60
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 110
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexion10A').style.fill = "rgb(200,200,200,0.2)";
 	}
 	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 240
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 290
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionVRA').style.fill = "rgb(200,200,200,0.2)";
 	}
@@ -2941,8 +2932,8 @@ function dragEndConectorRojo()
 {
 	if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 60
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 110
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexion10A').style.fill = "transparent";
 		conectorRojoElement.style.left = "84px";
@@ -2956,13 +2947,13 @@ function dragEndConectorRojo()
 	}
 	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 240
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 290
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionVRA').style.fill = "transparent";
 		conectorRojoElement.style.left = "255px";
 		conectorRojoElement.style.top = "653px";
-		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojoConectado.png')"; 
+		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojoConectado.png')";
 		conectorRojoElement.style.backgroundRepeat = "no-repeat";
 		console.log("Conector Rojo conectado a puerto VRA");
 		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
@@ -2993,8 +2984,7 @@ function dragStartConectorNegro(e)
 	posicionXConectorNegro = e.pageX - conectorNegroElement.offsetLeft;
 	posicionYConectorNegro = e.pageY - conectorNegroElement.offsetTop;	
 
-	conectorNegroElement.style.backgroundImage = "url('./images/conectorNegro.png')"; 
-	conectorNegroElement.style.backgroundRepeat = "no-repeat";
+	conectorNegroElement.style.backgroundImage = "url('./images/conectorNegro.png')";
 
 	addEventListener("mousemove", dragMoveConectorNegro);
 	addEventListener("mouseup", dragEndConectorNegro);
@@ -3006,10 +2996,10 @@ function dragMoveConectorNegro(e)
 	conectorNegroElement.style.left = (e.pageX - posicionXConectorNegro);
 	conectorNegroElement.style.top = (e.pageY - posicionYConectorNegro);
 	
-	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 30
-			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 60
-				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 580
-					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 610)
+	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 130
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionCOM').style.fill = "rgb(200,200,200,0.2)";
 	//console.log(conectorNegroElement.style.left);
@@ -3025,16 +3015,15 @@ function dragMoveConectorNegro(e)
 //-----------------------------------------------------------------------------------------------------------------------
 function dragEndConectorNegro()
 {
-	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 30
-			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 60
-				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 580
-					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 610)
+	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 130
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionCOM').style.fill = "transparent";
 		conectorNegroElement.style.left = "169px";
 		conectorNegroElement.style.top = "653px";
 		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
-		conectorNegroElement.style.backgroundRepeat = "no-repeat";
 		console.log("Conector Negro conectado a puerto COM");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
 		conectorNegroConectadoACOM = true;
@@ -3063,7 +3052,6 @@ function dragStartPuenteNeutro(e)
 	posicionYPuenteNeutro = e.pageY - puenteNeutroElement.offsetTop;	
 
 	puenteNeutroElement.style.backgroundImage = "url('./images/puenteNeutro.png')"; 
-	puenteNeutroElement.style.backgroundRepeat = "no-repeat";
 
 	addEventListener("mousemove", dragMovePuenteNeutro);
 	addEventListener("mouseup", dragEndPuenteNeutro);
@@ -3105,7 +3093,6 @@ function dragEndPuenteNeutro()
 		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
 		puenteNeutroElement.style.left = "733px";
 		puenteNeutroElement.style.top = "300px";
-		puenteNeutroElement.style.backgroundRepeat = "no-repeat";
 		console.log("Puente neutro conectado a regleta");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
 		puenteNeutroConectadoARegleta = true;
@@ -3135,7 +3122,6 @@ function dragStartPuenteFase(e)
 	posicionYPuenteFase = e.pageY - puenteFaseElement.offsetTop;	
 
 	puenteFaseElement.style.backgroundImage = "url('./images/puenteFase.png')"; 
-	puenteFaseElement.style.backgroundRepeat = "no-repeat";
 
 	addEventListener("mousemove", dragMovePuenteFase);
 	addEventListener("mouseup", dragEndPuenteFase);
@@ -3177,7 +3163,6 @@ function dragEndPuenteFase()
 		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
 		puenteFaseElement.style.left = "764px";
 		puenteFaseElement.style.top = "302px";
-		puenteFaseElement.style.backgroundRepeat = "no-repeat";
 		console.log("Puenta fase conectado a la regleta");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
 		puenteFaseConectadoARegleta = true;
