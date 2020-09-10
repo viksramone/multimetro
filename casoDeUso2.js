@@ -2997,8 +2997,8 @@ function dragEndSondaRoja(e)
 		console.log("Sonda Roja conectada a fase");
 		sondaRojaConectadaARegletaNeutro1 = false;
 		sondaRojaConectadaARegletaNeutro2 = true;
-		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
-		document.getElementById('regletaPuenteNeutro6').style.fill = "transparent";
+		document.getElementById('aspaRojaPaso6').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
 	}
 	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 516
 			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 536
@@ -3494,7 +3494,10 @@ function dragEndPuenteNeutro()
 		puenteNeutroElement.style.top = "218px";
 		puenteNeutroElement.style.backgroundRepeat = "no-repeat";
 		console.log("Puente neutro conectado");
-		document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
+		if 	(puenteFaseConectadoARegleta == true)
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
+		else
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaVerde.png')";
 		puenteNeutroConectadoARegleta = true;
 	}
 	else
@@ -3573,7 +3576,10 @@ function dragEndPuenteFase()
 		puenteFaseElement.style.top = "220px";
 		puenteFaseElement.style.backgroundRepeat = "no-repeat";
 		console.log("Puenta fase conectado a la regleta");
-		document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
+		if (puenteNeutroConectadoARegleta == true)
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
+		else
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaVerde.png')";
 		puenteFaseConectadoARegleta = true;
 
 	}
@@ -3717,28 +3723,24 @@ function determinaValor()
 		case 14: //console.log("ADC - 200mA");
 			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[14] == "Correcto")
 			{
-				audioExplosionElement.play();
 				estadoFusiblePosicionSelector[14] = "Fundido";
 			}
 			break
 		case 15: //console.log("ADC - 20mA/10A");
 			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[15] == "Correcto")
 			{
-				audioExplosionElement.play();
 				estadoFusiblePosicionSelector[15] = "Fundido";
 			}
 			break
 		case 16: //console.log("ADC - 2mA");
 			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[16] == "Correcto")
 			{
-				audioExplosionElement.play();
 				estadoFusiblePosicionSelector[16] = "Fundido";
 			}
 			break
 		case 17: //console.log("ADC - 200uA");
 			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[17] == "Correcto")
 			{
-				audioExplosionElement.play();
 				estadoFusiblePosicionSelector[17] = "Fundido";
 			}
 			break
