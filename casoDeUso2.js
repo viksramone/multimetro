@@ -98,11 +98,11 @@
 	sondaNegraElement.addEventListener("mousedown", dragStartSondaNegra);
 
 	var conectorRojoElement = document.getElementById('conectorRojo'), posicionXConectorRojo = 0, posicionYConectorRojo = 0;
-	var conectorRojoConectadoA10A = false, conectorRojoConectadoAVRA = false;
+	var conectorRojoConectadoA10A = false, conectorRojoConectadoAVRA = false, conectorRojoConectadoACOM = false;
 	conectorRojoElement.addEventListener("mousedown", dragStartConectorRojo);
 
 	var conectorNegroElement = document.getElementById('conectorNegro'), posicionXConectorNegro = 0, posicionYConectorNegro = 0;
-	var conectorNegroConectadoACOM = false;
+	var conectorNegroConectadoA10A = false, conectorRojoConectadoAVRA = false, conectorNegroConectadoACOM = false;
 	conectorNegroElement.addEventListener("mousedown", dragStartConectorNegro);
 
 	var puenteNeutroElement = document.getElementById('puenteNeutro'), posicionXpuenteNeutro = 0, posicionYpuenteNeutro = 0;
@@ -131,6 +131,7 @@ function actualizaReceptor()
 	if (receptorActivoSecador == true)
 	{
 		audioCadenaElement.pause();
+		document.getElementById('aspaRojaPaso7').style.backgroundImage = "url('./images/aspaVerde.png')";
 
 		if (conexionCorrectaParaReceptor == true)
 		{
@@ -149,7 +150,7 @@ function actualizaReceptor()
 	{
 
 		audioSecadorElement.pause();
-
+		document.getElementById('aspaRojaPaso7').style.backgroundImage = "url('./images/aspaVerde.png')";
 		if (conexionCorrectaParaReceptor == true)
 		{
 			audioCadenaElement.play();
@@ -166,13 +167,15 @@ function actualizaReceptor()
 	{
 		audioSecadorElement.pause();
 		audioCadenaElement.pause();
-		potenciaReceptor = 5000;
+		potenciaReceptor = 2000;
+		document.getElementById('aspaRojaPaso7').style.backgroundImage = "url('./images/aspaVerde.png')";
 	}	
 	else
 	{
 		audioSecadorElement.pause();
 		audioCadenaElement.pause();
 		potenciaReceptor = 0;	
+		document.getElementById('aspaRojaPaso7').style.backgroundImage = "url('./images/aspaRoja.png')";
 	}
 }
 
@@ -2981,7 +2984,7 @@ function dragEndSondaRoja(e)
 		console.log("Sonda Roja conectada a neutro");
 		sondaRojaConectadaARegletaNeutro1 = true;
 		sondaRojaConectadaARegletaNeutro2 = false;
-		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso6').style.backgroundImage = "url('./images/aspaVerde.png')";
 		document.getElementById('regletaPuenteNeutro').style.fill = "transparent";
 	}
 	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 656
@@ -2995,7 +2998,7 @@ function dragEndSondaRoja(e)
 		sondaRojaConectadaARegletaNeutro1 = false;
 		sondaRojaConectadaARegletaNeutro2 = true;
 		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
-		document.getElementById('regletaPuenteNeutro2').style.fill = "transparent";
+		document.getElementById('regletaPuenteNeutro6').style.fill = "transparent";
 	}
 	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 516
 			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 536
@@ -3007,7 +3010,7 @@ function dragEndSondaRoja(e)
 		console.log("Sonda Roja conectada a fase");
 		sondaRojaConectadaARegletaFase1 = true;
 		sondaRojaConectadaARegletaFase2 = false;
-		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso6').style.backgroundImage = "url('./images/aspaVerde.png')";
 		document.getElementById('regletaPuenteFase').style.fill = "transparent";
 	}
 	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 626
@@ -3020,13 +3023,13 @@ function dragEndSondaRoja(e)
 		console.log("Sonda Roja conectada a fase");
 		sondaRojaConectadaARegletaFase1 = false;
 		sondaRojaConectadaARegletaFase2 = true;
-		document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso6').style.backgroundImage = "url('./images/aspaVerde.png')";
 		document.getElementById('regletaPuenteFase2').style.fill = "transparent";
 	}
 	else
 	{
 	console.log("Sonda Roja desconectada");
-	document.getElementById('aspaRojaPaso5').style.backgroundImage = "url('./images/aspaRoja.png')";
+	document.getElementById('aspaRojaPaso6').style.backgroundImage = "url('./images/aspaRoja.png')";
 	sondaRojaConectadaARegletaFase1 = false;
 	sondaRojaConectadaARegletaFase2 = false;
 	sondaRojaConectadaARegletaNeutro1 = false;
@@ -3209,22 +3212,30 @@ function dragMoveConectorRojo(e)
 
 	if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 60
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 110
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexion10A').style.fill = "rgb(200,200,200,0.2)";
 	}
 	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 240
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 290
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionVRA').style.fill = "rgb(200,200,200,0.2)";
+	}
+	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 150
+			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 200
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionCOM').style.fill = "rgb(200,200,200,0.2)";
 	}
 	else
 	{
 		document.getElementById('conexion10A').style.fill = "transparent";
-		document.getElementById('conexionVRA').style.fill = "transparent";	
+		document.getElementById('conexionVRA').style.fill = "transparent";
+		document.getElementById('conexionCOM').style.fill = "transparent";
 	}	
 }
 
@@ -3233,8 +3244,8 @@ function dragEndConectorRojo()
 {
 	if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 60
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 110
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexion10A').style.fill = "transparent";
 		conectorRojoElement.style.left = "84px";
@@ -3242,14 +3253,15 @@ function dragEndConectorRojo()
 		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojoConectado.png')"; 
 		conectorRojoElement.style.backgroundRepeat = "no-repeat";
 		console.log("Conector Rojo conectado a puerto A10");
-		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
 		conectorRojoConectadoA10A = true;
 		conectorRojoConectadoAVRA = false;
+		conectorRojoConectadoACOM = false;
 	}
 	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 240
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 290
-				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 580
-						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 610)
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionVRA').style.fill = "transparent";
 		conectorRojoElement.style.left = "255px";
@@ -3257,9 +3269,26 @@ function dragEndConectorRojo()
 		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojoConectado.png')"; 
 		conectorRojoElement.style.backgroundRepeat = "no-repeat";
 		console.log("Conector Rojo conectado a puerto VRA");
-		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
 		conectorRojoConectadoA10A = false;
 		conectorRojoConectadoAVRA = true;
+		conectorRojoConectadoACOM = false;
+	}
+	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 140
+			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 200
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionCOM').style.fill = "transparent";
+		conectorRojoElement.style.left = "169px";
+		conectorRojoElement.style.top = "653px";
+		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojoConectado.png')"; 
+		conectorRojoElement.style.backgroundRepeat = "no-repeat";
+		console.log("Conector Rojo conectado a puerto COM");
+		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorRojoConectadoA10A = false;
+		conectorRojoConectadoAVRA = false;
+		conectorRojoConectadoACOM = true;
 	}
 	else
 	{
@@ -3268,6 +3297,7 @@ function dragEndConectorRojo()
 		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojo.png')";
 		conectorRojoConectadoA10A = false;
 		conectorRojoConectadoAVRA = false;
+		conectorRojoConectadoACOM = false;
 	}
 
 	compruebaConexion();
@@ -3298,10 +3328,30 @@ function dragMoveConectorNegro(e)
 	conectorNegroElement.style.left = (e.pageX - posicionXConectorNegro);
 	conectorNegroElement.style.top = (e.pageY - posicionYConectorNegro);
 	
-	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 30
-			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 60
-				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 580
-					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 610)
+	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > -10
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 40
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexion10A').style.fill = "rgb(200,200,200,0.2)";
+	//console.log(conectorNegroElement.style.left);
+	//console.log(conectorNegroElement.style.top);
+
+	}
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 170
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 220
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionVRA').style.fill = "rgb(200,200,200,0.2)";
+	//console.log(conectorNegroElement.style.left);
+	//console.log(conectorNegroElement.style.top);
+
+	}
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 130
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionCOM').style.fill = "rgb(200,200,200,0.2)";
 	//console.log(conectorNegroElement.style.left);
@@ -3310,6 +3360,8 @@ function dragMoveConectorNegro(e)
 	}
 	else
 	{
+		document.getElementById('conexion10A').style.fill = "transparent";
+		document.getElementById('conexionVRA').style.fill = "transparent";
 		document.getElementById('conexionCOM').style.fill = "transparent";
 	}
 }
@@ -3317,10 +3369,44 @@ function dragMoveConectorNegro(e)
 //-----------------------------------------------------------------------------------------------------------------------
 function dragEndConectorNegro()
 {
-	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 30
-			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 60
-				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 580
-					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 610)
+	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > -10
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 40
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexion10A').style.fill = "transparent";
+		conectorNegroElement.style.left = "84px";
+		conectorNegroElement.style.top = "653px";
+		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
+		conectorNegroElement.style.backgroundRepeat = "no-repeat";
+		console.log("Conector Negro conectado a puerto 10A");
+		document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorNegroConectadoA10A = true;
+		conectorNegroConectadoAVRA = false;
+		conectorNegroConectadoACOM = false;
+
+	}
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 170
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 220
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionVRA').style.fill = "transparent";
+		conectorNegroElement.style.left = "255px";
+		conectorNegroElement.style.top = "653px";
+		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
+		conectorNegroElement.style.backgroundRepeat = "no-repeat";
+		console.log("Conector Negro conectado a puerto VRA");
+		document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorNegroConectadoA10A = false;
+		conectorNegroConectadoAVRA = true;
+		conectorNegroConectadoACOM = false;
+
+	}
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 130
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionCOM').style.fill = "transparent";
 		conectorNegroElement.style.left = "169px";
@@ -3328,18 +3414,21 @@ function dragEndConectorNegro()
 		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
 		conectorNegroElement.style.backgroundRepeat = "no-repeat";
 		console.log("Conector Negro conectado a puerto COM");
-		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaVerde.png')";
+		conectorNegroConectadoA10A = false;
+		conectorNegroConectadoAVRA = false;
 		conectorNegroConectadoACOM = true;
-
 	}
 	else
 	{
 		console.log("Conector negro desconectado");
-		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
+		document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorNegroConectadoA10A = false;
+		conectorNegroConectadoAVRA = true;
 		conectorNegroConectadoACOM = false;
 		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegro.png')";
 	}
-	
+
 	compruebaConexion();
 	clearInterval(myVar);
 	actualizaVisor();
@@ -3405,13 +3494,16 @@ function dragEndPuenteNeutro()
 		puenteNeutroElement.style.top = "218px";
 		puenteNeutroElement.style.backgroundRepeat = "no-repeat";
 		console.log("Puente neutro conectado");
-		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
 		puenteNeutroConectadoARegleta = true;
 	}
 	else
 	{
 		console.log("Puente Neutro desconectado");
-		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
+		if (puenteFaseConectadoARegleta == false)
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
+		else
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaVerde.png')";
 		puenteNeutroConectadoARegleta = false;
 		puenteNeutroElement.style.backgroundImage = "url('./images/puenteNeutro.png')";
 	}
@@ -3481,14 +3573,17 @@ function dragEndPuenteFase()
 		puenteFaseElement.style.top = "220px";
 		puenteFaseElement.style.backgroundRepeat = "no-repeat";
 		console.log("Puenta fase conectado a la regleta");
-		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
 		puenteFaseConectadoARegleta = true;
 
 	}
 	else
 	{
 		console.log("Puente fase desconectado");
-		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
+		if (puenteNeutroConectadoARegleta == false)
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaRoja.png')";
+		else
+			document.getElementById('aspaRojaPaso4').style.backgroundImage = "url('./images/aspaVerde.png')";
 		puenteFaseConectadoARegleta = false;
 		puenteFaseElement.style.backgroundImage = "url('./images/puenteFase.png')";
 	}
@@ -3518,12 +3613,12 @@ function compruebaConexion()
 		conexionCorrectaParaMedicion = false;
 	}
 	else if (
-		puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false
+			puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false
 		&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaNeutro2 == true)
 			|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaNeutro1 == true))
 		&& sondaRojaConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false
-		&& (conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true
-		)
+		&& (((conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
+			||  ((conectorNegroConectadoA10A == true || conectorNegroConectadoAVRA == true) && conectorRojoConectadoACOM == true)))
 	{
 
 		conexionCorrectaParaReceptor = true;
@@ -3534,7 +3629,8 @@ function compruebaConexion()
 		&& ((sondaRojaConectadaARegletaFase1 == true && sondaNegraConectadaARegletaFase2 == true)
 			|| (sondaRojaConectadaARegletaFase2 == true && sondaNegraConectadaARegletaFase1 == true))
 		&& sondaRojaConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false
-		&& (conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
+		&& (((conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
+			||  ((conectorNegroConectadoA10A == true || conectorNegroConectadoAVRA == true) && conectorRojoConectadoACOM == true)))
 	{
 		conexionCorrectaParaReceptor = true;
 		conexionCorrectaParaMedicion = true;
@@ -3563,34 +3659,36 @@ function determinaValor()
 		case 4:  //console.log("VDC - 200V");
 		case 5:  //console.log("VDC - 1000V");
 			configuraValor(0 + Math.random()*4/1000 - 8/10000);
-			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			break;
 		case 6:  //console.log("VAC - 750V");
-			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaVerde.png')";
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
 			if (conexionCorrectaParaMedicion == true) configuraValor(VoltajeAC);
 			else configuraValor(0);
 			break;
 		case 7:  //console.log("VAC - 200V");
 			representaFueraDeEscala();
-			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			break;
 		case 8:  //console.log("VAC - 20V");
 			representaFueraDeEscala();
-			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			break;				
 		case 9:  //console.log("VAC - 2V");
 			representaFueraDeEscala();
-			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			break;				
 		case 10: //console.log("hFE");
 			break;
 		case 11: //console.log("AAC - 2mA");
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[13] == "Correcto")
 			{
 				configuraValor(potenciaReceptor/VoltajeAC);
 			}
 			break
 		case 12: //console.log("AAC - 20mA/10A");
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
 			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoA10A == true && estadoFusiblePosicionSelector[12] == "Correcto")
 			{
 				configuraValor(potenciaReceptor/VoltajeAC);
@@ -3610,6 +3708,7 @@ function determinaValor()
 			break
 
 		case 13: //console.log("AAC - 200mA");
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[13] == "Correcto")
 			{
 				configuraValor(potenciaReceptor/VoltajeAC);
@@ -3649,9 +3748,9 @@ function determinaValor()
 		case 21: //console.log("Ohm - 200k");
 		case 22: //console.log("Ohm - 2M");
 		case 23: //console.log("Ohm - 20M");
-			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 		default:
-			document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			break;
 	}
 }

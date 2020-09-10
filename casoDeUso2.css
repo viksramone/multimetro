@@ -77,23 +77,25 @@ a{
 #puenteNeutro{position: absolute; top: 218px; width:185px; height: 154px; left:519px; background-image: url('./images/puenteNeutro.png');}
 #puenteFase{position: absolute; top: 220px; width:125px; height: 125px; left:549px; background-image: url('./images/puenteFase.png');}
 
-#regletaPuenteFase {position:absolute; top:180px; left:505px ;visibility:visible; fill:brown;}
-#regletaPuenteNeutro {position:absolute; top:177px; left:474px ;visibility:visible; fill:blue;}
-#regletaPuenteFase2 {position:absolute; top:185px; left:615px ;visibility:visible; fill:brown;}
-#regletaPuenteNeutro2 {position:absolute; top:188px; left:647px ;visibility:visible; fill:blue;}
+#regletaPuenteFase {position:absolute; top:180px; left:505px ;visibility:visible; fill:transparent;}
+#regletaPuenteNeutro {position:absolute; top:177px; left:474px ;visibility:visible; fill:transparent;}
+#regletaPuenteFase2 {position:absolute; top:185px; left:615px ;visibility:visible; fill:transparent;}
+#regletaPuenteNeutro2 {position:absolute; top:188px; left:647px ;visibility:visible; fill:transparent;}
 
 
 #sondaRoja{position: absolute; width:50px; height: 815px; top:100px; left:320px; background-image: url('./images/puntaRoja.png');}
 #sondaNegra{position: absolute; width:50px; height: 815px; top:20px; left:364px; background-image: url('./images/puntaNegra.png');}
-#conectorRojo {position:absolute; width:185px; height: 500px; top:460px; left:300px; background-image: url('./images/conectorRojo.png');}
-#conectorNegro {position:absolute; width:150px; height: 500px; top:560px; left:320px; background-image: url('./images/conectorNegro.png');}
+#conectorRojo {position:absolute; width:88px; height: 500px; top:460px; left:300px; background-image: url('./images/conectorRojo.png'); background-repeat:no-repeat;}
+#conectorNegro {position:absolute; width:90px; height: 500px; top:560px; left:320px; background-image: url('./images/conectorNegro.png'); background-repeat:no-repeat;}
 
 
-#aspaRojaPaso1{position: absolute; width:30px; height: 37px; top:67px; left:10px; background-image: url('./images/aspaRoja.png');}
-#aspaRojaPaso2{position: absolute; width:30px; height: 37px; top:110px; left:10px; background-image: url('./images/aspaRoja.png');}
-#aspaRojaPaso3{position: absolute; width:30px; height: 37px; top:153px; left:10px; background-image: url('./images/aspaRoja.png');}
-#aspaRojaPaso4{position: absolute; width:30px; height: 37px; top:194px; left:10px; background-image: url('./images/aspaRoja.png');}
-#aspaRojaPaso5{position: absolute; width:30px; height: 37px; top:235px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso1{position: absolute; width:30px; height: 37px; top:80px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso2{position: absolute; width:30px; height: 37px; top:152px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso3{position: absolute; width:30px; height: 37px; top:250px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso4{position: absolute; width:30px; height: 37px; top:350px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso5{position: absolute; width:30px; height: 37px; top:422px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso6{position: absolute; width:30px; height: 37px; top:474px; left:10px; background-image: url('./images/aspaRoja.png');}
+#aspaRojaPaso7{position: absolute; width:30px; height: 37px; top:545px; left:10px; background-image: url('./images/aspaRoja.png');}
 
 #asesor {position:absolute; width:600px; height: 800px; top:10px; left:1050px; background-image: url('./images/papelLibretaCasoDeUso2.jpg');}
 #secador{
