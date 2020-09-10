@@ -82,11 +82,11 @@
 	sondaNegraElement.addEventListener("mousedown", dragStartSondaNegra);
 
 	var conectorRojoElement = document.getElementById('conectorRojo'), posicionXConectorRojo = 0, posicionYConectorRojo = 0;
-	var conectorRojoConectadoA10A, conectorRojoConectadoAVRA;
+	var conectorRojoConectadoA10A, conectorRojoConectadoAVRA, conectorRojoConectadoACOM;
 	conectorRojoElement.addEventListener("mousedown", dragStartConectorRojo);
 
 	var conectorNegroElement = document.getElementById('conectorNegro'), posicionXConectorNegro = 0, posicionYConectorNegro = 0;
-	var conectorNegroConectadoACOM;
+	var conectorNegroConectadoACOM, conectorNegroConectadoA10A, conectorNegroConectadoAVRA;
 	conectorNegroElement.addEventListener("mousedown", dragStartConectorNegro);
 
 	var audioExplosionElement = document.getElementById("audioExplosion");
@@ -2920,9 +2920,16 @@ function dragMoveConectorRojo(e)
 	{
 		document.getElementById('conexionVRA').style.fill = "rgb(200,200,200,0.2)";
 	}
-	else
+	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 150
+			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 200
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionCOM').style.fill = "rgb(200,200,200,0.2)";
+	}else
 	{
 		document.getElementById('conexion10A').style.fill = "transparent";
+		document.getElementById('conexionCOM').style.fill = "transparent";
 		document.getElementById('conexionVRA').style.fill = "transparent";	
 	}	
 }
@@ -2941,9 +2948,10 @@ function dragEndConectorRojo()
 		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojoConectado.png')"; 
 		conectorRojoElement.style.backgroundRepeat = "no-repeat";
 		console.log("Conector Rojo conectado a puerto A10");
-		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
+		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 		conectorRojoConectadoA10A = true;
 		conectorRojoConectadoAVRA = false;
+		conectorRojoConectadoACOM = false;
 	}
 	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 240
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 290
@@ -2959,8 +2967,24 @@ function dragEndConectorRojo()
 		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
 		conectorRojoConectadoA10A = false;
 		conectorRojoConectadoAVRA = true;
+		conectorRojoConectadoACOM = false;
 	}
-	else
+	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 150
+			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 200
+				&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) > 605
+						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionCOM').style.fill = "transparent";
+		conectorRojoElement.style.left = "169px";
+		conectorRojoElement.style.top = "653px";
+		conectorRojoElement.style.backgroundImage = "url('./images/conectorRojoConectado.png')";
+		conectorRojoElement.style.backgroundRepeat = "no-repeat";
+		console.log("Conector Rojo conectado a puerto COM");
+		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorRojoConectadoA10A = false;
+		conectorRojoConectadoAVRA = false;
+		conectorRojoConectadoACOM = true;
+	}else
 	{
 		console.log("Conector rojo desconectado");
 		document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
@@ -2996,7 +3020,27 @@ function dragMoveConectorNegro(e)
 	conectorNegroElement.style.left = (e.pageX - posicionXConectorNegro);
 	conectorNegroElement.style.top = (e.pageY - posicionYConectorNegro);
 	
-	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
+	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > -10
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 40
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexion10A').style.fill = "rgb(200,200,200,0.2)";
+	//console.log(conectorNegroElement.style.left);
+	//console.log(conectorNegroElement.style.top);
+
+	}
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 170
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 220
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionVRA').style.fill = "rgb(200,200,200,0.2)";
+	//console.log(conectorNegroElement.style.left);
+	//console.log(conectorNegroElement.style.top);
+
+	}
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
 			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 130
 				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
 					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
@@ -3008,6 +3052,8 @@ function dragMoveConectorNegro(e)
 	}
 	else
 	{
+		document.getElementById('conexion10A').style.fill = "transparent";
+		document.getElementById('conexionVRA').style.fill = "transparent";
 		document.getElementById('conexionCOM').style.fill = "transparent";
 	}
 }
@@ -3015,7 +3061,41 @@ function dragMoveConectorNegro(e)
 //-----------------------------------------------------------------------------------------------------------------------
 function dragEndConectorNegro()
 {
-	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
+	if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > -10
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 40
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexion10A').style.fill = "transparent";
+		conectorNegroElement.style.left = "84px";
+		conectorNegroElement.style.top = "653px";
+		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
+		console.log("Conector Negro conectado a puerto 10A");
+		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorNegroConectadoA10A = true;
+		conectorNegroConectadoAVRA = false;
+		conectorNegroConectadoACOM = false;
+
+	}
+	
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 170
+			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 220
+				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
+					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
+	{
+		document.getElementById('conexionVRA').style.fill = "transparent";
+		conectorNegroElement.style.left = "255px";
+		conectorNegroElement.style.top = "653px";
+		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
+		console.log("Conector Negro conectado a puerto VRA");
+		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorNegroConectadoA10A = false;
+		conectorNegroConectadoAVRA = true;
+		conectorNegroConectadoACOM = false;
+
+	}
+	
+	else if ((conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) > 80
 			&& (conectorNegroElement.style.left.substring(0,conectorNegroElement.style.left.length-2)) < 130
 				&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) > 605
 					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
@@ -3026,13 +3106,16 @@ function dragEndConectorNegro()
 		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegroConectado.png')"; 
 		console.log("Conector Negro conectado a puerto COM");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaVerde.png')";
+		conectorNegroConectadoA10A = false;
+		conectorNegroConectadoAVRA = false;
 		conectorNegroConectadoACOM = true;
-
 	}
 	else
 	{
 		console.log("Conector negro desconectado");
 		document.getElementById('aspaRojaPaso2').style.backgroundImage = "url('./images/aspaRoja.png')";
+		conectorNegroConectadoA10A = false;
+		conectorNegroConectadoAVRA = false;
 		conectorNegroConectadoACOM = false;
 		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegro.png')";
 	}
@@ -3199,7 +3282,9 @@ function compruebaConexion()
 		case 2: //medidas de voltaje en base de enchufe
 			if (((sondaRojaConectadaAFASE == true && sondaNegraConectadaANEUTRO == true)
 				|| (sondaRojaConectadaANEUTRO == true && sondaNegraConectadaAFASE == true))
-				&& conectorRojoConectadoA10A == false && conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+				&& (
+					conectorRojoConectadoA10A == false && conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true
+					|| conectorRojoConectadoA10A == false && conectorRojoConectadoACOM == true && conectorNegroConectadoAVRA == true))
 				conexionCorrecta = true;
 			else
 				conexionCorrecta = false;
