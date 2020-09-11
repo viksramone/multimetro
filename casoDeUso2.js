@@ -3645,7 +3645,7 @@ function dragEndPuenteFase()
 function actualizaVisor() {
 	compruebaConexion();
 	clearInterval(myVar);
-	myVar = setInterval(determinaValor, 400);
+	myVar = setInterval(determinaValor, 500);
 	//myVar = setInterval(determinaValor, Math.random()*400);
 }
 
@@ -3686,7 +3686,8 @@ function compruebaConexion()
 					&& sondaNegraConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false)
 					|| (conectorRojoConectadoA10A == false && conectorRojoConectadoACOM == false && conectorRojoConectadoAVRA == false)
 					|| (conectorNegroConectadoA10A == false && conectorNegroConectadoACOM == false && conectorNegroConectadoAVRA == false)))
-			{ // algún puente no está conectado y las sondas tampoco
+			{
+				console.log("Algún puente no está conectado y las sondas tampoco. Conclusión: ni funciona el receptor ni mide el multímetro");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = false;		
 			}
@@ -3696,7 +3697,8 @@ function compruebaConexion()
 					&& sondaNegraConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false)
 					|| (conectorRojoConectadoA10A == false && conectorRojoConectadoACOM == false && conectorRojoConectadoAVRA == false)
 					|| (conectorNegroConectadoA10A == false && conectorNegroConectadoACOM == false && conectorNegroConectadoAVRA == false))
-			{ //alguna sonda no está conectada
+			{
+				console.log("O Alguna punta de las sondas o algun conector en el multímetro no está conectado.");
 				conexionCorrectaParaReceptor = true;
 				conexionCorrectaParaMedicion = false;		
 			}	
@@ -3708,9 +3710,10 @@ function compruebaConexion()
 					|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaNeutro1 == true)
 					|| (sondaRojaConectadaARegletaFase1 == true && sondaNegraConectadaARegletaFase2 == true)
 					|| (sondaRojaConectadaARegletaFase2 == true && sondaNegraConectadaARegletaFase1 == true)))
-			{//las sondas están conectadas a entre fases o entre neutros y los puentes puestos
+			{
+				console.log("Los puentes están puestos y las sondas conectadas entre fases o entre neutros.");
 				conexionCorrectaParaReceptor = true;
-				conexionCorrectaParaMedicion = false;	
+				conexionCorrectaParaMedicion = false; //sí mide, pero el resultado es 0.
 			}
 			else if ((puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
@@ -3723,7 +3726,8 @@ function compruebaConexion()
 					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase2 == true)
 					|| (sondaNegraConectadaARegletaNeutro2 == true && sondaRojaConectadaARegletaFase1 == true)
 					|| (sondaNegraConectadaARegletaNeutro2 == true && sondaRojaConectadaARegletaFase2 == true)))
-			{//los dos puentes están conectados las sondas están conectadas a entre fases y  neutro en cualquier punto
+			{
+				console.log("Los puentes están conectados y las sondas conectadas entre fase y neutro, en cualquier punto.");
 				conexionCorrectaParaReceptor = true;
 				conexionCorrectaParaMedicion = true;	
 			}
@@ -3732,7 +3736,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& (((sondaRojaConectadaARegletaFase1 == true || sondaNegraConectadaARegletaFase1 == true)
 					&& (sondaRojaConectadaARegletaFase2 == true || sondaNegraConectadaARegletaFase2 == true))))
-			{//con puente fase conectado únicamente y puntas entre fases
+			{
+				console.log("Únicamente está conectado el puente de la fase y las puntas entre fases");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = false;	
 			}
@@ -3741,7 +3746,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& (((sondaRojaConectadaARegletaNeutro1 == true || sondaNegraConectadaARegletaNeutro1 == true)
 					&& (sondaRojaConectadaARegletaNeutro2 == true || sondaNegraConectadaARegletaNeutro2 == true))))
-			{//con puente neutro conectado únicamente y puntas entre neutros
+			{
+				console.log("Únicamente está conectado el puente del neutro y las puntas entre neutros");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = false;	
 			}
@@ -3750,7 +3756,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& (((sondaRojaConectadaARegletaFase1 == true || sondaNegraConectadaARegletaFase1 == true)
 					&& (sondaRojaConectadaARegletaFase2 == true || sondaNegraConectadaARegletaFase2 == true))))
-			{//con puente neutro conectado únicamente y puntas entre fases
+			{
+				console.log("Únicamente está conectado el puente del neutro y las puntas entre fases");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = true;	
 			}
@@ -3759,7 +3766,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& (((sondaRojaConectadaARegletaNeutro1 == true || sondaNegraConectadaARegletaNeutro1 == true)
 					&& (sondaRojaConectadaARegletaNeutro2 == true || sondaNegraConectadaARegletaNeutro2 == true))))
-			{//con puente fase conectado únicamente y puntas entre neutros
+			{
+				console.log("Únicamente está conectado el puente de la fase y las puntas entre neutros");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = true;	
 			}
@@ -3768,7 +3776,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase1 == true)
 					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase1 == true)))
-			{//quitamos los puentes y medimos entre fase1 y neutro1
+			{
+				console.log("Sin puentes conectados y puntas en F1 y N1");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = true;	
 			}
@@ -3777,7 +3786,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase1 == true)
 					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase1 == true)))
-			{//quitamos un puentes y medimos entre fase1 y neutro1
+			{
+				console.log("Únicamente puente neutro conectado y puntas en F1 y N1");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = true;	
 			}
@@ -3786,7 +3796,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase1 == true)
 					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase1 == true)))
-			{//quitamos el otro puentes y medimos entre fase1 y neutro1
+			{
+				console.log("Únicamente puente fase conectado y puntas en F1 y N1");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = true;	
 			}
@@ -3795,7 +3806,8 @@ function compruebaConexion()
 					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
 				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase2 == true)
 					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase2 == true)))
-			{//dejamos puente fase
+			{
+				console.log("Únicamente puente fase conectado y puntas en F2 y N1");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = true;	
 			}
@@ -3805,11 +3817,13 @@ function compruebaConexion()
 				&& ((sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaFase1 == true)
 					|| (sondaNegraConectadaARegletaNeutro2 == true && sondaRojaConectadaARegletaFase1 == true)))
 			{//dejamos puente neutro
+				console.log("Únicamente puente neutro conectado y puntas en F1 y N2");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = true;	
 			}
 			else
 			{
+				console.log("Caso no contemplado");
 				conexionCorrectaParaReceptor = false;
 				conexionCorrectaParaMedicion = false;	
 				console.log("help");
