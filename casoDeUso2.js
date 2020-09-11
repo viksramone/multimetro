@@ -3644,7 +3644,8 @@ function dragEndPuenteFase()
 //-----------------------------------------------------------------------------------------------------------------------
 function actualizaVisor() {
 	compruebaConexion();
-	myVar = setInterval(determinaValor, Math.random()*400);
+	myVar = setInterval(determinaValor, 400);
+	//myVar = setInterval(determinaValor, Math.random()*400);
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
