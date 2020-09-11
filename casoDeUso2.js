@@ -102,7 +102,7 @@
 	conectorRojoElement.addEventListener("mousedown", dragStartConectorRojo);
 
 	var conectorNegroElement = document.getElementById('conectorNegro'), posicionXConectorNegro = 0, posicionYConectorNegro = 0;
-	var conectorNegroConectadoA10A = false, conectorRojoConectadoAVRA = false, conectorNegroConectadoACOM = false;
+	var conectorNegroConectadoA10A = false, conectorNegroConectadoAVRA = false, conectorNegroConectadoACOM = false;
 	conectorNegroElement.addEventListener("mousedown", dragStartConectorNegro);
 
 	var puenteNeutroElement = document.getElementById('puenteNeutro'), posicionXpuenteNeutro = 0, posicionYpuenteNeutro = 0;
@@ -116,7 +116,7 @@
 	var conexionCorrectaParaMedicion;
 	var conexionCorrectaParaReceptor;
 	var potenciaReceptor = 0;
-	var VoltajeAC = 230;
+	var VoltajeAC = 232;
 
 	var audioExplosionElement = document.getElementById("audioExplosion");
 	var audioSecadorElement = document.getElementById("audioSecador");
@@ -2525,16 +2525,32 @@ function configuraValor(valorMedido)
 			representaFueraDeEscala();
 		break;
 	case 12: //console.log("AAC - 20mA/10A");
-		if (conectorRojoConectadoAVRA == true)
+		if ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true) || (conectorRojoConectadoACOM == true && conectorNegroConectadoAVRA == true))
+		{
 			if (valorMedido <= valorMaximo && valorMedido >= valorMinimo)
+			{
 				representaValor(valorMedido*1000000);
+			}
 			else
+			{
 				representaFueraDeEscala();
-		else if (conectorRojoConectadoA10A == true)
+			}
+		}
+		else if ((conectorRojoConectadoA10A == true && conectorNegroConectadoACOM == true) || (conectorNegroConectadoA10A == true && conectorRojoConectadoACOM == true))
+		{
 			if (valorMedido <= valorMaximo10A && valorMedido >= valorMinimo10A)
+			{
 				representaValor(valorMedido*100);
+			}
 			else
+			{
 				representaFueraDeEscala();
+			}
+		}
+		else
+		{
+			representaValor(valorMedido);
+		}
 		break;
 	case 13: //console.log("AAC - 200mA");
 		if (conectorRojoConectadoAVRA == true)
@@ -2595,6 +2611,8 @@ function representaValor(valorARepresentar)
 	var valorCentena = Math.floor((valorARepresentar/100)%10);
 	var valorMillar = Math.floor((valorARepresentar/1000)%10);
 	
+	configuraPolimetroSegunSelector(indicePosicionSelector);
+
 	//console.log(valorARepresentar);
 	//console.log(valorUnidad);
 	//console.log(valorDecena);
@@ -3216,6 +3234,7 @@ function dragMoveConectorRojo(e)
 						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexion10A').style.fill = "rgb(200,200,200,0.2)";
+		conectorRojoConectadoA10A = true;
 	}
 	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 240
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 290
@@ -3223,6 +3242,7 @@ function dragMoveConectorRojo(e)
 						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionVRA').style.fill = "rgb(200,200,200,0.2)";
+		conectorRojoConectadoAVRA = true;
 	}
 	else if ((conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) > 150
 			&& (conectorRojoElement.style.left.substring(0,conectorRojoElement.style.left.length-2)) < 200
@@ -3230,13 +3250,20 @@ function dragMoveConectorRojo(e)
 						&& (conectorRojoElement.style.top.substring(0,conectorRojoElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionCOM').style.fill = "rgb(200,200,200,0.2)";
+		conectorRojoConectadoACOM = true;
 	}
 	else
 	{
 		document.getElementById('conexion10A').style.fill = "transparent";
 		document.getElementById('conexionVRA').style.fill = "transparent";
 		document.getElementById('conexionCOM').style.fill = "transparent";
+		conectorRojoConectadoA10A = false;
+		conectorRojoConectadoAVRA = false;
+		conectorRojoConectadoACOM = false;
 	}	
+
+	actualizaReceptor();
+	actualizaVisor();
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -3300,8 +3327,8 @@ function dragEndConectorRojo()
 		conectorRojoConectadoACOM = false;
 	}
 
-	compruebaConexion();
 	clearInterval(myVar);
+	actualizaReceptor();
 	actualizaVisor();
 	removeEventListener("mousemove", dragMoveConectorRojo);
 	removeEventListener("mouseup", dragEndConectorRojo);	
@@ -3334,6 +3361,8 @@ function dragMoveConectorNegro(e)
 					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexion10A').style.fill = "rgb(200,200,200,0.2)";
+		conectorNegroConectadoA10A = true;
+
 	//console.log(conectorNegroElement.style.left);
 	//console.log(conectorNegroElement.style.top);
 
@@ -3344,6 +3373,8 @@ function dragMoveConectorNegro(e)
 					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionVRA').style.fill = "rgb(200,200,200,0.2)";
+		conectorNegroConectadoAVRA = true;
+
 	//console.log(conectorNegroElement.style.left);
 	//console.log(conectorNegroElement.style.top);
 
@@ -3354,6 +3385,8 @@ function dragMoveConectorNegro(e)
 					&& (conectorNegroElement.style.top.substring(0,conectorNegroElement.style.top.length-2)) < 645)
 	{
 		document.getElementById('conexionCOM').style.fill = "rgb(200,200,200,0.2)";
+		conectorNegroConectadoACOM = true;
+
 	//console.log(conectorNegroElement.style.left);
 	//console.log(conectorNegroElement.style.top);
 
@@ -3363,7 +3396,13 @@ function dragMoveConectorNegro(e)
 		document.getElementById('conexion10A').style.fill = "transparent";
 		document.getElementById('conexionVRA').style.fill = "transparent";
 		document.getElementById('conexionCOM').style.fill = "transparent";
+		conectorNegroConectadoA10A = false;
+		conectorNegroConectadoAVRA = false;
+		conectorNegroConectadoACOM = false;
 	}
+
+	actualizaReceptor();
+	actualizaVisor();
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -3424,13 +3463,13 @@ function dragEndConectorNegro()
 		console.log("Conector negro desconectado");
 		document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
 		conectorNegroConectadoA10A = false;
-		conectorNegroConectadoAVRA = true;
+		conectorNegroConectadoAVRA = false;
 		conectorNegroConectadoACOM = false;
 		conectorNegroElement.style.backgroundImage = "url('./images/conectorNegro.png')";
 	}
 
-	compruebaConexion();
 	clearInterval(myVar);
+	actualizaReceptor();
 	actualizaVisor();
 	removeEventListener("mousemove", dragMoveConectorNegro);
 	removeEventListener("mouseup", dragEndConectorNegro);	
@@ -3594,8 +3633,8 @@ function dragEndPuenteFase()
 		puenteFaseElement.style.backgroundImage = "url('./images/puenteFase.png')";
 	}
 	
-	compruebaConexion();
 	clearInterval(myVar);
+	actualizaReceptor();
 	actualizaVisor();
 	removeEventListener("mousemove", dragMovePuenteFase);
 	removeEventListener("mouseup", dragEndPuenteFase);	
@@ -3604,6 +3643,7 @@ function dragEndPuenteFase()
 
 //-----------------------------------------------------------------------------------------------------------------------
 function actualizaVisor() {
+	compruebaConexion();
 	myVar = setInterval(determinaValor, Math.random()*400);
 }
 
@@ -3611,40 +3651,205 @@ function actualizaVisor() {
 function compruebaConexion()
 {
 	// el circuito lo cierran los puentes
-	if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true
-	&& sondaRojaConectadaARegletaFase1 == false && sondaRojaConectadaARegletaFase2 == false
-	&& sondaNegraConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false)
+	switch(indicePosicionSelector)
 	{
-		conexionCorrectaParaReceptor = true;
-		conexionCorrectaParaMedicion = false;
-	}
-	else if (
-			puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false
-		&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaNeutro2 == true)
-			|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaNeutro1 == true))
-		&& sondaRojaConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false
-		&& (((conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
-			||  ((conectorNegroConectadoA10A == true || conectorNegroConectadoAVRA == true) && conectorRojoConectadoACOM == true)))
-	{
-
-		conexionCorrectaParaReceptor = true;
-		conexionCorrectaParaMedicion = true;
-	}
-	else if (
-		puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == true
-		&& ((sondaRojaConectadaARegletaFase1 == true && sondaNegraConectadaARegletaFase2 == true)
-			|| (sondaRojaConectadaARegletaFase2 == true && sondaNegraConectadaARegletaFase1 == true))
-		&& sondaRojaConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false
-		&& (((conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
-			||  ((conectorNegroConectadoA10A == true || conectorNegroConectadoAVRA == true) && conectorRojoConectadoACOM == true)))
-	{
-		conexionCorrectaParaReceptor = true;
-		conexionCorrectaParaMedicion = true;
-	}
-	else
-	{
-		conexionCorrectaParaReceptor = false;
-		conexionCorrectaParaMedicion = true;
+		case 0:
+		{
+			if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+			{
+				conexionCorrectaParaReceptor = true;
+				conexionCorrectaParaMedicion = true;
+			}
+			else
+			{
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = false;	
+			}
+			break;
+		}
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		{
+			if ((puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false)
+				&& ((sondaRojaConectadaARegletaFase1 == false && sondaRojaConectadaARegletaFase2 == false
+				&& sondaRojaConectadaARegletaNeutro1 == false && sondaRojaConectadaARegletaNeutro2 == false)
+				|| (sondaNegraConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false
+					&& sondaNegraConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false)
+					|| (conectorRojoConectadoA10A == false && conectorRojoConectadoACOM == false && conectorRojoConectadoAVRA == false)
+					|| (conectorNegroConectadoA10A == false && conectorNegroConectadoACOM == false && conectorNegroConectadoAVRA == false)))
+			{ // algún puente no está conectado y las sondas tampoco
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = false;		
+			}
+			else if ((sondaRojaConectadaARegletaFase1 == false && sondaRojaConectadaARegletaFase2 == false
+				&& sondaRojaConectadaARegletaNeutro1 == false && sondaRojaConectadaARegletaNeutro2 == false)
+				|| (sondaNegraConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false
+					&& sondaNegraConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false)
+					|| (conectorRojoConectadoA10A == false && conectorRojoConectadoACOM == false && conectorRojoConectadoAVRA == false)
+					|| (conectorNegroConectadoA10A == false && conectorNegroConectadoACOM == false && conectorNegroConectadoAVRA == false))
+			{ //alguna sonda no está conectada
+				conexionCorrectaParaReceptor = true;
+				conexionCorrectaParaMedicion = false;		
+			}	
+			else if ((puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& ((sondaRojaConectadaARegletaFase1 == true && sondaNegraConectadaARegletaFase2 == true)
+					|| (sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaNeutro2 == true)
+					|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaNeutro1 == true)
+					|| (sondaRojaConectadaARegletaFase1 == true && sondaNegraConectadaARegletaFase2 == true)
+					|| (sondaRojaConectadaARegletaFase2 == true && sondaNegraConectadaARegletaFase1 == true)))
+			{//las sondas están conectadas a entre fases o entre neutros y los puentes puestos
+				conexionCorrectaParaReceptor = true;
+				conexionCorrectaParaMedicion = false;	
+			}
+			else if ((puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase1 == true)
+					|| (sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase2 == true)
+					|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaFase1 == true)
+					|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaFase2 == true)
+					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase1 == true)
+					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase2 == true)
+					|| (sondaNegraConectadaARegletaNeutro2 == true && sondaRojaConectadaARegletaFase1 == true)
+					|| (sondaNegraConectadaARegletaNeutro2 == true && sondaRojaConectadaARegletaFase2 == true)))
+			{//los dos puentes están conectados las sondas están conectadas a entre fases y  neutro en cualquier punto
+				conexionCorrectaParaReceptor = true;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else if ((puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& (((sondaRojaConectadaARegletaFase1 == true || sondaNegraConectadaARegletaFase1 == true)
+					&& (sondaRojaConectadaARegletaFase2 == true || sondaNegraConectadaARegletaFase2 == true))))
+			{//con puente fase conectado únicamente y puntas entre fases
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = false;	
+			}
+			else if ((puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == true)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& (((sondaRojaConectadaARegletaNeutro1 == true || sondaNegraConectadaARegletaNeutro1 == true)
+					&& (sondaRojaConectadaARegletaNeutro2 == true || sondaNegraConectadaARegletaNeutro2 == true))))
+			{//con puente neutro conectado únicamente y puntas entre neutros
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = false;	
+			}
+			else if ((puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == true)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& (((sondaRojaConectadaARegletaFase1 == true || sondaNegraConectadaARegletaFase1 == true)
+					&& (sondaRojaConectadaARegletaFase2 == true || sondaNegraConectadaARegletaFase2 == true))))
+			{//con puente neutro conectado únicamente y puntas entre fases
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else if ((puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& (((sondaRojaConectadaARegletaNeutro1 == true || sondaNegraConectadaARegletaNeutro1 == true)
+					&& (sondaRojaConectadaARegletaNeutro2 == true || sondaNegraConectadaARegletaNeutro2 == true))))
+			{//con puente fase conectado únicamente y puntas entre neutros
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else if ((puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == false)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase1 == true)
+					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase1 == true)))
+			{//quitamos los puentes y medimos entre fase1 y neutro1
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else if ((puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == true)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase1 == true)
+					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase1 == true)))
+			{//quitamos un puentes y medimos entre fase1 y neutro1
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else if ((puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase1 == true)
+					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase1 == true)))
+			{//quitamos el otro puentes y medimos entre fase1 y neutro1
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else if ((puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaFase2 == true)
+					|| (sondaNegraConectadaARegletaNeutro1 == true && sondaRojaConectadaARegletaFase2 == true)))
+			{//dejamos puente fase
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else if ((puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == true)
+				&& ((conectorRojoConectadoAVRA == true && conectorNegroConectadoACOM == true)
+					|| (conectorNegroConectadoAVRA == true && conectorRojoConectadoACOM == true))
+				&& ((sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaFase1 == true)
+					|| (sondaNegraConectadaARegletaNeutro2 == true && sondaRojaConectadaARegletaFase1 == true)))
+			{//dejamos puente neutro
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = true;	
+			}
+			else
+			{
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = false;	
+				console.log("help");
+			}
+			break;
+		}
+		case 12:
+		{
+			if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true
+				&& sondaRojaConectadaARegletaFase1 == false && sondaRojaConectadaARegletaFase2 == false
+				&& sondaNegraConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false)
+			{
+				conexionCorrectaParaReceptor = true;
+				conexionCorrectaParaMedicion = false;
+			}
+			else if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == false
+				&& ((sondaRojaConectadaARegletaNeutro1 == true && sondaNegraConectadaARegletaNeutro2 == true)
+				|| (sondaRojaConectadaARegletaNeutro2 == true && sondaNegraConectadaARegletaNeutro1 == true))
+				&& sondaRojaConectadaARegletaFase1 == false && sondaNegraConectadaARegletaFase2 == false
+				&& (((conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
+				||  ((conectorNegroConectadoA10A == true || conectorNegroConectadoAVRA == true) && conectorRojoConectadoACOM == true)))
+			{
+				conexionCorrectaParaReceptor = true;
+				conexionCorrectaParaMedicion = true;
+			}
+			else if (puenteFaseConectadoARegleta == false && puenteNeutroConectadoARegleta == true
+				&& ((sondaRojaConectadaARegletaFase1 == true && sondaNegraConectadaARegletaFase2 == true)
+				|| (sondaRojaConectadaARegletaFase2 == true && sondaNegraConectadaARegletaFase1 == true))
+				&& sondaRojaConectadaARegletaNeutro1 == false && sondaNegraConectadaARegletaNeutro2 == false
+				&& (((conectorRojoConectadoA10A == true || conectorRojoConectadoAVRA == true) && conectorNegroConectadoACOM == true)
+				||  ((conectorNegroConectadoA10A == true || conectorNegroConectadoAVRA == true) && conectorRojoConectadoACOM == true)))
+			{
+				conexionCorrectaParaReceptor = true;
+				conexionCorrectaParaMedicion = true;
+			}
+			else
+			{
+				conexionCorrectaParaReceptor = false;
+				conexionCorrectaParaMedicion = false;
+			}
+			break;
+		}
 	}
 }
 
@@ -3669,8 +3874,14 @@ function determinaValor()
 			break;
 		case 6:  //console.log("VAC - 750V");
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
-			if (conexionCorrectaParaMedicion == true) configuraValor(VoltajeAC);
-			else configuraValor(0);
+			if (conexionCorrectaParaMedicion == true)
+			{
+				configuraValor(VoltajeAC);
+			}
+			else
+			{
+				configuraValor(0);
+			}
 			break;
 		case 7:  //console.log("VAC - 200V");
 			representaFueraDeEscala();
@@ -3695,11 +3906,7 @@ function determinaValor()
 			break
 		case 12: //console.log("AAC - 20mA/10A");
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
-			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoA10A == true && estadoFusiblePosicionSelector[12] == "Correcto")
-			{
-				configuraValor(potenciaReceptor/VoltajeAC);
-			}
-			else if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[12] == "Correcto")
+			if (conexionCorrectaParaMedicion == true  && estadoFusiblePosicionSelector[12] == "Correcto")
 			{
 				configuraValor(potenciaReceptor/VoltajeAC);
 			}
