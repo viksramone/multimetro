@@ -35,32 +35,8 @@
 		posicionSelector[22] = "./images/boto23.jpg";
 		posicionSelector[23] = "./images/boto24.jpg";
 
-	var estadoFusiblePosicionSelector = new Array (20);
-		estadoFusiblePosicionSelector[0] = "Correcto";
-		estadoFusiblePosicionSelector[1] = "Correcto";
-		estadoFusiblePosicionSelector[2] = "Correcto";
-		estadoFusiblePosicionSelector[3] = "Correcto";
-		estadoFusiblePosicionSelector[4] = "Correcto";
-		estadoFusiblePosicionSelector[5] = "Correcto";
-		estadoFusiblePosicionSelector[6] = "Correcto";
-		estadoFusiblePosicionSelector[7] = "Correcto";
-		estadoFusiblePosicionSelector[8] = "Correcto";
-		estadoFusiblePosicionSelector[9] = "Correcto";
-		estadoFusiblePosicionSelector[10] = "Correcto";
-		estadoFusiblePosicionSelector[11] = "Correcto";
-		estadoFusiblePosicionSelector[12] = "Correcto";
-		estadoFusiblePosicionSelector[13] = "Correcto";
-		estadoFusiblePosicionSelector[14] = "Correcto";
-		estadoFusiblePosicionSelector[15] = "Correcto";
-		estadoFusiblePosicionSelector[16] = "Correcto";
-		estadoFusiblePosicionSelector[17] = "Correcto";
-		estadoFusiblePosicionSelector[18] = "Correcto";
-		estadoFusiblePosicionSelector[19] = "Correcto";
-		estadoFusiblePosicionSelector[20] = "Correcto";
-		estadoFusiblePosicionSelector[21] = "Correcto";
-		estadoFusiblePosicionSelector[22] = "Correcto";
-		estadoFusiblePosicionSelector[23] = "Correcto";
-
+	var estadoFusiblemACorrecto = true;
+	var estadoFusible10ACorrecto = true;
 	var magnitudAMedir;
 	var tipoMagnitudAMedir;
 	var magnitudMedida;
@@ -215,9 +191,9 @@ function seleccionaReceptorSecador()
 	receptorActivoEstufa = false;
 	estufaElement.style.border = "2px solid black";
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
+	analizaTopologia();
+	clasificaTipoDeMedicion();
+	interpretaMedicionSegunTipo();
 	actualizaReceptor();
 	//completaPantallaConValor();
 	analizaValorParaRepresentarEnPantalla();
@@ -242,9 +218,9 @@ function seleccionaReceptorCadena()
 	receptorActivoEstufa = false;
 	estufaElement.style.border = "2px solid black";
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
+	analizaTopologia();
+	clasificaTipoDeMedicion();
+	interpretaMedicionSegunTipo();
 	actualizaReceptor();
 	//completaPantallaConValor();
 	analizaValorParaRepresentarEnPantalla();
@@ -269,9 +245,9 @@ function seleccionaReceptorEstufa()
 	receptorActivoSecador = false;
 	secadorElement.style.border = "2px solid black";
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
+	analizaTopologia();
+	clasificaTipoDeMedicion();
+	interpretaMedicionSegunTipo();
 	actualizaReceptor();
 	//completaPantallaConValor();
 	analizaValorParaRepresentarEnPantalla();
@@ -288,27 +264,33 @@ function determinaPosicionSelector(e)
 	if (indicePosicionSelector == 0 && event.button == 0)
 	{
 		indicePosicionSelector = 23;
+		
 		enciende_multimetro();
 		console.log("Multímetro encendido");
 	}
+	
 	else if (indicePosicionSelector == 0 && event.button == 2)
 	{
 		indicePosicionSelector = 1;
+		
 		enciende_multimetro();
 		console.log("Multímetro encendido");
 	}
+	
 	else if (indicePosicionSelector == 23 && event.button == 2)
 	{
 		indicePosicionSelector = 0;
 		apaga_multimetro();
 		console.log("Multímetro apagado");
 	}
+	
 	else if (indicePosicionSelector == 1 && event.button == 0)
 	{
 		indicePosicionSelector = 0;
 		apaga_multimetro();
 		console.log("Multímetro apagado");
 	}
+	
 	else
 	{
 		if (indicePosicionSelector <= 23)
@@ -331,14 +313,21 @@ function determinaPosicionSelector(e)
 	document.getElementById("selector").src = posicionSelector[indicePosicionSelector];
 	console.log("posición del selector:" + indicePosicionSelector);
 
-	obtieneCaracteristicasSegunPosicionSelector(); //Magnitud, tipo y rangos
-	configuraPantallaSegunPosicionSelector(); //Representa magnitud y tipo
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		obtieneCaracteristicasSegunPosicionSelector(); //Magnitud, tipo y rangos
+		configuraPantallaSegunPosicionSelector(); //Representa magnitud y tipo
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
+	else
+	{
+		multimetroEstropeado();
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1215,7 +1204,6 @@ function configuraPantallaSegunPosicionSelector()
 	}
 }
 
-
 //-----------------------------------------------------------------------------------------------------------------------
 function representaValorEnPantalla(valorARepresentar)
 {
@@ -1574,7 +1562,7 @@ function dragMoveSondaRoja(e)
 	{
 		document.getElementById('regletaPuenteNeutro').style.fill = "rgb(200,200,200,1)";
 		sondaRojaConectadaARegletaNeutro1 = true;
-		//compruebaTopologia();
+		//analizaTopologia();
 	}
 	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 656
 			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 676
@@ -1583,7 +1571,7 @@ function dragMoveSondaRoja(e)
 	{
 		document.getElementById('regletaPuenteNeutro2').style.fill = "rgb(200,200,200,1)";
 		sondaRojaConectadaARegletaNeutro2 = true;
-		//compruebaTopologia();
+		//analizaTopologia();
 	}
 	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 516
 			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 536
@@ -1592,7 +1580,7 @@ function dragMoveSondaRoja(e)
 	{
 		document.getElementById('regletaPuenteFase').style.fill = "rgb(200,200,200,1)";
 		sondaRojaConectadaARegletaFase1 = true;
-		//compruebaTopologia();
+		//analizaTopologia();
 	}
 	else if ((sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) > 626
 			&& (sondaRojaElement.style.left.substring(0,sondaRojaElement.style.left.length-2)) < 646
@@ -1601,7 +1589,7 @@ function dragMoveSondaRoja(e)
 	{
 		document.getElementById('regletaPuenteFase2').style.fill = "rgb(200,200,200,1)";
 		sondaRojaConectadaARegletaFase2 = true;
-		//compruebaTopologia();
+		//analizaTopologia();
 	}
 	else 
 	{
@@ -1615,12 +1603,15 @@ function dragMoveSondaRoja(e)
 		sondaRojaConectadaARegletaFase2 = false;
 	}
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
 	
 }
 //-----------------------------------------------------------------------------------------------------------------------
@@ -1693,12 +1684,16 @@ function dragEndSondaRoja(e)
 	}
 
 	//clearInterval(myVar);
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
+	
 	removeEventListener("mousemove", dragMoveSondaRoja);
 	removeEventListener("mouseup", dragEndSondaRoja);
 }
@@ -1768,12 +1763,15 @@ function dragMoveSondaNegra(e)
 		sondaNegraConectadaARegletaFase2 = false;
 	}
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -1845,14 +1843,18 @@ function dragEndSondaNegra()
 	}
 
 	//clearInterval(myVar);
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
+	
 	removeEventListener("mousemove", dragMoveSondaNegra);
-	removeEventListener("mouseup", dragEndSondaNegra);	
+	removeEventListener("mouseup", dragEndSondaNegra);
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -1917,12 +1919,15 @@ function dragMoveConectorRojo(e)
 		conectorRojoConectadoACOM = false;
 	}	
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -1989,12 +1994,15 @@ function dragEndConectorRojo()
 	}
 
 	//clearInterval(myVar);
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
 	removeEventListener("mousemove", dragMoveConectorRojo);
 	removeEventListener("mouseup", dragEndConectorRojo);	
 }
@@ -2070,12 +2078,15 @@ function dragMoveConectorNegro(e)
 		conectorNegroConectadoACOM = false;
 	}
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -2144,12 +2155,16 @@ function dragEndConectorNegro()
 	}
 
 	//clearInterval(myVar);
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
+
 	removeEventListener("mousemove", dragMoveConectorNegro);
 	removeEventListener("mouseup", dragEndConectorNegro);	
 }
@@ -2193,12 +2208,15 @@ function dragMovePuenteNeutro(e)
 		puenteNeutroConectadoARegleta = false;
 	}
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -2234,12 +2252,16 @@ function dragEndPuenteNeutro()
 	}
 	
 	//clearInterval(myVar);
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
+
 	removeEventListener("mousemove", dragMovePuenteNeutro);
 	removeEventListener("mouseup", dragEndPuenteNeutro);	
 }
@@ -2284,12 +2306,15 @@ function dragMovePuenteFase(e)
 		puenteFaseConectadoARegleta = false;
 	}
 
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -2325,12 +2350,16 @@ function dragEndPuenteFase()
 	}
 	
 	//clearInterval(myVar);
-	compruebaTopologia();
-	analizaTipoDeMedicion();
-	interpretaMedicion();
-	actualizaReceptor();
-	//completaPantallaConValor();
-	analizaValorParaRepresentarEnPantalla();
+	if (estadoFusible10ACorrecto == true)
+	{
+		analizaTopologia();
+		clasificaTipoDeMedicion();
+		interpretaMedicionSegunTipo();
+		actualizaReceptor();
+		//completaPantallaConValor();
+		analizaValorParaRepresentarEnPantalla();
+	}
+
 	removeEventListener("mousemove", dragMovePuenteFase);
 	removeEventListener("mouseup", dragEndPuenteFase);	
 }
@@ -2385,7 +2414,7 @@ function generaRuidoBlanco()
 	{
 		clearInterval(variableParasetInterval);	
 		variableParasetInterval = undefined;
-		valorMedido = interpretaMedicion();
+		valorMedido = interpretaMedicionSegunTipo();
 		analizaValorParaRepresentarEnPantalla(valorMedido);
 	}
 		//clearInterval(myVar);
@@ -2395,13 +2424,13 @@ function generaRuidoBlanco()
 }
 */
 //-----------------------------------------------------------------------------------------------------------------------
-function compruebaTopologia()
+function analizaTopologia()
 {
 	analizaConexionDeBornes();
 	analizaConexionDePuntas();
 	analizaConexionDePuentes();
-	//analizaTipoDeMedicion();
-	//interpretaMedicion();
+	//clasificaTipoDeMedicion();
+	//interpretaMedicionSegunTipo();
 }
 //-----------------------------------------------------------------------------------------------------------------------
 function analizaConexionDeBornes()	//Conexión de bornes (configuración del multímetro)
@@ -2619,7 +2648,14 @@ function analizaConexionDePuentes()
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
-function analizaTipoDeMedicion()
+function analizaEstadoDelReceptor()
+{
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+function clasificaTipoDeMedicion()
 {	
 	
 	switch (indicePosicionSelector)
@@ -2627,89 +2663,226 @@ function analizaTipoDeMedicion()
 		case 0: 
 
 			if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
-				{
-					conexionCorrectaParaReceptor = true;
-				}
-				else
-				{
-					conexionCorrectaParaReceptor = false;
-				}
-
-			break;
-
-		case 1: case 2: case 3: case 4: case 5:
-			console.log("Medimos voltaje DC en caso de uso AC.");
-			if (sondasDesconectadas == true)
 			{
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
-
-				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
-				{
-					conexionCorrectaParaReceptor = true;
-				}
-				else
-				{
-					conexionCorrectaParaReceptor = false;
-				}
-
-				clearInterval(oscilacionValorMedido);
-				//solucion = 'RUIDO_BLANCO_SIN_SONDA';
-			}
-			else if (sondasDesconectadas == false && configuracionMedicionVoltaje == true && conexionDePuntasIncompleta == true)
-			{
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
-				clearInterval(oscilacionValorMedido);
-				//solucion = 'RUIDO_BLANCO_CON_SONDA'
-
-				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
-				{
-					conexionCorrectaParaReceptor = true;
-				}
-				else
-				{
-					conexionCorrectaParaReceptor = false;
-				}
-			}
-			else if (sondasDesconectadas == false && configuracionMedicionVoltaje == true && conexionDePuntasIncompleta == false)
-			{
-				if (conexionDeSondasAMismoPunto == true) 
-				{
-					tipoDeMedicion = 'VOLTAJE_DC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
-
-					if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
-					{
-						conexionCorrectaParaReceptor = true;
-					}
-					else
-					{
-						conexionCorrectaParaReceptor = false;
-					}
-				}
-				else
-				{
-					tipoDeMedicion = 'VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC'; //Falta toda la historia de los puentes
-
-					if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
-					{
-						conexionCorrectaParaReceptor = true;
-					}
-					else
-					{
-						conexionCorrectaParaReceptor = false;
-					}
-				}
+				conexionCorrectaParaReceptor = true;
 			}
 			else
 			{
-				console.log("¿Tipo de conexión?");
+				conexionCorrectaParaReceptor = false;
+			}
+			break;
+
+		case 1: case 2: case 3: case 4: case 5:
+			
+			console.log("Medimos voltaje DC en caso de uso AC.");
+			if (sondasDesconectadas == true)
+			{
+				tipoDeMedicion = 'MEDICION_INCORRECTA_RUIDO_BLANCO';
+				
+				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
+
+				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
+				{
+					conexionCorrectaParaReceptor = true;
+				}
+				else
+				{
+					conexionCorrectaParaReceptor = false;
+				}
+			}
+			
+			else if (sondasDesconectadas == false && configuracionMedicionVoltaje == true && conexionDePuntasIncompleta == true)
+			{
+				tipoDeMedicion = 'MEDICION_INCORRECTA_RUIDO_BLANCO';
+				
+				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
+
+				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
+				{
+					conexionCorrectaParaReceptor = true;
+				}
+				else
+				{
+					conexionCorrectaParaReceptor = false;
+				}
+			}
+			
+			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == true)
+			{
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
+				
+				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
+
+				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
+				{
+					conexionCorrectaParaReceptor = true;
+				}
+				else
+				{
+					conexionCorrectaParaReceptor = false;
+				}
+			}
+
+			else if (sondasDesconectadas == false && configuracionMedicionVoltaje == true && conexionDePuntasIncompleta == false)
+			{
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta1YFaseRegleta2 == true && puenteFaseConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro");
+					tipoDeMedicion = "VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC";
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro en la regleta 2, con los puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre fases puenteadas");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre fases aisladas");
+						tipoDeMedicion = "VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC_A_TRAVES_DE_RECEPTOR";//Pendiente revisar con Pere ¿Depende del estado del receptor?
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre neutros puenteados");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre neutros aislados");
+						tipoDeMedicion = "VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC_A_TRAVES_DE_RECEPTOR";//Pendiente revisar con Pere ¿Depende del estado del receptor?
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC";					
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC";								
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+						console.log("Sondas conectadas entre ellas.");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+			}
+			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
+			{
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta1YFaseRegleta2 == true && puenteFaseConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro");
+					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro en la regleta 2, con los puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre fases puenteadas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre fases aisladas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre neutros puenteados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre neutros aislados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";					
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";								
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";						
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+						console.log("Sondas conectadas entre ellas.");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+				}
+			}
+			else
+			{console.log("Assert linha 2752");
 			}
 			break;
 		case 6: case 7: case 8: case 9:
 			console.log("Medimos voltaje AC en caso de uso AC");
 			if (sondasDesconectadas == true)
 			{
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
 				{
@@ -2723,8 +2896,9 @@ function analizaTipoDeMedicion()
 			else if (sondasDesconectadas == false && conexionDePuntasIncompleta == true)
 			{
 				console.log("Sondas conectadas pero por lo menos una punta desconetada");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
 				{
@@ -2744,7 +2918,6 @@ function analizaTipoDeMedicion()
 				{
 					console.log("Sondas conectadas y puntas entre Fase y Neutro");
 					tipoDeMedicion = "VOLTAJE_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC";
-					//solucion = 'VALOR_VOLTAJE_AC'
 
 					if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
 					{
@@ -2754,6 +2927,16 @@ function analizaTipoDeMedicion()
 					{
 						conexionCorrectaParaReceptor = false;
 					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					clearInterval(oscilacionValorMedido);
+					oscilacionValorMedido = undefined;
+					clearInterval(oscilacionValorMedidoIntensidadmA);
+					oscilacionValorMedidoIntensidadmA = undefined;
+					conexionCorrectaParaReceptor = false;
 				}
 				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
 				{
@@ -2786,7 +2969,6 @@ function analizaTipoDeMedicion()
 						conexionCorrectaParaReceptor = false;
 					}
 				}
-				
 				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
 				{
 					if (puenteFaseConectadoARegleta == true)
@@ -2798,13 +2980,14 @@ function analizaTipoDeMedicion()
 					else
 					{
 						console.log("Medición incorrecta");
-						tipoDeMedicion = "MEDICION_INCORRECTA";
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 						conexionCorrectaParaReceptor = false;
 						clearInterval(oscilacionValorMedido);
 						oscilacionValorMedido = undefined;
+						clearInterval(oscilacionValorMedidoIntensidadmA);
+						oscilacionValorMedidoIntensidadmA = undefined;
 					}
 				}
-
 				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
 				{
 					if (puenteNeutroConectadoARegleta == true)
@@ -2816,26 +2999,95 @@ function analizaTipoDeMedicion()
 					else
 					{
 						console.log("Medición incorrecta");
-						tipoDeMedicion = "MEDICION_INCORRECTA";
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 						conexionCorrectaParaReceptor = false;
 						clearInterval(oscilacionValorMedido);
 						oscilacionValorMedido = undefined;
+						clearInterval(oscilacionValorMedidoIntensidadmA);
+						oscilacionValorMedidoIntensidadmA = undefined;
 					}
 				}
-			}
-			else if (conexionDeSondasAMismoPunto == true)
-			{
-				tipoDeMedicion = 'VOLTAJE_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
-				conexionCorrectaParaReceptor = true;
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+					tipoDeMedicion = 'VOLTAJE_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
+					conexionCorrectaParaReceptor = true;
+				}
 			}
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
 			{
-				alert("Caso sin implementar");
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta1YFaseRegleta2 == true && puenteFaseConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro");
+					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion ="MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre fases puenteadas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre fases aisladas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre neutros puenteados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre neutros aislados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";					
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+						console.log("Sondas conectadas entre ellas.");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+				}
 			}
-
 			else
-			{
-				alert("Assert linha 2652");
+			{console.log("Assert linha 2752");
 			}
 			break;
 
@@ -2847,15 +3099,172 @@ function analizaTipoDeMedicion()
 			if (sondasDesconectadas == true)
 			{
 				console.log("Sondas desconectadas");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
+				//solucion = 'VALOR_0'
+			}
+			
+			else if (sondasDesconectadas == false && conexionDePuntasIncompleta == true)
+			{
+				console.log("Sondas conectadas pero por lo menos una punta desconetada");
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
+				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
+				//solucion = 'VALOR_0'
+			}
+			
+			else if (sondasDesconectadas == false && configuracionMedicionIntensidadmA == true && conexionDePuntasIncompleta == false)
+			{
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta1YFaseRegleta2 == true && puenteFaseConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro");
+					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					//solucion = 'CORTOCIRCUITO'
+				}
+				
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion ="MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre fases puenteadas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+						conexionCorrectaParaReceptor = true;
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre fases aisladas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC";
+						conexionCorrectaParaReceptor = true;
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre neutros puenteados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+						conexionCorrectaParaReceptor = true;
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre neutros aislados");
+						tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC";
+						conexionCorrectaParaReceptor = true;
+					}
+				}
+				
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+					tipoDeMedicion = 'INTENSIDAD_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
+				}
+			}
+			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
+			{
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta1YFaseRegleta2 == true && puenteFaseConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro");
+					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+				}
+				
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+				
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre fases puenteadas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre fases aisladas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre neutros puenteados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre neutros aislados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+					}
+				}
+				
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";						
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+						console.log("Sondas conectadas entre ellas.");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+				}
+			}
+			else
+			{console.log("Assert linha 2752");
+			}
+			break;
+		case 12:
+			console.log("Medimos intensidad AC en caso de uso AC");
+			if (sondasDesconectadas == true)
+			{
+				console.log("Sondas desconectadas");
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
+				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 			}
 			else if (sondasDesconectadas == false && conexionDePuntasIncompleta == true)
 			{
 				console.log("Sondas conectadas pero por lo menos una punta desconetada");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 			}
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidadmA == true && conexionDePuntasIncompleta == false)
@@ -2869,19 +3278,26 @@ function analizaTipoDeMedicion()
 					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
 					//solucion = 'CORTOCIRCUITO'
 				}
+				
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+
 				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
 				{
 					if (puenteFaseConectadoARegleta == true)
 					{
 						console.log("Sondas conectadas y puntas entre fases puenteadas");
 						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
-						//solucion = "VALOR_0";
+						conexionCorrectaParaReceptor = true;
 					}
 					else
 					{
 						console.log("Sondas conectadas y puntas entre fases aisladas");
-						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_A_DISTINTO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
-						//solucion = 'VALOR_VOLTAJE_AC' depende del estado del receptor
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+						conexionCorrectaParaReceptor = true;
 					}
 				}
 				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
@@ -2890,45 +3306,20 @@ function analizaTipoDeMedicion()
 					{
 						console.log("Sondas conectadas y puntas entre neutros puenteados");
 						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+						conexionCorrectaParaReceptor = true;
 					}
 					else
 					{
 						console.log("Sondas conectadas y puntas entre neutros aislados");
-						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_A_DISTINTO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
-						//solucion = 'VALOR_VOLTAJE_AC' depende del estado del receptor
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+						conexionCorrectaParaReceptor = true;
 					}
 				}
-			}
-			
-			else if (conexionDeSondasAMismoPunto == true)
-			{
-				tipoDeMedicion = 'INTENSIDAD_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
-			}
-			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
-			{
-				alert("Caso sin implementar");
-			}
-
-			else
-			{
-				alert("Assert linha 2652");
-			}
-			break;
-		case 12:
-			console.log("Medimos intensidad AC en caso de uso AC");
-			if (sondasDesconectadas == true)
-			{
-				console.log("Sondas desconectadas");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
-				clearInterval(oscilacionValorMedido);
-				//solucion = 'VALOR_0'
-			}
-			else if (sondasDesconectadas == false && conexionDePuntasIncompleta == true)
-			{
-				console.log("Sondas conectadas pero por lo menos una punta desconetada");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
-				clearInterval(oscilacionValorMedido);
-				//solucion = 'VALOR_0'
+		
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+					tipoDeMedicion = 'INTENSIDAD_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
+				}
 			}
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
 			{
@@ -2939,7 +3330,11 @@ function analizaTipoDeMedicion()
 				{
 					console.log("Sondas conectadas y puntas entre Fase y Neutro");
 					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
-					//solucion = 'CORTOCIRCUITO'
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 				}
 				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
 				{
@@ -2947,13 +3342,11 @@ function analizaTipoDeMedicion()
 					{
 						console.log("Sondas conectadas y puntas entre fases puenteadas");
 						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
-						//solucion = "VALOR_0";
 					}
 					else
 					{
 						console.log("Sondas conectadas y puntas entre fases aisladas");
-						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_A_DISTINTO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
-						//solucion = 'VALOR_VOLTAJE_AC' depende del estado del receptor
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
 					}
 				}
 				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
@@ -2962,30 +3355,47 @@ function analizaTipoDeMedicion()
 					{
 						console.log("Sondas conectadas y puntas entre neutros puenteados");
 						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
-						solucion = "VALOR_0";
 					}
 					else
 					{
 						console.log("Sondas conectadas y puntas entre neutros aislados");
-						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_A_DISTINTO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
-						//solucion = 'VALOR_VOLTAJE_AC' depende del estado del receptor
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
 					}
 				}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";					
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+						console.log("Sondas conectadas entre ellas.");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+				}
 			}
-			
-			else if (conexionDeSondasAMismoPunto == true)
-			{
-				tipoDeMedicion = 'INTENSIDAD_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
-			}
-			
-			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
-			{
-				alert("Caso sin implementar");
-			}
-
 			else
-			{
-				alert("Assert linha 2652");
+			{console.log("Assert linha 2752");
 			}
 			break;
 
@@ -2996,13 +3406,15 @@ function analizaTipoDeMedicion()
 				console.log("Sondas desconectadas");
 				tipoDeMedicion = 'MEDICION_INCORRECTA';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 			}
 			else if (sondasDesconectadas == false && conexionDePuntasIncompleta == true)
 			{
 				console.log("Sondas conectadas pero por lo menos una punta desconetada");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 			}
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidadmA == true && conexionDePuntasIncompleta == false)
@@ -3013,16 +3425,23 @@ function analizaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
 				{
 					console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC";
+					tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
 					//solucion = 'CORTOCIRCUITO'
 				}
+
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+
 				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
 				{
 					if (puenteFaseConectadoARegleta == true)
 					{
 						console.log("Sondas conectadas y puntas entre fases puenteadas");
 						tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
-						//solucion = "VALOR_0";
+						conexionCorrectaParaReceptor = true;
 					}
 					else
 					{
@@ -3031,13 +3450,14 @@ function analizaTipoDeMedicion()
 						//solucion = 'VALOR_VOLTAJE_AC' depende del estado del receptor
 					}
 				}
+			
 				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
 				{
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						console.log("Sondas conectadas y puntas entre neutros puenteados");
 						tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
-						solucion = "VALOR_0";
+						conexionCorrectaParaReceptor = true;
 					}
 					else
 					{
@@ -3046,21 +3466,117 @@ function analizaTipoDeMedicion()
 						//solucion = 'VALOR_VOLTAJE_AC' depende del estado del receptor
 					}
 				}
-			}
 			
-			else if (conexionDeSondasAMismoPunto == true)
-			{
-				tipoDeMedicion = 'INTENSIDAD_DC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
-			}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";					
+					}
+				}
+
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+					console.log("Sondas conectadas entre ellas.");
+					tipoDeMedicion = 'INTENSIDAD_DC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
+				}
+			}			
 			
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
 			{
-				alert("Caso sin implementar");
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta1YFaseRegleta2 == true && puenteFaseConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro");
+					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre fases puenteadas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre fases aisladas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre neutros puenteados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre neutros aislados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+						console.log("Sondas conectadas entre ellas.");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+				}
 			}
-
 			else
-			{
-				alert("Assert linha 2652");
+			{console.log("Assert linha 2752");
 			}
 			break;
 		case 15:
@@ -3068,15 +3584,17 @@ function analizaTipoDeMedicion()
 			if (sondasDesconectadas == true)
 			{
 				console.log("Sondas desconectadas");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 			}
 			else if (sondasDesconectadas == false && conexionDePuntasIncompleta == true)
 			{
 				console.log("Sondas conectadas pero por lo menos una punta desconetada");
-				tipoDeMedicion = 'MEDICION_INCORRECTA';
+				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoIntensidadmA);
 				//solucion = 'VALOR_0'
 			}
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidadmA == true && conexionDePuntasIncompleta == false)
@@ -3090,13 +3608,19 @@ function analizaTipoDeMedicion()
 					tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC";
 					//solucion = 'CORTOCIRCUITO'
 				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+
 				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
 				{
 					if (puenteFaseConectadoARegleta == true)
 					{
 						console.log("Sondas conectadas y puntas entre fases puenteadas");
-						tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
-						//solucion = "VALOR_0";
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+						conexionCorrectaParaReceptor = true;
 					}
 					else
 					{
@@ -3110,8 +3634,8 @@ function analizaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						console.log("Sondas conectadas y puntas entre neutros puenteados");
-						tipoDeMedicion = "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
-						solucion = "VALOR_0";
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+						conexionCorrectaParaReceptor = true;
 					}
 					else
 					{
@@ -3120,16 +3644,115 @@ function analizaTipoDeMedicion()
 						//solucion = 'VALOR_VOLTAJE_AC' depende del estado del receptor
 					}
 				}
+				
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+					tipoDeMedicion = 'INTENSIDAD_DC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
+				}
 			}
-			
-			else if (conexionDeSondasAMismoPunto == true)
-			{
-				tipoDeMedicion = 'INTENSIDAD_DC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
-			}
-			
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
 			{
-				alert("Caso sin implementar");
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta1YFaseRegleta2 == true && puenteFaseConectadoARegleta == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta1 == true && puenteNeutroConectadoARegleta == true))
+				{
+					console.log("Sondas conectadas y puntas entre Fase y Neutro");
+					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					console.log("Puentes desconectados");
+					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+				}
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre fases puenteadas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre fases aisladas");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre neutros puenteados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Sondas conectadas y puntas entre neutros aislados");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR";
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						console.log("Sondas conectadas y puntas entre Fase y Neutro");
+						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC";
+					}
+					else
+					{
+						console.log("Medición incorrecta");
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+					console.log("Sondas conectadas entre ellas.");
+					tipoDeMedicion = "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC";
+				}
+			}
+			else
+			{console.log("Assert linha 2752");
 			}
 			break;
 
@@ -3142,13 +3765,17 @@ function analizaTipoDeMedicion()
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
-function interpretaMedicion()
+function interpretaMedicionSegunTipo()
 {
 	switch(tipoDeMedicion)
 	{
-		case "MEDICION_INCORRECTA":
-			console.log("Topología incorrecta para medir.");
-			medicion_incorrecta();
+		case "MEDICION_INCORRECTA_DEVUELVE_CERO":
+			console.log("Topología incorrecta para medir no afectada por ruido.");
+			medicion_incorrecta_devuelve_cero();
+			break;
+		case "MEDICION_INCORRECTA_RUIDO_BLANCO":
+			console.log("Topología incorrecta para medir afectada por ruido y conexión de sondas.");
+			medicion_incorrecta_ruido_blanco();
 			break;
 		case "VOLTAJE_DC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC":
 			clearInterval(variableParasetInterval);
@@ -3531,14 +4158,14 @@ function interpretaMedicion()
 			break;
 		case 11: //console.log("AAC - 2mA");
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
-			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[13] == "Correcto")
+			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblemA == "Correcto")
 			{
 				return(potenciaReceptor/VoltajeAC);
 			}
 			break
 		case 12: //console.log("AAC - 20mA/10A");
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
-			if (conexionCorrectaParaMedicion == true  && estadoFusiblePosicionSelector[12] == "Correcto")
+			if (conexionCorrectaParaMedicion == true  && estadoFusiblemA == "Correcto")
 			{
 				return(potenciaReceptor/VoltajeAC);
 			}
@@ -3554,33 +4181,33 @@ function interpretaMedicion()
 
 		case 13: //console.log("AAC - 200mA");
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
-			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblePosicionSelector[13] == "Correcto")
+			if (conexionCorrectaParaMedicion == true && conectorRojoConectadoAVRA == true && estadoFusiblemA == "Correcto")
 			{
 				return(potenciaReceptor/VoltajeAC);
 			}
 			break
 		case 14: //console.log("ADC - 200mA");
-			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[14] == "Correcto")
+			if (conexionCorrectaParaMedicion == true && estadoFusiblemA == "Correcto")
 			{
-				estadoFusiblePosicionSelector[14] = "Fundido";
+				estadoFusiblemA = "Fundido";
 			}
 			break
 		case 15: //console.log("ADC - 20mA/10A");
-			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[15] == "Correcto")
+			if (conexionCorrectaParaMedicion == true && estadoFusiblemA == "Correcto")
 			{
-				estadoFusiblePosicionSelector[15] = "Fundido";
+				estadoFusiblemA = "Fundido";
 			}
 			break
 		case 16: //console.log("ADC - 2mA");
-			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[16] == "Correcto")
+			if (conexionCorrectaParaMedicion == true && estadoFusiblemA == "Correcto")
 			{
-				estadoFusiblePosicionSelector[16] = "Fundido";
+				estadoFusiblemA = "Fundido";
 			}
 			break
 		case 17: //console.log("ADC - 200uA");
-			if (conexionCorrectaParaMedicion == true && estadoFusiblePosicionSelector[17] == "Correcto")
+			if (conexionCorrectaParaMedicion == true && estadoFusiblemA == "Correcto")
 			{
-				estadoFusiblePosicionSelector[17] = "Fundido";
+				estadoFusiblemA = "Fundido";
 			}
 			break
 		case 18: //console.log("Ohm - 200");
@@ -3658,6 +4285,21 @@ function oscilaValor(valor)
 }
 
 //---------------------------------------
+function oscilaValorIntensidadmA(valor)
+{
+	valorMedido = valor + Math.random()*0.1 - 5/100;
+	console.log("Estabilización del valor medido en proceso");
+
+	if ((valorMedido < valor + .02) && (valorMedido > valor - .02))
+	{
+		clearInterval(oscilacionValorMedidoIntensidadmA);
+		console.log("Valor de la medida estabilizado");
+	}
+
+	analizaValorParaRepresentarEnPantalla();
+}
+
+//---------------------------------------
 function voltaje_ac_entre_dos_puntos_desconectados_ac()
 {
 
@@ -3673,62 +4315,23 @@ var diferenciaDePotencial = voltajePuntoB - voltajePuntoA;
 }
 
 //-----------------------------
-function medicion_incorrecta()
+function medicion_incorrecta_ruido_blanco()
 {
-	console.log("medicion_incorrecta()");
-	switch(indicePosicionSelector)
-	{
-		case 0: break;
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-			
-			console.log("Al no haber conexión valida simulamos valores de ruido.");
+	console.log("Al no haber conexión valida simulamos valores de ruido.");
 
-			if (variableParasetInterval)
-			{}
-			else
-				variableParasetInterval = setInterval(generaRuidoBlanco, 400);
-			break;
+	if (variableParasetInterval)
+	{}
+	else
+		variableParasetInterval = setInterval(generaRuidoBlanco, 400);
+}
 
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			valorMedido = 0;
-			analizaValorParaRepresentarEnPantalla();
-			break;
-		case 10: break;
-		case 11:
-		case 12:
-		case 13:
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			valorMedido = 0;
-			analizaValorParaRepresentarEnPantalla();
-			break;
-		case 14: break;
-		case 15: break;
-		case 16: break;
-		case 17: break;
-		case 18: break;
-		case 19: break;
-		case 20: break;
-		case 21: break;
-		case 22: break;
-		case 23: break;
-		default:
-			/*clearInterval(variableParasetInterval);	
-			variableParasetInterval = undefined;
-			analizaValorParaRepresentarEnPantalla(0);
-			break;*/
-	}
-
-	
+//-----------------------------
+function medicion_incorrecta_devuelve_cero()
+{
+	clearInterval(variableParasetInterval);
+	variableParasetInterval = undefined;
+	valorMedido = 0;
+	analizaValorParaRepresentarEnPantalla();	
 }
 //-----------------------------
 function voltaje_dc_entre_dos_sondas_conectadas_al_mismo_punto_ac()
@@ -3767,11 +4370,16 @@ function voltaje_ac_entre_dos_puntos_desconectados_ac_a_traves_de_receptor()
 	valorMedido = 0;
 }
 //-----------------------------
+
+var oscilacionValorMedidoIntensidadmA;
+
 function intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()
 {
 	console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
-	valorMedido = 0;
+	clearInterval(oscilacionValorMedidoIntensidadmA);
+ 	oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
 }
+
 //-----------------------------
 function intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac()
 {
@@ -3800,18 +4408,22 @@ function intensidad_dc_entre_dos_puntos_a_diferente_potencial_ac()
 function intensidad_ac_entre_dos_puntos_a_diferente_potencial_ac()
 {
 	console.log("intensidad_ac_entre_dos_puntos_a_diferente_potencial_ac() = CORTOCIRCUITO")
-	audioExplosionElement.play();
-	estadoFusiblePosicionSelector[11] = "Fundido";
-	
-	if (configuracionMedicionIntensidad10A == true)
+	if ((configuracionMedicionIntensidad10A == true) && estadoFusible10ACorrecto == true)
 	{
+		audioExplosionElement.play();
+		estadoFusible10ACorrecto = false;
 		document.getElementById('polimetro').src = './images/polimetroExplotado.png';
 	}
-
-	else
+	else if ((configuracionMedicionIntensidadmA == true) && estadoFusiblemACorrecto == true)
 	{
+		audioExplosionElement.play();
+		estadoFusiblemACorrecto = false;
 		document.getElementById('polimetro').src = './images/polimetroFusibleFundido.png';
 	}
+	else
+	{
+	}
+	
 	valorMedido = 0;
 }
 
@@ -3820,4 +4432,914 @@ function intensidad_ac_entre_dos_puntos_conectados_al_mismo_potencial_ac()
 {
 	console.log("intensidad_ac_entre_dos_puntos_conectados_al_mismo_potencial_ac()")
 	valorMedido = 0;
+}
+
+
+//-----------------------------
+function multimetroEstropeado()
+{
+	switch(indicePosicionSelector)
+	{
+		case 0: break;
+		case 1:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#141414";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#141414";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#141414";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 2:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#808080";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#141414";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#808080";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#141414";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#141414";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 3:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#808080";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#141414";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#808080";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#141414";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 4:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#808080";
+			document.getElementById("D7S_1d").style.fill = "#141414";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#141414";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#141414";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 5:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#141414";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#141414";
+			document.getElementById("punto3").style.fill = "#808080";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 6:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#141414";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#808080";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#141414";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 7:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#141414";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#808080";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 8:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#808080";
+			document.getElementById("D7S_1c").style.fill = "#808080";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 9:
+			document.getElementById("D7S_1a").style.fill = "#141414";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#141414";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 10:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#141414";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 11:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#808080";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#808080";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#141414";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 12:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#808080";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#808080";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#141414";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 13:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#808080";
+			document.getElementById("D7S_1c").style.fill = "#808080";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#141414";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#141414";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#808080";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 14:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#141414";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#808080";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#141414";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#808080";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#141414";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 15:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#808080";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#808080";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#808080";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#141414";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 16:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#808080";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#141414";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 17:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#141414";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#141414";
+			document.getElementById("punto3").style.fill = "#808080";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 18:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#808080";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#141414";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#141414";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 19:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#808080";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#141414";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#141414";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#808080";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#141414";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 20:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#808080";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#141414";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#141414";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 21:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#808080";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#141414";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 22: 
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#808080";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#141414";
+			document.getElementById("D7S_3c").style.fill = "#141414";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#808080";
+			document.getElementById("punto4").style.fill = "#808080";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#141414";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		case 23:
+			document.getElementById("D7S_1a").style.fill = "#808080";
+			document.getElementById("D7S_1b").style.fill = "#141414";
+			document.getElementById("D7S_1c").style.fill = "#141414";
+			document.getElementById("D7S_1d").style.fill = "#808080";
+			document.getElementById("D7S_1e").style.fill = "#808080";
+			document.getElementById("D7S_1f").style.fill = "#808080";
+			document.getElementById("D7S_1g").style.fill = "#141414";
+			document.getElementById("D7S_2a").style.fill = "#808080";
+			document.getElementById("D7S_2b").style.fill = "#808080";
+			document.getElementById("D7S_2c").style.fill = "#141414";
+			document.getElementById("D7S_2d").style.fill = "#808080";
+			document.getElementById("D7S_2e").style.fill = "#808080";
+			document.getElementById("D7S_2f").style.fill = "#141414";
+			document.getElementById("D7S_2g").style.fill = "#808080";
+			document.getElementById("D7S_3a").style.fill = "#808080";
+			document.getElementById("D7S_3b").style.fill = "#808080";
+			document.getElementById("D7S_3c").style.fill = "#808080";
+			document.getElementById("D7S_3d").style.fill = "#808080";
+			document.getElementById("D7S_3e").style.fill = "#808080";
+			document.getElementById("D7S_3f").style.fill = "#808080";
+			document.getElementById("D7S_3g").style.fill = "#808080";
+			document.getElementById("D7S_4b").style.fill = "#808080";
+			document.getElementById("D7S_4c").style.fill = "#141414";
+			document.getElementById("signo").style.fill = "#808080";
+			document.getElementById("punto1").style.fill = "#808080";
+			document.getElementById("punto2").style.fill = "#808080";
+			document.getElementById("punto3").style.fill = "#141414";
+			document.getElementById("punto4").style.fill = "#141414";
+			document.getElementById("ohmios").style.color = "#808080";
+			document.getElementById("kiloohmios").style.color = "#808080";
+			document.getElementById("megaohmios").style.color = "#808080";
+			document.getElementById("voltios").style.color = "#808080";
+			document.getElementById("milivoltios").style.color = "#141414";
+			document.getElementById("hfe").style.color = "#808080";
+			document.getElementById("miliamperios").style.color = "#808080";
+			document.getElementById("microamperios").style.color = "#808080";
+			document.getElementById("AC").style.color = "#808080";
+			break;
+		default:
+			alert("Assert linha 4369");
+			break;
+	}
 }
