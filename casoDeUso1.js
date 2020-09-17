@@ -1933,11 +1933,13 @@ function clasificaTipoDeMedicion()
     switch (indicePosicionSelector)
     {
       case 0: tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO'; break;
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";  
 
       case 1: case 2: case 3: case 4: case 5:
         
         console.log("Medimos voltaje DC en caso de uso AC.");
-        
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         if (sondasDesconectadas == true)
         {
           tipoDeMedicion = 'MEDICION_INCORRECTA_RUIDO_BLANCO';
@@ -1993,10 +1995,61 @@ function clasificaTipoDeMedicion()
         
         break;
       
-      case 6: case 7: case 8: case 9:
+      case 6:
+      
+        console.log("Medimos voltaje AC en caso de uso AC");
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaVerde.png')";
+
+        if (sondasDesconectadas == true)
+        {
+          tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
+          clearInterval(oscilacionValorMedido);
+        }
+        
+        else if (sondasDesconectadas == false && conexionDePuntasIncompleta == true)
+        {
+          console.log("Sondas conectadas pero por lo menos una punta desconetada");
+          tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
+          clearInterval(oscilacionValorMedido);
+        }
+        
+        else if (sondasDesconectadas == false && configuracionMedicionVoltaje == true && conexionDePuntasIncompleta == false)
+        {
+          if (conexionEntreNeutroYFase == true)
+          {
+            console.log("Sondas conectadas y puntas entre Fase y Neutro");
+            tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_NEUTRO_AC";
+          }
+          else if (conexionDeSondasAMismoPunto == true)
+          {
+              console.log("Sondas conectadas entre ellas.");
+              tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+          }
+        }
+        
+        else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
+        {
+          if (conexionEntreNeutroYFase == true)
+          {
+            console.log("Sondas conectadas y puntas entre Fase y Neutro");
+            tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_NEUTRO_AC";
+          }
+          
+          else if (conexionDeSondasAMismoPunto == true)
+          {
+              tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
+          }
+        }
+
+        else {console.log("Assert linha 2752");}
+        
+        break;
+
+      case 7: case 8: case 9:
         
         console.log("Medimos voltaje AC en caso de uso AC");
-        
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         if (sondasDesconectadas == true)
         {
           tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
@@ -2045,13 +2098,15 @@ function clasificaTipoDeMedicion()
       case 10:
         
         console.log("Medimos hfe");
-        
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         break;
       
       case 11: case 13:
         
         console.log("Medimos intensidad AC en caso de uso AC");
-        
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         if (sondasDesconectadas == true)
         {
           console.log("Sondas desconectadas");
@@ -2104,7 +2159,8 @@ function clasificaTipoDeMedicion()
       case 12:
       
         console.log("Medimos intensidad AC en caso de uso AC");
-      
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         if (sondasDesconectadas == true)
         {
           console.log("Sondas desconectadas");
@@ -2152,7 +2208,8 @@ function clasificaTipoDeMedicion()
       case 14: case 16: case 17:
         
         console.log("Medimos intensidad DC en caso de uso AC");
-        
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         if (sondasDesconectadas == true)
         {
           console.log("Sondas desconectadas");
@@ -2205,7 +2262,8 @@ function clasificaTipoDeMedicion()
       case 15:
 
         console.log("Medimos intensidad DC en caso de uso AC");
-        
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         if (sondasDesconectadas == true)
         {
           console.log("Sondas desconectadas");
@@ -2253,6 +2311,8 @@ function clasificaTipoDeMedicion()
 
       case 18: case 19: case 20: case 21: case 22: case 23:
       
+        document.getElementById('aspaRojaPaso1').style.backgroundImage = "url('./images/aspaRoja.png')";
+
         tipoDeMedicion = 'MEDICION_FUERA_DE_ESCALA';
             
         clearInterval(oscilacionValorMedido);
