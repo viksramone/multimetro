@@ -894,7 +894,7 @@ function configuraPantallaSegunPosicionSelector()
       document.getElementById("voltios").style.color = "#808080";
       document.getElementById("milivoltios").style.color = "#808080";
       document.getElementById("hfe").style.color = "#808080";
-      document.getElementById("miliamperios").style.color = "#141414";
+      document.getElementById("miliamperios").style.color = "#808080";
       document.getElementById("microamperios").style.color = "#808080";
       document.getElementById("AC").style.color = "#808080";    
       break;
