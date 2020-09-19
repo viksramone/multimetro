@@ -2684,7 +2684,7 @@ function clasificaTipoDeMedicion()
 				//console.log ("Sondas desconectadas: obtenemos una pequeña variación de mV debida al ruido que capta el aparato de medida.");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_RUIDO_BLANCO';
 				
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -2703,7 +2703,7 @@ function clasificaTipoDeMedicion()
 				//console.log ("Sondas conectadas y alguna punta al aire: obtenemos una pequeña de variación de mV debida al ruido que capta el multímetro, algo mayor que si las sondas estuvieran desconectadas.");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_RUIDO_BLANCO';
 				
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -2722,7 +2722,7 @@ function clasificaTipoDeMedicion()
 				//console.log ("Puntas desconectadas: sin medida sensible de aparecer en pantalla.");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -2777,7 +2777,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases sin continuidad entre ellas");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC_A_TRAVES_DE_RECEPTOR
+							tipoDeMedicion = "VOLTAJE_DC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC_A_TRAVES_DE_RECEPTOR
 
 							conexionCorrectaParaReceptor = false;
 						}
@@ -2804,7 +2804,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros sin continuidad entre ellos");
-							tipoDeMedicion = "VOLTAJE_DC_ENTRE_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//Pendiente revisar con Pere ¿Depende del estado del receptor?
+							tipoDeMedicion = "VOLTAJE_DC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//Pendiente revisar con Pere ¿Depende del estado del receptor?
 
 							conexionCorrectaParaReceptor = false;
 						}
@@ -3022,7 +3022,7 @@ function clasificaTipoDeMedicion()
 				//console.log ("Sondas desconectadas: obtenemos una pequeña variación de mV debida al ruido que capta el aparato de medida.");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -3041,7 +3041,7 @@ function clasificaTipoDeMedicion()
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 				//console.log ("Sondas conectadas y alguna punta al aire: obtenemos una pequeña de variación de mV debida al ruido que capta el multímetro, algo mayor que si las sondas estuvieran desconectadas.");
 				
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 				
@@ -3078,11 +3078,11 @@ function clasificaTipoDeMedicion()
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro en la regleta 2, con los puentes desconectados");
 					tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 					
-					clearInterval(oscilacionValorMedido);
+					clearInterval(oscilacionValorMedidoVoltaje);
 					clearInterval(oscilacionValorMedidoIntensidadmA);
 					clearInterval(oscilacionValorMedidoIntensidad10A);
 					
-					oscilacionValorMedido = undefined;
+					oscilacionValorMedidoVoltaje = undefined;
 					oscilacionValorMedidoIntensidadmA = undefined;
 					
 					conexionCorrectaParaReceptor = false;
@@ -3109,6 +3109,7 @@ function clasificaTipoDeMedicion()
 					else
 					{
 						//console.log("Camino de vuelta cortado.");
+						clearInterval(oscilacionValorMedidoVoltaje);
 						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 
 						conexionCorrectaParaReceptor = false;
@@ -3121,19 +3122,32 @@ function clasificaTipoDeMedicion()
 						if (puenteNeutroConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre neutros puenteados");
+							clearInterval(oscilacionValorMedidoVoltaje);
 							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+							
 							conexionCorrectaParaReceptor = true;
 						}
 						else
 						{
-							//console.log("Sondas conectadas y puntas entre neutros sin continuidad entre ellas");
-							tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							if (receptorActivoSecador == false && receptorActivoCadena == false && receptorActivoEstufa == false)
+							{
+								clearInterval(oscilacionValorMedidoVoltaje);
+								tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+							}
+							else
+							{
+								//console.log("Sondas conectadas y puntas entre neutros sin continuidad entre ellas");
+								clearInterval(oscilacionValorMedidoVoltaje);
+								tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							}
+							
 							conexionCorrectaParaReceptor = false;
 						}
 					}
 					else
 					{
 						//console.log("Camino de vuelta cortado.");
+						clearInterval(oscilacionValorMedidoVoltaje);
 						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 
 						conexionCorrectaParaReceptor = false;
@@ -3162,8 +3176,8 @@ function clasificaTipoDeMedicion()
 						
 						conexionCorrectaParaReceptor = false;
 						
-						clearInterval(oscilacionValorMedido);
-						oscilacionValorMedido = undefined;
+						clearInterval(oscilacionValorMedidoVoltaje);
+						oscilacionValorMedidoVoltaje = undefined;
 						
 						clearInterval(oscilacionValorMedidoIntensidadmA);
 						oscilacionValorMedidoIntensidadmA = undefined;
@@ -3195,8 +3209,8 @@ function clasificaTipoDeMedicion()
 						
 						conexionCorrectaParaReceptor = false;
 						
-						clearInterval(oscilacionValorMedido);
-						oscilacionValorMedido = undefined;
+						clearInterval(oscilacionValorMedidoVoltaje);
+						oscilacionValorMedidoVoltaje = undefined;
 						
 						clearInterval(oscilacionValorMedidoIntensidadmA);
 						oscilacionValorMedidoIntensidadmA = undefined;
@@ -3365,7 +3379,7 @@ function clasificaTipoDeMedicion()
 				//console.log("Sondas desconectadas");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 		
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 			}
@@ -3375,7 +3389,7 @@ function clasificaTipoDeMedicion()
 				//console.log("Sondas conectadas pero por lo menos una punta desconetada");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 		
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 			}
@@ -3621,7 +3635,7 @@ function clasificaTipoDeMedicion()
 			
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 			
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -3642,7 +3656,7 @@ function clasificaTipoDeMedicion()
 			
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 			
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -3656,6 +3670,7 @@ function clasificaTipoDeMedicion()
 				}
 
 			}
+			
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidadmA == true && conexionDePuntasIncompleta == false)
 			{
 				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
@@ -3795,6 +3810,7 @@ function clasificaTipoDeMedicion()
 					conexionCorrectaParaReceptor = true;
 				}
 			}
+			
 			else if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
 			{
 				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
@@ -3812,6 +3828,7 @@ function clasificaTipoDeMedicion()
 						conexionCorrectaParaReceptor = false;	
 					}
 				}
+				
 				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
 				{
 					//console.log("Puentes desconectados");
@@ -3827,6 +3844,7 @@ function clasificaTipoDeMedicion()
 						if (puenteFaseConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre fases puenteadas");
+							clearInterval(oscilacionValorMedidoIntensidad10A);
 							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 							
 							conexionCorrectaParaReceptor = true;
@@ -3855,6 +3873,8 @@ function clasificaTipoDeMedicion()
 						if (puenteNeutroConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre neutros puenteados");
+							clearInterval(oscilacionValorMedidoIntensidad10A);
+							
 							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 							
 							conexionCorrectaParaReceptor = true;
@@ -3935,10 +3955,12 @@ function clasificaTipoDeMedicion()
 						conexionCorrectaParaReceptor = true;
 				}
 			}
+			
 			else
 			{
 			//{console.log("Assert linha 2752");
 			}
+			
 			break;
 
 		case 14: case 16: case 17:
@@ -3950,7 +3972,7 @@ function clasificaTipoDeMedicion()
 				//console.log("Sondas desconectadas");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 		
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 			}
@@ -3960,7 +3982,7 @@ function clasificaTipoDeMedicion()
 				//console.log("Sondas conectadas pero por lo menos una punta desconetada");
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 		
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 			}
@@ -4210,7 +4232,7 @@ function clasificaTipoDeMedicion()
 			
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 			
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -4231,7 +4253,7 @@ function clasificaTipoDeMedicion()
 			
 				tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 			
-				clearInterval(oscilacionValorMedido);
+				clearInterval(oscilacionValorMedidoVoltaje);
 				clearInterval(oscilacionValorMedidoIntensidadmA);
 				clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -4539,7 +4561,7 @@ function clasificaTipoDeMedicion()
 				{
 					tipoDeMedicion = 'MEDICION_FUERA_DE_ESCALA';
 					
-					clearInterval(oscilacionValorMedido);
+					clearInterval(oscilacionValorMedidoVoltaje);
 					clearInterval(oscilacionValorMedidoIntensidadmA);
 					clearInterval(oscilacionValorMedidoIntensidad10A);
 
@@ -4580,6 +4602,14 @@ function interpretaMedicionSegunTipo()
 		case "MEDICION_INCORRECTA_DEVUELVE_CERO":
 		
 			//console.log("Topología incorrecta para medir no afectada por ruido.");
+			clearInterval(oscilacionValorMedidoVoltaje);
+			clearInterval(oscilacionValorMedidoIntensidadmA);
+			clearInterval(oscilacionValorMedidoIntensidad10A);
+			
+			oscilacionValorMedidoVoltaje = undefined;
+			oscilacionValorMedidoIntensidadmA = undefined;
+			oscilacionValorMedidoIntensidad10A = undefined;
+			
 			medicion_incorrecta_devuelve_cero();
 		
 			break;
@@ -4714,6 +4744,9 @@ function interpretaMedicionSegunTipo()
 			clearInterval(variableParasetInterval);
 			variableParasetInterval = undefined;
 			
+			clearInterval(oscilacionValorMedidoVoltaje);
+			oscilacionValorMedidoVoltaje = undefined;
+
 			voltaje_ac_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
 			
 			break;
@@ -4726,17 +4759,20 @@ function interpretaMedicionSegunTipo()
 	}
 }
 
-var oscilacionValorMedido;
+var oscilacionValorMedidoVoltaje;
+var oscilacionValorMedidoIntensidadmA;
+var oscilacionValorMedidoIntensidad10A;
+
 //---------------------------------------
-function oscilaValor(valor)
+function oscilaValorVoltaje(valor)
 {
 	valorMedido = valor + Math.random()*10 - 5;
 	//console.log("Estabilización del valor medido en proceso");
 
 	if ((valorMedido < valor + 2) && (valorMedido > valor - 2))
 	{
-		clearInterval(oscilacionValorMedido);
-		//console.log("Valor de la medida estabilizado");
+		clearInterval(oscilacionValorMedidoVoltaje);
+		//console.log("Valor de la medida estabilizado");	
 	}
 
 	analizaValorParaRepresentarEnPantalla();
@@ -4748,7 +4784,12 @@ function oscilaValorIntensidad10A(valor)
 	valorMedido = valor + Math.random()*0.1 - 5/100;
 	//console.log("Estabilización del valor medido en proceso");
 
-	if ((valorMedido < valor + .02) && (valorMedido > valor - .02))
+	if(receptorActivoSecador == false && receptorActivoCadena == false && receptorActivoEstufa == false)
+	{
+		valorMedido = 0;
+	}
+
+	if ((valorMedido < valor + .01) && (valorMedido > valor - .01))
 	{
 		clearInterval(oscilacionValorMedidoIntensidad10A);
 		//console.log("Valor de la medida estabilizado");
@@ -4763,7 +4804,7 @@ function oscilaValorIntensidadmA(valor)
 	valorMedido = valor + Math.random()*0.1 - 5/100;
 	//console.log("Estabilización del valor medido en proceso");
 
-	if ((valorMedido < valor + .02) && (valorMedido > valor - .02))
+	if ((valorMedido < valor + .01) && (valorMedido > valor - .01))
 	{
 		clearInterval(oscilacionValorMedidoIntensidadmA);
 		//console.log("Valor de la medida estabilizado");
@@ -4782,8 +4823,8 @@ function voltaje_ac_entre_fase_y_neutro_ac()
 	var voltajePuntoB = 230;
 	var diferenciaDePotencial = voltajePuntoB - voltajePuntoA;
  	
-	clearInterval(oscilacionValorMedido);
-	oscilacionValorMedido = setInterval(function(){oscilaValor(diferenciaDePotencial);}, 500);
+	clearInterval(oscilacionValorMedidoVoltaje);
+	oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(diferenciaDePotencial);}, 500);
 }
 
 //---------------------------------------
@@ -4796,15 +4837,15 @@ var voltajePuntoA = 0;
 var voltajePuntoB = 230;
 var diferenciaDePotencial = voltajePuntoB - voltajePuntoA;
  	
-	clearInterval(oscilacionValorMedido);
+	clearInterval(oscilacionValorMedidoVoltaje);
 
 	if (receptorActivoSecador == true || receptorActivoCadena == true || receptorActivoEstufa == true)
 	{
-		oscilacionValorMedido = setInterval(function(){oscilaValor(diferenciaDePotencial);}, 800);
+		oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(diferenciaDePotencial);}, 800);
  	}
  	else
  	{
- 		oscilacionValorMedido = setInterval(function(){oscilaValor(0);}, 800);	
+ 		oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(0);}, 800);
  	}
 
 }
@@ -4865,9 +4906,7 @@ function voltaje_ac_entre_dos_puntos_desconectados_ac_a_traves_de_receptor()
 	valorMedido = 0;
 }
 //-----------------------------
-var oscilacionValorMedidoIntensidad10A;
 
-var oscilacionValorMedidoIntensidadmA;
 
 function intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()
 {
@@ -4898,6 +4937,13 @@ function intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_tr
 	//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_traves_de_receptor()");
 	valorMedido = 0;
 }
+//-----------------------------
+function voltaje_dc_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
+{
+	//console.log("voltaje_dc_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac");
+	valorMedido = 0;
+}
+
 //-----------------------------
 function intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_traves_de_receptor()
 {
