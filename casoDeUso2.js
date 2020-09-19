@@ -2659,8 +2659,9 @@ function clasificaTipoDeMedicion()
 	
 	switch (indicePosicionSelector)
 	{
-		case 0: 
+		case 0: 	
 
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Multímetro apagado.");
 
 			tipoDeMedicion = 'MULTIMETRO_APAGADO';
@@ -2677,6 +2678,7 @@ function clasificaTipoDeMedicion()
 
 		case 1: case 2: case 3: case 4: case 5:
 			
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos voltaje DC en un caso de uso de AC (10A).");
 			
 			if (sondasDesconectadas == true)
@@ -3013,8 +3015,10 @@ function clasificaTipoDeMedicion()
 			//{console.log("Assert linha 3048");
 			}
 			break;
+		
 		case 6: case 7: case 8: case 9:
 			
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos voltaje AC en caso de uso AC");
 			
 			if (sondasDesconectadas == true)
@@ -3366,12 +3370,14 @@ function clasificaTipoDeMedicion()
 
 		case 10:
 			
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos hfe");
 		
 			break;
 		
 		case 11: case 13:
 		
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos intensidad AC en caso de uso AC");
 		
 			if (sondasDesconectadas == true)
@@ -3624,8 +3630,10 @@ function clasificaTipoDeMedicion()
 			{//console.log("Assert linha 2752");
 			}
 			break;
+		
 		case 12:
 			
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaVerde.png')";
 			//console.log("Medimos intensidad AC en caso de uso AC");
 			
 			if (sondasDesconectadas == true)
@@ -3965,6 +3973,7 @@ function clasificaTipoDeMedicion()
 
 		case 14: case 16: case 17:
 			
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos intensidad DC en caso de uso AC");
 			
 			if (sondasDesconectadas == true)
@@ -4223,6 +4232,7 @@ function clasificaTipoDeMedicion()
 		
 		case 15:
 			
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos intensidad DC en caso de uso AC");
 			
 			if (sondasDesconectadas == true)
@@ -4555,6 +4565,8 @@ function clasificaTipoDeMedicion()
 
 		case 18: case 19: case 20: case 21: case 22: case 23:
 		
+			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
+
 			if ((sondasDesconectadas == true)
 				|| (sondasDesconectadas == false && configuracionMedicionVoltaje == true && conexionDePuntasIncompleta == true)
 				|| (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == true))
