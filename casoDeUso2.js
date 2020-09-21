@@ -131,7 +131,7 @@ function actualizaReceptor()
 		if (conexionCorrectaParaReceptor == true)
 		{
 			audioSecadorElement.play();
-			potenciaReceptor = 1000;
+			potenciaReceptor = 1500;
 
 		}
 		else
@@ -149,7 +149,7 @@ function actualizaReceptor()
 		if (conexionCorrectaParaReceptor == true)
 		{
 			audioCadenaElement.play();
-			potenciaReceptor = 200;
+			potenciaReceptor = 145;
 		}
 		else
 		{
@@ -260,7 +260,7 @@ function seleccionaReceptorEstufa()
 function determinaPosicionSelector(e)
 {
 	event.preventDefault();
-	console.clear();
+	//console.clear();
 	//console.log("button:" + event.button);
 	//console.log("which:" + event.which);
 
@@ -2676,7 +2676,7 @@ function clasificaTipoDeMedicion()
 			}
 			break;
 
-		case 1: case 2: case 3: case 4: case 5:
+		case 1: case 2: case 3: case 4: case 5: //VOLTAJE_DC
 			
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos voltaje DC en un caso de uso de AC (10A).");
@@ -2744,7 +2744,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro, ya sea en la regleta 1 o en la regleta 2");
-					tipoDeMedicion = "VOLTAJE_DC_ENTRE_FASE_Y_NEUTRO_AC";//VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC
+					tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";//VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC
 
 					if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
 					{
@@ -2779,7 +2779,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases sin continuidad entre ellas");
-							tipoDeMedicion = "VOLTAJE_DC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//VOLTAJE_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC_A_TRAVES_DE_RECEPTOR
+							tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//VOLTAJE_DC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC
 
 							conexionCorrectaParaReceptor = false;
 						}
@@ -2806,7 +2806,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros sin continuidad entre ellos");
-							tipoDeMedicion = "VOLTAJE_DC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//Pendiente revisar con Pere ¿Depende del estado del receptor?
+							tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";//Pendiente revisar con Pere ¿Depende del estado del receptor?
 
 							conexionCorrectaParaReceptor = false;
 						}
@@ -2824,7 +2824,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro en diferentes regletas");
-						tipoDeMedicion = "VOLTAJE_DC_ENTRE_FASE_Y_NEUTRO_AC";					
+						tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";					
 
 						if (puenteNeutroConectadoARegleta == true)
 						{
@@ -2849,7 +2849,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro en diferentes regletas");
-						tipoDeMedicion = "VOLTAJE_DC_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)							
 						{
@@ -2882,7 +2882,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro, ya sea en la regleta 1 o en la regleta 2");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC"; //INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC
+					tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC"; //INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC -> INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -2907,14 +2907,14 @@ function clasificaTipoDeMedicion()
 						if (puenteFaseConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre fases puenteadas");
-							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO"; //INTENSIDAD_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AL_MISMO_POTENCIAL_AC
+							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 
 							conexionCorrectaParaReceptor = true;
 						}
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases sin continuidad entre ellas");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_FASE_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC"; // --> INTENSIDAD_10A_ENTRE_FASE_Y_FASE_A_TRAVES_DE_RECEPTOR_AC
 
 							conexionCorrectaParaReceptor = false;
 						}
@@ -2941,7 +2941,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros sin continuidad entre ellos");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_FASE_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 
 							conexionCorrectaParaReceptor = false;
 						}
@@ -2951,7 +2951,7 @@ function clasificaTipoDeMedicion()
 						//console.log("Camino de vuelta cortado.");
 						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 
-						conexionCorrectaParaReceptor = true;
+						conexionCorrectaParaReceptor = false;
 					}
 				}
 				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
@@ -2959,7 +2959,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro en diferentes regletas");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true)
 						{
@@ -2983,7 +2983,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro en diferentes regletas");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -3016,7 +3016,7 @@ function clasificaTipoDeMedicion()
 			}
 			break;
 		
-		case 6: case 7: case 8: case 9:
+		case 6: case 7: case 8: case 9: //VOLTAJE AC
 			
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Medimos voltaje AC en caso de uso AC");
@@ -3065,7 +3065,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro, ya sea en la regleta 1 o en la regleta 2");
-					tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC"; //VOLTAJE_AC_ENTRE_FASE_Y_NEUTRO_AC
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -3099,14 +3099,25 @@ function clasificaTipoDeMedicion()
 						if (puenteFaseConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre fases puenteadas");
+							clearInterval(oscilacionValorMedidoVoltaje);
 							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
+							
 							conexionCorrectaParaReceptor = true;
 						}
 						else
 						{
-							//console.log("Sondas conectadas y puntas entre fases sin continuidad entre ellas");
-							tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
-							
+							if (receptorActivoSecador == false && receptorActivoCadena == false && receptorActivoEstufa == false)
+							{
+								clearInterval(oscilacionValorMedidoVoltaje);
+								tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";							
+							}
+							else
+							{
+								//console.log("Sondas conectadas y puntas entre fases sin continuidad entre ellas");
+								clearInterval(oscilacionValorMedidoVoltaje);
+								tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							}
+
 							conexionCorrectaParaReceptor = false;
 						}
 					}
@@ -3142,7 +3153,7 @@ function clasificaTipoDeMedicion()
 							{
 								//console.log("Sondas conectadas y puntas entre neutros sin continuidad entre ellas");
 								clearInterval(oscilacionValorMedidoVoltaje);
-								tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+								tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							}
 							
 							conexionCorrectaParaReceptor = false;
@@ -3162,7 +3173,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 						
 							if (puenteNeutroConectadoARegleta == true)
 							{
@@ -3195,7 +3206,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "VOLTAJE_AC_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_VRA_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 						
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -3235,7 +3246,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -3267,7 +3278,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_FASE__O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC"; //INTENSIDAD_10A_ENTRE_FASE_Y_FASE__O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC
 						}
 					}
 					else
@@ -3292,7 +3303,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 
 							conexionCorrectaParaReceptor = false;
 						}
@@ -3310,7 +3321,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true)
 						{
@@ -3334,7 +3345,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -3406,7 +3417,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_mA_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -3441,7 +3452,7 @@ function clasificaTipoDeMedicion()
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
 							
-							tipoDeMedicion = "INTENSIDAD_mA_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							conexionCorrectaParaReceptor = true;
 						}
 					}
@@ -3468,7 +3479,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_mA_ENTRE_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							conexionCorrectaParaReceptor = true;
 						}
 					}
@@ -3493,7 +3504,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -3528,7 +3539,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 
 							conexionCorrectaParaReceptor = true;
 						}
@@ -3555,7 +3566,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 
 							conexionCorrectaParaReceptor == true;
 						}
@@ -3574,7 +3585,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true)
 						{
@@ -3599,7 +3610,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -3621,7 +3632,7 @@ function clasificaTipoDeMedicion()
 				else if (conexionDeSondasAMismoPunto == true)
 				{
 						//console.log("Sondas conectadas entre ellas.");
-						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_AC";
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 
 						conexionCorrectaParaReceptor = true;
 				}
@@ -3685,7 +3696,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -3719,7 +3730,7 @@ function clasificaTipoDeMedicion()
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
 							
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							conexionCorrectaParaReceptor = true;
 						}
 					}
@@ -3739,14 +3750,14 @@ function clasificaTipoDeMedicion()
 						if (puenteNeutroConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre neutros puenteados");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_NEUTRO_Y_NEUTRO_AC";
+							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 							
 							conexionCorrectaParaReceptor = true;
 						}
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							
 							conexionCorrectaParaReceptor = true;
 						}
@@ -3766,7 +3777,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true)
 						{	
@@ -3791,7 +3802,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -3813,7 +3824,7 @@ function clasificaTipoDeMedicion()
 
 				else if (conexionDeSondasAMismoPunto == true)
 				{
-					tipoDeMedicion = 'INTENSIDAD_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
+					tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 
 					conexionCorrectaParaReceptor = true;
 				}
@@ -3825,7 +3836,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -3852,6 +3863,7 @@ function clasificaTipoDeMedicion()
 						if (puenteFaseConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre fases puenteadas");
+							clearInterval(oscilacionValorMedidoIntensidadmA);
 							clearInterval(oscilacionValorMedidoIntensidad10A);
 							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 							
@@ -3860,7 +3872,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							
 							conexionCorrectaParaReceptor = true;
 						}
@@ -3881,6 +3893,7 @@ function clasificaTipoDeMedicion()
 						if (puenteNeutroConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre neutros puenteados");
+							clearInterval(oscilacionValorMedidoIntensidadmA);
 							clearInterval(oscilacionValorMedidoIntensidad10A);
 							
 							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
@@ -3890,7 +3903,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							
 							conexionCorrectaParaReceptor = true;
 						}
@@ -3910,7 +3923,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true) 
 						{	
@@ -3935,7 +3948,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -4002,7 +4015,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_mA_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC"; //-->
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -4037,7 +4050,7 @@ function clasificaTipoDeMedicion()
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
 							
-							tipoDeMedicion = "INTENSIDAD_mA_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							conexionCorrectaParaReceptor = true;
 						}
 					}
@@ -4064,7 +4077,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_mA_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							conexionCorrectaParaReceptor = true;
 						}
 					}
@@ -4089,7 +4102,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -4124,7 +4137,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 
 							conexionCorrectaParaReceptor = true;
 						}
@@ -4151,7 +4164,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 
 							conexionCorrectaParaReceptor == true;
 						}
@@ -4170,7 +4183,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true)
 						{
@@ -4195,7 +4208,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -4217,7 +4230,7 @@ function clasificaTipoDeMedicion()
 				else if (conexionDeSondasAMismoPunto == true)
 				{
 						//console.log("Sondas conectadas entre ellas.");
-						tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_AC";
+						tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 
 						conexionCorrectaParaReceptor = true;
 				}
@@ -4283,7 +4296,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -4317,7 +4330,7 @@ function clasificaTipoDeMedicion()
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
 							
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							conexionCorrectaParaReceptor = true;
 						}
 					}
@@ -4337,14 +4350,14 @@ function clasificaTipoDeMedicion()
 						if (puenteNeutroConectadoARegleta == true)
 						{
 							//console.log("Sondas conectadas y puntas entre neutros puenteados");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_NEUTRO_Y_NEUTRO_AC";
+							tipoDeMedicion = "MEDICION_INCORRECTA_DEVUELVE_CERO";
 							
 							conexionCorrectaParaReceptor = true;
 						}
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							
 							conexionCorrectaParaReceptor = true;
 						}
@@ -4364,7 +4377,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true)
 						{	
@@ -4389,7 +4402,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -4411,7 +4424,7 @@ function clasificaTipoDeMedicion()
 
 				else if (conexionDeSondasAMismoPunto == true)
 				{
-					tipoDeMedicion = 'INTENSIDAD_AC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC';
+					tipoDeMedicion = 'MEDICION_INCORRECTA_DEVUELVE_CERO';
 
 					conexionCorrectaParaReceptor = true;
 				}
@@ -4422,7 +4435,7 @@ function clasificaTipoDeMedicion()
 					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
 				{
 					//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-					tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+					tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
 					{
@@ -4455,7 +4468,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre fases aisladas");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							
 							conexionCorrectaParaReceptor = true;
 						}
@@ -4483,7 +4496,7 @@ function clasificaTipoDeMedicion()
 						else
 						{
 							//console.log("Sondas conectadas y puntas entre neutros aislados");
-							tipoDeMedicion = "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
+							tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC";
 							
 							conexionCorrectaParaReceptor = true;
 						}
@@ -4503,7 +4516,7 @@ function clasificaTipoDeMedicion()
 					if (puenteFaseConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteNeutroConectadoARegleta == true) 
 						{	
@@ -4528,7 +4541,7 @@ function clasificaTipoDeMedicion()
 					if (puenteNeutroConectadoARegleta == true)
 					{
 						//console.log("Sondas conectadas y puntas entre Fase y Neutro");
-						tipoDeMedicion = "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC";
+						tipoDeMedicion = "CONFIGURACION_10A_INTENSIDAD_10A_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
 
 						if (puenteFaseConectadoARegleta == true)
 						{
@@ -4589,17 +4602,11 @@ function clasificaTipoDeMedicion()
 				
 			else
 				{
-					alert("Casos sin implementar");
+					tipoDeMedicion = "MEDICION_FUERA_DE_ESCALA";
 				}
 			break;
 	}	
 
-}
-
-//-----------------------------------------------------------------------------------------------------------------------
-function medicion_fuera_de_escala()
-{
-	representaFueraDeEscala();
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -4640,118 +4647,53 @@ function interpretaMedicionSegunTipo()
 		
 			break;
 
-		case "VOLTAJE_DC_ENTRE_DOS_SONDAS_CONECTADAS_AL_MISMO_PUNTO_AC":
+		case "CONFIGURACION_VRA_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
 			
 			clearInterval(variableParasetInterval);
 			variableParasetInterval = undefined;
 			
-			voltaje_dc_entre_dos_sondas_conectadas_al_mismo_punto_ac();
+			configuracion_vra_voltaje_dc_puntas_entre_fase_y_neutro_ac();
 			
 			break;
 	
-		case "VOLTAJE_DC_ENTRE_DOS_PUNTOS_CONECTADOS_AC_SIN_RIZADO":
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			voltaje_dc_entre_dos_puntos_conectados_ac_sin_rizado();
-			break;
-		case "VOLTAJE_AC_ENTRE_DOS_PUNTOS_CONECTADOS_AC":
+		case "CONFIGURACION_VRA_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
 			
 			clearInterval(variableParasetInterval);
 			variableParasetInterval = undefined;
 			
-			voltaje_ac_entre_dos_puntos_conectados_ac();
+			configuracion_vra_voltaje_dc_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
 			
 			break;
 	
-		case "VOLTAJE_DC_ENTRE_FASE_Y_NEUTRO_AC":
-			
+		
+		case "CONFIGURACION_10A_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+		
 			clearInterval(variableParasetInterval);
 			variableParasetInterval = undefined;
-			
-			voltaje_dc_entre_fase_y_neutro_ac();
-			
-			break;
-	
-		case "VOLTAJE_AC_ENTRE_FASE_Y_NEUTRO_AC":
-			
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			
-			voltaje_ac_entre_fase_y_neutro_ac()
-			
-			break;
-	
-		case "VOLTAJE_DC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
-			
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			
-			voltaje_dc_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
-			
-			break;
-	
-		case "VOLTAJE_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AC_A_TRAVES_DE_RECEPTOR":
-			
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			
-			voltaje_ac_entre_dos_puntos_desconectados_ac_a_traves_de_receptor();
-			
+		
+			configuracion_10A_voltaje_dc_puntas_entre_fase_y_neutro_ac();
+		
 			break;
 		
-		case "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC":
+		case "CONFIGURACION_10A_VOLTAJE_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+		
 			clearInterval(variableParasetInterval);
 			variableParasetInterval = undefined;
-			intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac();
+		
+			configuracion_10A_voltaje_dc_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
+		
 			break;
-		case "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC":
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac();
-			break;
-		case "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR":
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_traves_de_receptor();
-			break;
-		case "INTENSIDAD_AC_ENTRE_DOS_PUNTOS_DESCONECTADOS_AL_MISMO_POTENCIAL_AC_A_TRAVES_DE_RECEPTOR":
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_traves_de_receptor();
-			break;break;
-		case "INTENSIDAD_DC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC":
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			intensidad_dc_entre_dos_puntos_a_diferente_potencial_ac();
-			break;
-		case "INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC":
+		
+		case "CONFIGURACION_VRA_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
 			
 			clearInterval(variableParasetInterval);
 			variableParasetInterval = undefined;
 			
-			intensidad_10A_entre_fase_y_neutro_ac();
-			
-			break;
-	
-		case "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_AC":
-			
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			
-			intensidad_ac_entre_fase_y_fase_ac();
+			configuracion_vra_voltaje_ac_puntas_entre_fase_y_neutro_ac()
 			
 			break;
 
-		case "INTENSIDAD_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
-			
-			clearInterval(variableParasetInterval);
-			variableParasetInterval = undefined;
-			
-			intensidad_ac_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
-			
-			break;
-		
-		case "VOLTAJE_AC_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+		case "CONFIGURACION_VRA_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
 			
 			clearInterval(variableParasetInterval);
 			variableParasetInterval = undefined;
@@ -4759,13 +4701,106 @@ function interpretaMedicionSegunTipo()
 			clearInterval(oscilacionValorMedidoVoltaje);
 			oscilacionValorMedidoVoltaje = undefined;
 
-			voltaje_ac_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
+			configuracion_vra_voltaje_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
 			
+			break;
+
+		case "CONFIGURACION_10A_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+			
+			clearInterval(variableParasetInterval);
+			variableParasetInterval = undefined;
+			
+			configuracion_10A_voltaje_ac_puntas_entre_fase_y_neutro_ac();
+			
+			break;
+	
+		case "CONFIGURACION_10A_VOLTAJE_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+
+			clearInterval(variableParasetInterval);
+			variableParasetInterval = undefined;
+		
+			configuracion_10A_voltaje_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
+		
+			break;
+
+		case "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+		
+			configuracion_mA_intensidad_mA_AC_puntas_entre_fase_y_neutro_AC();
+		
+			break;
+		
+		case "CONFIGURACION_mA_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+		
+			configuracion_mA_intensidad_mA_AC_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC();
+		
+			 break;
+		
+		case "CONFIGURACION_10A_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+		
+			configuracion_10A_intensidad_mA_AC_puntas_entre_fase_y_neutro_AC();
+		
+		 	break;
+		
+		case "CONFIGURACION_10A_INTENSIDAD_mA_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+		
+			configuracion_10A_intensidad_mA_AC_puntas_entre_fase_y_neutro_AC();
+
+			break;
+		
+		case "CONFIGURACION_10A_INTENSIDAD_10A_AC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+		
+			configuracion_10A_intensidad_10A_AC_puntas_entre_fase_y_neutro_AC();
+
+			break;
+
+		case "CONFIGURACION_10A_INTENSIDAD_10A_AC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+
+			clearInterval(variableParasetInterval);
+			variableParasetInterval = undefined;
+			
+			configuracion_10A_intensidad_10A_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac();
+			
+			break;
+
+		case "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+			
+			configuracion_mA_intensidad_mA_DC_puntas_entre_fase_y_neutro_AC();
+		
+			break;
+
+		case "CONFIGURACION_mA_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+			
+			configuracion_mA_intensidad_mA_DC_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC();
+		
+			break;
+		
+		case "CONFIGURACION_10A_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+				
+			configuracion_10A_intensidad_mA_DC_puntas_entre_fase_y_neutro_AC();
+
+			break;
+		
+		case "CONFIGURACION_10A_INTENSIDAD_mA_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+
+			configuracion_10A_intensidad_mA_DC_PUNTAS_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC();
+
+		 	break;
+		
+		case "CONFIGURACION_10A_INTENSIDAD_10A_DC_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+
+			configuracion_10A_intensidad_10A_DC_puntas_entre_fase_y_neutro_AC();
+		
+			break;
+		
+		case "CONFIGURACION_10A_INTENSIDAD_10A_DC_PUNTAS_ENTRE_FASE_Y_FASE_O_NEUTRO_Y_NEUTRO_A_TRAVES_DE_RECEPTOR_AC":
+
+			configuracion_10A_intensidad_10A_DC_PUNTAS_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC();
+
 			break;
 		
 		default:
 
-			alert("Assert linha 3144");
+			alert("Assert linha 3144: tipoDeMedicion:" + tipoDeMedicion);
 
 			break;
 	}
@@ -4813,23 +4848,123 @@ function oscilaValorIntensidad10A(valor)
 //---------------------------------------
 function oscilaValorIntensidadmA(valor)
 {
-	valorMedido = valor + Math.random()*0.1 - 5/100;
-	//console.log("Estabilización del valor medido en proceso");
+	if (valor == 0 || (receptorActivoSecador == false && receptorActivoCadena == false && receptorActivoEstufa == false))
+	{
+		valorMedido = 0;
+	}
+	
+	else if (valor > 0.2)
+	{
+		cortocircuito();
+	}
 
-	if ((valorMedido < valor + .01) && (valorMedido > valor - .01))
+	else
+	{
+		valorMedido = valor + Math.random()*0.0001 - 5/100000;
+	}
+		
+	if ((valorMedido < valor + .0001) && (valorMedido > valor - .0001))
 	{
 		clearInterval(oscilacionValorMedidoIntensidadmA);
 		//console.log("Valor de la medida estabilizado");
 	}
-
+	
 	analizaValorParaRepresentarEnPantalla();
 }
 
-//---------------------------------------
-//---------------------------------------
-function voltaje_ac_entre_fase_y_neutro_ac()
+//-----------------------------
+function cortocircuito()
 {
-	//console.log("voltaje_ac_entre_fase_y_neutro_ac()");
+	//console.log("configuracion_10A_voltaje_ac_puntas_entre_fase_y_neutro_ac() = CORTOCIRCUITO")
+	if (configuracionMedicionIntensidad10A == true && estadoFusible10ACorrecto == true)
+	{
+		audioExplosionElement.play();
+		estadoFusible10ACorrecto = false;
+		document.getElementById('polimetro').src = './images/polimetroExplotado.png';
+
+		alert("¡PREMIO! Te acabas de cargar el multímetro. No puedes medir la corriente de igual forma que mides la diferencia de potencial. El procedimiento que debes seguir es diferente. Lo que acabas de provocar se llama cortocircuito, y en este caso lo has hecho, incoscientemente, al colocar una punta en la fase y la otra en el neutro, habiendo configurado el múltimetro en modo amperímetro. Es como si hubieras interconectado fase y neutro directamente con un conductor de resistencia casi nula, que es como se comporta el multímetro cuando está configurado en modo amperímetro. Para poder continuar trabajando, por favor, recarga la página.")
+
+	}
+	else if (configuracionMedicionIntensidadmA == true && estadoFusiblemACorrecto == true)
+	{
+		audioExplosionElement.play();
+		estadoFusiblemACorrecto = false;
+		document.getElementById('polimetro').src = './images/polimetroFusibleFundido.png';
+
+		if ((sondaRojaConectadaARegletaFase1	== true && sondaNegraConectadaARegletaFase2 == true)
+			|| (sondaNegraConectadaARegletaFase1 == true && sondaRojaConectadaARegletaFase2 == true)
+				|| (sondaRojaConectadaARegletaNeutro1	== true && sondaNegraConectadaARegletaNeutro2 == true)
+					|| (sondaNegraConectadaARegletaNeutro1	== true && sondaRojaConectadaARegletaNeutro2 == true))
+		{
+			alert("Acabas de fundir el fusible de protección del multímetro al intentar medir una intensidad (" + (potenciaReceptor/.230).toFixed(0) + " mA) mayor a la máxima soportada en su entrada protegida (200 mA). A partir de ahora, los valores de corriente obtenidos ya no son de fiar. Para poder continuar trabajando, por favor, recarga la página.")
+		}
+		else
+		{
+			alert("Acabas de fundir el fusible de protección del multímetro al intentar medir una intensidad como si midieras una diferencia de potencial. Al colocar una punta en la fase y la otra en el neutro, y configurar el múltimetro en modo amperímetro estás provocando un cortocircuito. Es como si hubieras interconectado fase y neutro directamente con un conductor de resistencia casi nula, que es como se comporta el multímetro cuando está configurado en modo amperímetro. Para poder continuar trabajando, por favor, recarga la página.")
+		}
+	}
+	else
+	{
+	}
+	
+	valorMedido = 0;
+}
+
+//---------------------------------------
+function medicion_incorrecta_devuelve_cero()
+{
+	clearInterval(variableParasetInterval);
+	variableParasetInterval = undefined;
+	valorMedido = 0;
+	analizaValorParaRepresentarEnPantalla();	
+}
+
+//-----------------------------
+function medicion_incorrecta_ruido_blanco()
+{
+	//console.log("Al no haber conexión valida simulamos valores de ruido.");
+
+	if (variableParasetInterval)
+	{}
+	else
+		variableParasetInterval = setInterval(generaRuidoBlanco, 400);
+}
+
+function medicion_fuera_de_escala()
+{
+	representaFueraDeEscala();
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+function configuracion_vra_voltaje_dc_puntas_entre_fase_y_neutro_ac()
+{
+	//console.log("configuracion_vra_voltaje_dc_puntas_entre_fase_y_neutro_ac()");
+	valorMedido = 0;
+}
+
+//-----------------------------
+function configuracion_vra_voltaje_dc_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
+{
+	//console.log("configuracion_vra_voltaje_dc_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac");
+	valorMedido = 0;
+}
+
+//-----------------------------
+function configuracion_10A_voltaje_dc_puntas_entre_fase_y_neutro_ac()
+{
+	//console.log("configuracion_10A_voltaje_dc_puntas_entre_fase_y_neutro_ac()");
+	cortocircuito();
+}
+//-----------------------------
+function configuracion_10A_voltaje_dc_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
+{
+	valorMedido = 0;	
+}
+
+//---------------------------------------
+function configuracion_vra_voltaje_ac_puntas_entre_fase_y_neutro_ac()
+{
+	//console.log("configuracion_vra_voltaje_ac_puntas_entre_fase_y_neutro_ac()");
 
 	var voltajePuntoA = 0;
 	var voltajePuntoB = 230;
@@ -4840,10 +4975,10 @@ function voltaje_ac_entre_fase_y_neutro_ac()
 }
 
 //---------------------------------------
-function voltaje_ac_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
+function configuracion_vra_voltaje_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
 {
 
-//console.log("voltaje_ac_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()");
+//console.log("configuracion_vra_voltaje_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()");
 
 var voltajePuntoA = 0;
 var voltajePuntoB = 230;
@@ -4863,101 +4998,14 @@ var diferenciaDePotencial = voltajePuntoB - voltajePuntoA;
 }
 
 //-----------------------------
-function medicion_incorrecta_ruido_blanco()
+function configuracion_10A_voltaje_ac_puntas_entre_fase_y_neutro_ac()
 {
-	//console.log("Al no haber conexión valida simulamos valores de ruido.");
-
-	if (variableParasetInterval)
-	{}
-	else
-		variableParasetInterval = setInterval(generaRuidoBlanco, 400);
+	cortocircuito();
 }
 
-//-----------------------------
-function medicion_incorrecta_devuelve_cero()
-{
-	clearInterval(variableParasetInterval);
-	variableParasetInterval = undefined;
-	valorMedido = 0;
-	analizaValorParaRepresentarEnPantalla();	
-}
-//-----------------------------
-function voltaje_dc_entre_dos_sondas_conectadas_al_mismo_punto_ac()
-{
-	//console.log("voltaje_dc_entre_dos_sondas_conectadas_al_mismo_punto_ac()");
-	valorMedido = 0;
-}
-//-----------------------------
-function voltaje_dc_entre_dos_puntos_conectados_ac_sin_rizado()
-{
-	//console.log("voltaje_dc_entre_dos_puntos_conectados_ac_sin_rizado()");
-	valorMedido = 0;
-}
-//-----------------------------
-function voltaje_ac_entre_dos_puntos_conectados_ac()
-{
-	//console.log("voltaje_ac_entre_dos_puntos_conectados_ac()");
-	valorMedido = 0;
-}
-//-----------------------------
-function voltaje_dc_entre_fase_y_neutro_ac()
-{
-	//console.log("voltaje_dc_entre_fase_y_neutro_ac()");
-	valorMedido = 0;
-}
-//-----------------------------
-function voltaje_dc_entre_fase_y_fase_neutro_y_neutro_a_traves_de_receptor_ac()
-{
-	//console.log("voltaje_dc_entre_fase_y_fase_a_traves_de_receptor_ac()");
-	valorMedido = 0;
-}
-//-----------------------------
-function voltaje_ac_entre_dos_puntos_desconectados_ac_a_traves_de_receptor()
-{
-	//console.log("voltaje_ac_entre_dos_puntos_desconectados_ac_a_traves_de_receptor()");
-	valorMedido = 0;
-}
-//-----------------------------
-
-
-function intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()
-{
-	//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
-	valorMedido = 0;
-}
 
 //-----------------------------
-function intensidad_ac_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
-{
-	if (configuracionMedicionIntensidadmA)
-	{
-		//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
-		clearInterval(oscilacionValorMedidoIntensidadmA);
- 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
-	}
-	else if (configuracionMedicionIntensidad10A)
-	{
-		//console.log("intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
-		clearInterval(oscilacionValorMedidoIntensidad10A);
-	 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
-	}
-}
-
-//-----------------------------
-function intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_traves_de_receptor()
-{
-	//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_traves_de_receptor()");
-	valorMedido = 0;
-}
-//-----------------------------
-function voltaje_dc_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
-{
-	//console.log("voltaje_dc_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac");
-	valorMedido = 0;
-}
-
-//-----------------------------
-function intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_traves_de_receptor()
+function configuracion_10A_voltaje_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
 {
 	if (conexionCorrectaParaReceptor)
 	{
@@ -4969,7 +5017,6 @@ function intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_tr
 		}
 		else if (configuracionMedicionIntensidad10A)
 		{
-			//console.log("intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
 			clearInterval(oscilacionValorMedidoIntensidad10A);
 		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
 		}
@@ -4985,41 +5032,133 @@ function intensidad_ac_entre_dos_puntos_desconectados_al_mismo_potencial_ac_a_tr
 	}
 }
 //-----------------------------
-function intensidad_dc_entre_dos_puntos_a_diferente_potencial_ac()
+
+function configuracion_mA_intensidad_mA_AC_puntas_entre_fase_y_neutro_AC()
 {
-	//console.log("intensidad_dc_entre_dos_puntos_a_diferente_potencial_ac()");
-	valorMedido = 0;
+	cortocircuito();
 }
-//-----------------------------
-function intensidad_10A_entre_fase_y_neutro_ac()
+
+//----------------------------
+function configuracion_mA_intensidad_mA_AC_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC()
 {
-	//console.log("intensidad_10A_entre_fase_y_neutro_ac() = CORTOCIRCUITO")
-	if ((configuracionMedicionIntensidad10A == true) && estadoFusible10ACorrecto == true)
+	if (conexionCorrectaParaReceptor)
 	{
-		audioExplosionElement.play();
-		estadoFusible10ACorrecto = false;
-		document.getElementById('polimetro').src = './images/polimetroExplotado.png';
+		if (configuracionMedicionIntensidadmA)
+		{
+			//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
+			clearInterval(oscilacionValorMedidoIntensidadmA);
+	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
+		}
+		else if (configuracionMedicionIntensidad10A)
+		{
+			clearInterval(oscilacionValorMedidoIntensidad10A);
+		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
+		}
+		else
+		{
+			alert("Assert linha 4613");
+		}
 	}
-	else if ((configuracionMedicionIntensidadmA == true) && estadoFusiblemACorrecto == true)
-	{
-		audioExplosionElement.play();
-		estadoFusiblemACorrecto = false;
-		document.getElementById('polimetro').src = './images/polimetroFusibleFundido.png';
-	}
+
 	else
 	{
+		valorMedido = 0;	
 	}
-	
-	valorMedido = 0;
+}
+
+//----------------------------
+function configuracion_10A_intensidad_mA_AC_puntas_entre_fase_y_neutro_AC()
+{
+	cortocircuito();
+}
+
+//----------------------------
+function configuracion_10A_intensidad_mA_AC_puntas_entre_fase_y_neutro_AC()
+{
+	if (conexionCorrectaParaReceptor)
+	{
+		if (configuracionMedicionIntensidadmA)
+		{
+			//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
+			clearInterval(oscilacionValorMedidoIntensidadmA);
+	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
+		}
+		else if (configuracionMedicionIntensidad10A)
+		{
+			clearInterval(oscilacionValorMedidoIntensidad10A);
+		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
+		}
+		else
+		{
+			alert("Assert linha 4613");
+		}
+	}
+
+	else
+	{
+		valorMedido = 0;	
+	}
+}
+
+
+//----------------------------
+function configuracion_10A_intensidad_10A_AC_puntas_entre_fase_y_neutro_AC()
+{
+	cortocircuito();
 }
 
 //-----------------------------
-function intensidad_ac_entre_dos_puntos_conectados_al_mismo_potencial_ac()
+function configuracion_10A_intensidad_10A_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_ac()
 {
-	//console.log("intensidad_ac_entre_dos_puntos_conectados_al_mismo_potencial_ac()")
-	valorMedido = 0;
+	if (configuracionMedicionIntensidadmA)
+	{
+		//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
+		clearInterval(oscilacionValorMedidoIntensidadmA);
+ 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
+	}
+	else if (configuracionMedicionIntensidad10A)
+	{
+		clearInterval(oscilacionValorMedidoIntensidad10A);
+	 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
+	}
 }
 
+
+//-----------------------------
+function configuracion_mA_intensidad_mA_DC_puntas_entre_fase_y_neutro_AC()
+{
+	cortocircuito();
+}
+
+//-----------------------------
+function configuracion_mA_intensidad_mA_DC_puntas_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC()
+{
+		valorMedido	= 0;
+}
+
+//-----------------------------
+function configuracion_10A_intensidad_mA_DC_puntas_entre_fase_y_neutro_AC()
+{
+	cortocircuito();
+}
+
+//-----------------------------
+function configuracion_10A_intensidad_mA_DC_PUNTAS_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC()
+{
+	valorMedido	= 0;
+}
+
+//-----------------------------
+function configuracion_10A_intensidad_10A_DC_puntas_entre_fase_y_neutro_AC()
+{
+	cortocircuito();
+}
+
+//-----------------------------
+function configuracion_10A_intensidad_10A_DC_PUNTAS_entre_fase_y_fase_o_neutro_y_neutro_a_traves_de_receptor_AC()
+{
+	valorMedido	= 0;
+}
 
 //-----------------------------
 function multimetroEstropeado()
