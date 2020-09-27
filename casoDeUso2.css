@@ -25,55 +25,50 @@ a{
 #conexionCOM {position:absolute; top:624px; left:136px ;visibility:visible; fill:transparent}
 #conexionVRA {position:absolute; top:624px; left:222px ;visibility:visible; fill:transparent}
 
-#D7S_1a {position:absolute; top:170px; left:220px ;visibility:hidden}		   
-#D7S_1b {position:absolute; top:170px; left:220px ;visibility:hidden}
-#D7S_1c {position:absolute; top:170px; left:220px ;visibility:hidden}
-#D7S_1d {position:absolute; top:170px; left:220px ;visibility:hidden}
-#D7S_1e {position:absolute; top:170px; left:220px ;visibility:hidden}
-#D7S_1f {position:absolute; top:170px; left:220px ;visibility:hidden}
-#D7S_1g {position:absolute; top:170px; left:220px ;visibility:hidden}
+#D7S_1a {position:absolute; top:170px; left:220px ;fill: #808080; visibility:hidden}		   
+#D7S_1b {position:absolute; top:170px; left:220px ;fill: #808080; visibility:hidden}
+#D7S_1c {position:absolute; top:170px; left:220px ;fill: #808080; visibility:hidden}
+#D7S_1d {position:absolute; top:170px; left:220px ;fill: #808080; visibility:hidden}
+#D7S_1e {position:absolute; top:170px; left:220px ;fill: #808080; visibility:hidden}
+#D7S_1f {position:absolute; top:170px; left:220px ;fill: #808080; visibility:hidden}
+#D7S_1g {position:absolute; top:170px; left:220px ;fill: #808080; visibility:hidden}
 
-#D7S_2a {position:absolute; top:170px; left:175px ;visibility:hidden}		   
-#D7S_2b {position:absolute; top:170px; left:175px ;visibility:hidden}
-#D7S_2c {position:absolute; top:170px; left:175px ;visibility:hidden}
-#D7S_2d {position:absolute; top:170px; left:175px ;visibility:hidden}
-#D7S_2e {position:absolute; top:170px; left:175px ;visibility:hidden}
-#D7S_2f {position:absolute; top:170px; left:175px ;visibility:hidden}
-#D7S_2g {position:absolute; top:170px; left:175px ;visibility:hidden}
+#D7S_2a {position:absolute; top:170px; left:175px ;fill: #808080; visibility:hidden}		   
+#D7S_2b {position:absolute; top:170px; left:175px ;fill: #808080; visibility:hidden}
+#D7S_2c {position:absolute; top:170px; left:175px ;fill: #808080; visibility:hidden}
+#D7S_2d {position:absolute; top:170px; left:175px ;fill: #808080; visibility:hidden}
+#D7S_2e {position:absolute; top:170px; left:175px ;fill: #808080; visibility:hidden}
+#D7S_2f {position:absolute; top:170px; left:175px ;fill: #808080; visibility:hidden}
+#D7S_2g {position:absolute; top:170px; left:175px ;fill: #808080; visibility:hidden}
 
-#D7S_3a {position:absolute; top:170px; left:130px ;visibility:hidden}		   
-#D7S_3b {position:absolute; top:170px; left:130px ;visibility:hidden}
-#D7S_3c {position:absolute; top:170px; left:130px ;visibility:hidden}
-#D7S_3d {position:absolute; top:170px; left:130px ;visibility:hidden}
-#D7S_3e {position:absolute; top:170px; left:130px ;visibility:hidden}
-#D7S_3f {position:absolute; top:170px; left:130px ;visibility:hidden}
-#D7S_3g {position:absolute; top:170px; left:130px ;visibility:hidden}
+#D7S_3a {position:absolute; top:170px; left:130px ;fill: #808080; visibility:hidden}		   
+#D7S_3b {position:absolute; top:170px; left:130px ;fill: #808080; visibility:hidden}
+#D7S_3c {position:absolute; top:170px; left:130px ;fill: #808080; visibility:hidden}
+#D7S_3d {position:absolute; top:170px; left:130px ;fill: #808080; visibility:hidden}
+#D7S_3e {position:absolute; top:170px; left:130px ;fill: #808080; visibility:hidden}
+#D7S_3f {position:absolute; top:170px; left:130px ;fill: #808080; visibility:hidden}
+#D7S_3g {position:absolute; top:170px; left:130px ;fill: #808080; visibility:hidden}
 
-#D7S_4a {position:absolute; top:170px; left:85px ;visibility:hidden}		   
-#D7S_4b {position:absolute; top:170px; left:85px ;visibility:hidden}
-#D7S_4c {position:absolute; top:170px; left:85px ;visibility:hidden}
-#D7S_4d {position:absolute; top:170px; left:85px ;visibility:hidden}
-#D7S_4e {position:absolute; top:170px; left:85px ;visibility:hidden}
-#D7S_4f {position:absolute; top:170px; left:85px ;visibility:hidden}
-#D7S_4g {position:absolute; top:170px; left:85px ;visibility:hidden}
+#D7S_4b {position:absolute; top:170px; left:85px ;fill: #808080; visibility:hidden}
+#D7S_4c {position:absolute; top:170px; left:85px ;fill: #808080; visibility:hidden}
 
-#signo {position:absolute; top:170px; left:76px ;visibility:hidden}
-#punto1 {position:absolute; top:239px; left:123px ;visibility:hidden}
-#punto2 {position:absolute; top:239px; left:169px ;visibility:hidden}
-#punto3 {position:absolute; top:239px; left:214px ;visibility:hidden}
-#punto4 {position:absolute; top:239px; left:258px ;visibility:hidden}
+#signo {position:absolute; top:170px; left:76px ;fill: #808080; visibility:hidden}
+#punto1 {position:absolute; top:239px; left:123px ;fill: #808080; visibility:hidden}
+#punto2 {position:absolute; top:239px; left:169px ;fill: #808080; visibility:hidden}
+#punto3 {position:absolute; top:239px; left:214px ;fill: #808080; visibility:hidden}
+#punto4 {position:absolute; top:239px; left:258px ;fill: #808080; visibility:hidden}
 
-#ohmios {position:absolute; top:166px; left:277px ;visibility:hidden}
-#kiloohmios {position:absolute; top:182px; left:270px ;visibility:hidden}
-#megaohmios {position:absolute; top:198px; left:265px ;visibility:hidden}
-#voltios {position:absolute; top:214px; left:279px ;visibility:hidden}
-#milivoltios {position:absolute; top:214px; left:267px ;visibility:hidden}
-#hfe {position:absolute; top:230px; left:266px ;visibility:hidden}
-#miliamperios {position:absolute; top:214px; left:90px ;visibility:hidden}
-#microamperios {position:absolute; top:230px; left:90px ;visibility:hidden}
-#AC {position:absolute; top:166px; left:90px ;visibility:hidden}
+#ohmios {position:absolute; top:166px; left:277px ;color: #808080; visibility:hidden}
+#kiloohmios {position:absolute; top:182px; left:270px ;color: #808080; visibility:hidden}
+#megaohmios {position:absolute; top:198px; left:265px ;color: #808080; visibility:hidden}
+#voltios {position:absolute; top:214px; left:279px ;color: #808080; visibility:hidden}
+#milivoltios {position:absolute; top:214px; left:267px ;color: #808080; visibility:hidden}
+#hfe {position:absolute; top:230px; left:266px ;color: #808080; visibility:hidden}
+#miliamperios {position:absolute; top:214px; left:90px ;color: #808080; visibility:hidden}
+#microamperios {position:absolute; top:230px; left:90px ;color: #808080; visibility:hidden}
+#AC {position:absolute; top:166px; left:90px ;color: #808080; visibility:hidden}
 
-#baseDeEnchufeCasoDeUso2{position: absolute; top: 50px; width:552px; height: 615px; left:438px; background-image: url('./images/baseDeEnchufeCasoDeUso2.png');}
+#baseDeEnchufeCasoDeUso2{position: absolute; top: 50px; width:552px; height: 645px; left:438px; background-image: url('./images/baseDeEnchufeCasoDeUso2.png');}
 #puenteNeutro{position: absolute; top: 218px; width:185px; height: 154px; left:519px; background-image: url('./images/puenteNeutro.png');}
 #puenteFase{position: absolute; top: 220px; width:125px; height: 125px; left:549px; background-image: url('./images/puenteFase.png');}
 

@@ -2664,17 +2664,155 @@ function clasificaTipoDeMedicion()
 			document.getElementById('aspaRojaPaso3').style.backgroundImage = "url('./images/aspaRoja.png')";
 			//console.log("Multímetro apagado.");
 
-			tipoDeMedicion = 'MULTIMETRO_APAGADO';
-
-			if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
+			if (sondasDesconectadas == false && configuracionMedicionIntensidad10A == true && conexionDePuntasIncompleta == false)
 			{
-				conexionCorrectaParaReceptor = true;
+				if ((conexionEntreNeutroRegleta1YFaseRegleta1 == true)
+					|| (conexionEntreNeutroRegleta2YFaseRegleta2 == true && puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true))
+				{
+					//console.log("Sondas conectadas y puntas entre Fase y Neutro, ya sea en la regleta 1 o en la regleta 2");
+					tipoDeMedicion = "MULTIMETRO_APAGADO_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC"; //INTENSIDAD_AC_ENTRE_DOS_PUNTOS_A_DIFERENTE_POTENCIAL_AC -> INTENSIDAD_10A_ENTRE_FASE_Y_NEUTRO_AC
+
+					if (puenteFaseConectadoARegleta == true && puenteNeutroConectadoARegleta == true)
+					{
+						conexionCorrectaParaReceptor = true;
+					}
+					else
+					{
+						conexionCorrectaParaReceptor = false;	
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta2 == true && (puenteFaseConectadoARegleta == false || puenteNeutroConectadoARegleta == false))
+				{
+					//console.log("Sondas conectadas y puntas entre Fase y Neutro en la regleta 2, con los puentes desconectados");
+					tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+					conexionCorrectaParaReceptor = false;
+				}
+				else if (conexionEntreFaseRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						if (puenteFaseConectadoARegleta == true)
+						{
+							//console.log("Sondas conectadas y puntas entre fases puenteadas");
+							tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+							conexionCorrectaParaReceptor = true;
+						}
+						else
+						{
+							//console.log("Sondas conectadas y puntas entre fases sin continuidad entre ellas");
+							tipoDeMedicion = "MULTIMETRO_APAGADO"; // --> INTENSIDAD_10A_ENTRE_FASE_Y_FASE_A_TRAVES_DE_RECEPTOR_AC
+
+							conexionCorrectaParaReceptor = false;
+						}
+					}
+					else
+					{
+						//console.log("Camino de vuelta cortado.");
+						tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+						conexionCorrectaParaReceptor = false;
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YNeutroRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						if (puenteNeutroConectadoARegleta == true)
+						{
+							//console.log("Sondas conectadas y puntas entre neutros puenteados");
+							tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+							conexionCorrectaParaReceptor = true;
+						}
+						else
+						{
+							//console.log("Sondas conectadas y puntas entre neutros sin continuidad entre ellos");
+							tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+							conexionCorrectaParaReceptor = false;
+						}
+					}
+					else
+					{
+						//console.log("Camino de vuelta cortado.");
+						tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+						conexionCorrectaParaReceptor = false;
+					}
+				}
+				else if (conexionEntreNeutroRegleta1YFaseRegleta2 == true)
+				{
+					if (puenteFaseConectadoARegleta == true)
+					{
+						//console.log("Sondas conectadas y puntas entre Fase y Neutro en diferentes regletas");
+						tipoDeMedicion = "MULTIMETRO_APAGADO_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
+
+						if (puenteNeutroConectadoARegleta == true)
+						{
+							conexionCorrectaParaReceptor = true;
+						}
+						else
+						{
+							conexionCorrectaParaReceptor = false;
+						}
+					}
+					else
+					{
+						//console.log("Configuración sin solución de continuidad");
+						tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+						conexionCorrectaParaReceptor = false;
+					}
+				}
+				else if (conexionEntreNeutroRegleta2YFaseRegleta1 == true)
+				{
+					if (puenteNeutroConectadoARegleta == true)
+					{
+						//console.log("Sondas conectadas y puntas entre Fase y Neutro en diferentes regletas");
+						tipoDeMedicion = "MULTIMETRO_APAGADO_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC";
+
+						if (puenteFaseConectadoARegleta == true)
+						{
+							conexionCorrectaParaReceptor = true;
+						}
+						else
+						{
+							conexionCorrectaParaReceptor = false;
+						}							
+					}
+					else
+					{
+						//console.log("Configuración sin solución de continuidad");
+						tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+						conexionCorrectaParaReceptor = false;
+					}
+				}
+				else if (conexionDeSondasAMismoPunto == true)
+				{
+						//console.log("Sondas conectadas entre ellas.");
+						tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+						conexionCorrectaParaReceptor = true;
+				}
 			}
 			else
 			{
-				conexionCorrectaParaReceptor = false;
+				tipoDeMedicion = "MULTIMETRO_APAGADO";
+
+				if (puenteNeutroConectadoARegleta == true && puenteFaseConectadoARegleta == true)
+				{
+					conexionCorrectaParaReceptor = true;
+				}
+				else
+				{
+					conexionCorrectaParaReceptor = false;
+				}//{console.log("Assert linha 3048");
 			}
 			break;
+
 
 		case 1: case 2: case 3: case 4: case 5: //VOLTAJE_DC
 			
@@ -4618,6 +4756,15 @@ function interpretaMedicionSegunTipo()
 
 			break;
 
+		case "MULTIMETRO_APAGADO_PUNTAS_ENTRE_FASE_Y_NEUTRO_AC":
+
+			clearInterval(variableParasetInterval);
+			variableParasetInterval = undefined;
+			
+			configuracion_10A_voltaje_ac_puntas_entre_fase_y_neutro_ac();
+
+			break;
+
 		case "MEDICION_INCORRECTA_DEVUELVE_CERO":
 		
 			//console.log("Topología incorrecta para medir no afectada por ruido.");
@@ -4876,13 +5023,21 @@ function oscilaValorIntensidadmA(valor)
 function cortocircuito()
 {
 	//console.log("configuracion_10A_voltaje_ac_puntas_entre_fase_y_neutro_ac() = CORTOCIRCUITO")
-	if (configuracionMedicionIntensidad10A == true && estadoFusible10ACorrecto == true)
+	if (configuracionMedicionIntensidad10A == true && estadoFusible10ACorrecto == true && indicePosicionSelector == 0)
 	{
 		audioExplosionElement.play();
 		estadoFusible10ACorrecto = false;
 		document.getElementById('polimetro').src = './images/polimetroExplotado.png';
 
-		alert("¡PREMIO! Te acabas de cargar el multímetro. No puedes medir la corriente de igual forma que mides la diferencia de potencial. El procedimiento que debes seguir es diferente. Lo que acabas de provocar se llama cortocircuito, y en este caso lo has hecho, incoscientemente, al colocar una punta en la fase y la otra en el neutro, habiendo configurado el múltimetro en modo amperímetro. Es como si hubieras interconectado fase y neutro directamente con un conductor de resistencia casi nula, que es como se comporta el multímetro cuando está configurado en modo amperímetro. Para poder continuar trabajando, por favor, recarga la página.")
+		alert("Vaya, te acabas de cargar el multímetro sin ni siquiera encenderlo. No puedes configurar el multímetro en modo amperímetro y llevar una punta a la fase y la otra al neutro.  Así lo que consigues provocar es un cortocircuito, incluso teniendo el selector en la posición de apagado [OFF]. Es como si hubieras interconectado fase y neutro directamente con un conductor de resistencia casi nula, que es como se comporta el multímetro cuando está configurado en modo amperímetro. Para poder continuar trabajando, por favor, recarga la página.")	
+	}
+	else if (configuracionMedicionIntensidad10A == true && estadoFusible10ACorrecto == true)
+	{
+		audioExplosionElement.play();
+		estadoFusible10ACorrecto = false;
+		document.getElementById('polimetro').src = './images/polimetroExplotado.png';
+
+		alert("¡PREMIO! Te acabas de cargar el multímetro. No puedes medir la corriente de igual forma que mides la diferencia de potencial. El procedimiento que debes seguir es diferente. Lo que acabas de provocar se llama cortocircuito, y en este caso lo has hecho, incoscientemente, al colocar una punta en la fase y la otra en el neutro, habiendo configurado el múltimetro en modo amperímetro (incluso teniendo el selector en la posición de apagado [OFF]). Es como si hubieras interconectado fase y neutro directamente con un conductor de resistencia casi nula, que es como se comporta el multímetro cuando está configurado en modo amperímetro. Para poder continuar trabajando, por favor, recarga la página.")
 
 	}
 	else if (configuracionMedicionIntensidadmA == true && estadoFusiblemACorrecto == true)
@@ -4969,9 +5124,12 @@ function configuracion_vra_voltaje_ac_puntas_entre_fase_y_neutro_ac()
 	var voltajePuntoA = 0;
 	var voltajePuntoB = 230;
 	var diferenciaDePotencial = voltajePuntoB - voltajePuntoA;
+
+	if (oscilacionValorMedidoVoltaje == null) 
+		valorMedido = diferenciaDePotencial + Math.random()*10 - 5;
  	
 	clearInterval(oscilacionValorMedidoVoltaje);
-	oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(diferenciaDePotencial);}, 500);
+	oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(diferenciaDePotencial);}, 400);
 }
 
 //---------------------------------------
@@ -4983,16 +5141,16 @@ function configuracion_vra_voltaje_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro
 var voltajePuntoA = 0;
 var voltajePuntoB = 230;
 var diferenciaDePotencial = voltajePuntoB - voltajePuntoA;
- 	
+
 	clearInterval(oscilacionValorMedidoVoltaje);
 
 	if (receptorActivoSecador == true || receptorActivoCadena == true || receptorActivoEstufa == true)
 	{
-		oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(diferenciaDePotencial);}, 800);
+		oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(diferenciaDePotencial);}, 400);
  	}
  	else
  	{
- 		oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(0);}, 800);
+ 		oscilacionValorMedidoVoltaje = setInterval(function(){oscilaValorVoltaje(0);}, 400);
  	}
 
 }
@@ -5012,13 +5170,19 @@ function configuracion_10A_voltaje_ac_puntas_entre_fase_y_fase_o_neutro_y_neutro
 		if (configuracionMedicionIntensidadmA)
 		{
 			//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
+			if (oscilacionValorMedidoIntensidadmA == null) 
+				valorMedido = potenciaReceptor/230 + Math.random()*0.0001 - 5/100000;
+			
 			clearInterval(oscilacionValorMedidoIntensidadmA);
-	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
+	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 400);
 		}
 		else if (configuracionMedicionIntensidad10A)
 		{
-			clearInterval(oscilacionValorMedidoIntensidad10A);
-		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
+			if (oscilacionValorMedidoIntensidad10A == null) 
+				valorMedido = potenciaReceptor/230 + Math.random()*0.1 - 5/100;
+
+		 	clearInterval(oscilacionValorMedidoIntensidad10A);
+			oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 400);	
 		}
 		else
 		{
@@ -5046,13 +5210,19 @@ function configuracion_mA_intensidad_mA_AC_puntas_entre_fase_y_fase_o_neutro_y_n
 		if (configuracionMedicionIntensidadmA)
 		{
 			//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
+			if (oscilacionValorMedidoIntensidadmA == null) 
+				valorMedido = potenciaReceptor/230 + Math.random()*0.0001 - 5/100000;
+			
 			clearInterval(oscilacionValorMedidoIntensidadmA);
-	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
+	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 400);
 		}
 		else if (configuracionMedicionIntensidad10A)
 		{
-			clearInterval(oscilacionValorMedidoIntensidad10A);
-		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
+			if (oscilacionValorMedidoIntensidad10A == null) 
+				valorMedido = potenciaReceptor/230 + Math.random()*0.1 - 5/100;
+
+		 	clearInterval(oscilacionValorMedidoIntensidad10A);
+		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 400);	
 		}
 		else
 		{
@@ -5080,13 +5250,19 @@ function configuracion_10A_intensidad_mA_AC_puntas_entre_fase_y_neutro_AC()
 		if (configuracionMedicionIntensidadmA)
 		{
 			//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
+			if (oscilacionValorMedidoIntensidadmA == null) 
+				valorMedido = potenciaReceptor/230 + Math.random()*0.0001 - 5/100000;
+			
 			clearInterval(oscilacionValorMedidoIntensidadmA);
-	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
+	 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 400);
 		}
 		else if (configuracionMedicionIntensidad10A)
 		{
-			clearInterval(oscilacionValorMedidoIntensidad10A);
-		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
+			if (oscilacionValorMedidoIntensidad10A == null) 
+				valorMedido = potenciaReceptor/230 + Math.random()*0.1 - 5/100;
+
+		 	clearInterval(oscilacionValorMedidoIntensidad10A);
+		 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 400);	
 		}
 		else
 		{
@@ -5113,13 +5289,19 @@ function configuracion_10A_intensidad_10A_ac_puntas_entre_fase_y_fase_o_neutro_y
 	if (configuracionMedicionIntensidadmA)
 	{
 		//console.log("intensidad_dc_entre_dos_puntos_desconectados_al_mismo_potencial_ac()");
+		if (oscilacionValorMedidoIntensidadmA == null) 
+				valorMedido = potenciaReceptor/230 + Math.random()*0.0001 - 5/100000;
+			
 		clearInterval(oscilacionValorMedidoIntensidadmA);
- 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 800);
+ 		oscilacionValorMedidoIntensidadmA = setInterval(function(){oscilaValorIntensidadmA(potenciaReceptor/230);}, 400);
 	}
 	else if (configuracionMedicionIntensidad10A)
 	{
+		if (oscilacionValorMedidoIntensidad10A == null) 
+			valorMedido = potenciaReceptor/230 + Math.random()*0.1 - 5/100;
+
 		clearInterval(oscilacionValorMedidoIntensidad10A);
-	 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 800);	
+	 	oscilacionValorMedidoIntensidad10A = setInterval(function(){oscilaValorIntensidad10A(potenciaReceptor/230);}, 400);	
 	}
 }
 
